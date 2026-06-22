@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScandiScout - Norway Directory</title>
+    <style>
+        /* Uniform Nordic Theme matching main page */
+        body { 
+            font-family: sans-serif; 
+            background-color: #F8F9FA; 
+            color: #1D2D44; 
+            margin: 0; 
+            padding: 0;
+        }
+        
+        .sidebar { 
+            width: 240px; 
+            position: fixed; 
+            height: 100%; 
+            background-color: #1D2D44; 
+            color: #F8F9FA; 
+            padding: 20px;
+        }
+        .sidebar h2 { color: #FFFFFF; font-size: 22px; border-bottom: 2px solid #F8F9FA; padding-bottom: 10px; }
+        .sidebar a { display: block; color: #F8F9FA; text-decoration: none; padding: 12px 5px; font-weight: bold; }
+        .sidebar a:hover { color: #A8DADC; }
+
+        .main-content { 
+            margin-left: 280px; 
+            padding: 40px 20px; 
+        }
+
+        /* Fluid Percentage Container for Norway Map */
+        .scandiscout-responsive-wrapper { 
+            width: 100%; 
+            max-width: 100%; 
+            position: relative; 
+            height: 0; 
+            padding-bottom: 56.25%; 
+            overflow: hidden; 
+            margin-bottom: 30px;
+            background: #E5E5E5;
+        }
+        .scandiscout-responsive-wrapper iframe { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; 
+        }
+
+        /* Budget Matrix Layout Grid */
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .price-card {
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .price-card h4 { margin-top: 0; color: #1D2D44; }
+        .price-value { font-size: 24px; font-weight: bold; color: #457B9D; }
+
+        /* Landmark Profiles Section */
+        .landmark-section { margin-top: 40px; }
+        .landmark-card { background: #FFFFFF; padding: 20px; margin-bottom: 20px; border-left: 5px solid #457B9D; }
+
+        /* Media Query: Changes horizontal multi-column grid into a clean vertical stack layout under 768px */
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; position: relative; height: auto; padding: 10px; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .price-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>ScandiScout</h2>
+        <a href="../index.html">← Back Home</a>
+        <a href="../denmark/index.html">Denmark</a>
+        <a href="../sweden/index.html">Sweden</a>
+        <a href="index.html" style="color: #A8DADC;">Norway</a>
+    </div>
+
+    <div class="main-content">
+        <h1>Norway Travel Directory</h1>
+        <p>An eco-conscious logistical overview for youth travelers exploring Norway.</p>
+        
+        <h3>Interactive Pinpoints (3 Nodes)</h3>
+        <div class="scandiscout-responsive-wrapper">
+            <iframe src="about:blank"></iframe>
+        </div>
+
+        <h3>Youth Budget Matrix</h3>
+        <div class="price-grid">
+            <div class="price-card">
+                <h4>Average Transit Ticket</h4>
+                <div class="price-value">40 NOK</div>
+                <p>Standard single fare travel ticket on regional Ruter networks.</p>
+            </div>
+            <div class="price-card">
+                <h4>Intercity Vy Train Ticket</h4>
+                <div class="price-value">450 NOK</div>
+                <p>Eco-friendly high-density rail transport across Norwegian regions.</p>
+            </div>
+            <div class="price-card">
+                <h4>Hostel Bracket</h4>
+                <div class="price-value">350 NOK / night</div>
+                <p>Cost-effective local hostel systems keeping pricing low for youngsters.</p>
+            </div>
+        </div>
+
+        <div class="landmark-section">
+            <h3>Significant Cultural & Architectural Features</h3>
+            
+            <div class="landmark-card">
+                <h4>1. Nidaros Cathedral (Trondheim)</h4>
+                <p><strong>Cultural Significance:</strong> Built from 1070 over the burial site of St. Olav, standing as the world's northernmost medieval cathedral.</p>
+                <p><strong>Public Transport Links:</strong> Easily accessible via Trondheim local bus lines or Prinsen krysset transit station.</p>
+            </div>
+
+            <div class="landmark-card">
+                <h4>2. Borgund Stave Church</h4>
+                <p><strong>Cultural Significance:</strong> Triple-nave stave church featuring unique architectural elements like carved dragon heads dating back to the late 12th century.</p>
+                <p><strong>Public Transport Links:</strong> Reached by rural transport networks or local connection buses line 130.</p>
+            </div>
+
+            <div class="landmark-card">
+                <h4>3. The Opera House (Oslo)</h4>
+                <p><strong>Cultural Significance:</strong> Neo-futuristic angled white marble roof structure that appears to rise directly out of the fjord water basin.</p>
+                <p><strong>Public Transport Links:</strong> Directly adjacent to Oslo Central Station (Oslo S train and subway hub).</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
