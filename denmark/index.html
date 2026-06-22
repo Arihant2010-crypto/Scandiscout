@@ -84,7 +84,7 @@
     </div>
 
     <div class="main-content">
-        <h1>Denmark: Maps & Structures</h1>
+        <h1>Denmark: Maps &amp; Structures</h1>
         <p style="color: var(--text-muted); margin-bottom: 30px;">Hover or click on the cards below to pinpoint coordinates on the map.</p>
         
         <a href="prices.html" class="nav-btn">View Denmark Price Directory →</a>
@@ -129,15 +129,47 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Wrapped in a try/catch block so a map initialization error can never turn your screen blue
+        let map;
+        let markerInstances = [];
+
         try {
-            const map = L.map('map').setView([55.680, 12.585], 13);
+            // Instantiate map canvas centered over Copenhagen
+            map = L.map('map').setView([55.680, 12.585], 13);
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
                 attribution: '&copy; OpenStreetMap' 
             }).addTo(map);
             
+            // Full structured dataset containing explicit landmark coordinates
             const locations = [
-                { coords: [55.6797, 12.5913], desc: "<b>Nyhavn Canal</b>" },
-                { coords: [55.6763, 12.5803], desc: "<b>Christiansborg Palace</b>" },
-                { coords:
+                { coords: [55.6797, 12.5913], desc: "<b>1. Nyhavn Canal</b><br>17th-Century Colorful Townhouses." },
+                { coords: [55.6763, 12.5803], desc: "<b>2. Christiansborg Palace</b><br>Seat of Danish Parliament." },
+                { coords: [55.6814, 12.5757], desc: "<b>3. The Round Tower</b><br>Historic Astronomical Observatory." },
+                { coords: [55.6737, 12.5683], desc: "<b>4. Tivoli Gardens</b><br>Historic Pleasure Gardens Amusement Park." },
+                { coords: [55.6841, 12.5931], desc: "<b>5. Amalienborg Palace</b><br>Winter Royal Residence." }
+            ];
+
+            // Loop through array and append native map pins
+            locations.forEach((place) => {
+                const marker = L.marker(place.coords).addTo(map);
+                marker.bindPopup(place.desc);
+                markerInstances.push(marker);
+            });
+
+        } catch (e) {
+            console.error("Leaflet initialization caught error:", e);
+        }
+
+        // Active pointer mapping execution block called by HTML layouts
+        function focusMarker(index) {
+            if (map && markerInstances[index]) {
+                const targetMarker = markerInstances[index];
+                
+                // Pan map camera viewport onto corresponding point coordinates smoothly
+                map.setView(targetMarker.getLatLng(), 15, { animate: true });
+                targetMarker.openPopup();
+            }
+        }
+    </script>
+</body>
+</html>
