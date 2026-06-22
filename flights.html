@@ -139,7 +139,7 @@
 
     <script>
         function redirectToFlight(airline, from, to) {
-            // Dynamically calculate a departure date exactly 14 days from today's active date
+            // Calculates a target departure date exactly 14 days from right now
             const targetDate = new Date();
             targetDate.setDate(targetDate.getDate() + 14);
             
@@ -149,7 +149,6 @@
             
             let finalUrl = "";
 
-            // Dynamic deep-linking parameters based on specific carrier architecture
             switch(airline) {
                 case 'Emirates':
                     finalUrl = `https://www.emirates.com/ae/english/book/flight-search/?destination=${to}&origin=${from}&dateOutbound=${day}-${month}-${year}`;
@@ -158,7 +157,6 @@
                     finalUrl = `https://www.qatarairways.com/en/homepage.html?bookingClass=E&oneway=0&from=${from}&to=${to}&dates=${year}-${month}-${day}`;
                     break;
                 case 'Norwegian':
-                    // Redirects straight into their live low-fare calendar matrix
                     finalUrl = `https://www.norwegian.com/en/ipc/availability/faredropdown?D_Airport=${from}&A_Airport=${to}&TripType=1&CurrencyCode=EUR`;
                     break;
                 case 'SAS':
@@ -168,7 +166,6 @@
                     finalUrl = "https://www.skyscanner.net";
             }
 
-            // Fire window target directly to launch airline seat query loop
             window.open(finalUrl, '_blank');
         }
     </script>
