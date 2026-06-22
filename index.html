@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScandiScout: Eco-Conscious Digital Guide</title>
+    <style>
+        /* Base Styling aligning with your Nordic Palette */
+        body { 
+            font-family: sans-serif; 
+            background-color: #F8F9FA; 
+            color: #1D2D44; 
+            margin: 0; 
+            padding: 0;
+        }
+        
+        /* Global Navigation Sidebar */
+        .sidebar { 
+            width: 240px; 
+            position: fixed; 
+            height: 100%; 
+            background-color: #1D2D44; 
+            color: #F8F9FA; 
+            padding: 20px;
+        }
+        .sidebar h2 { color: #FFFFFF; font-size: 22px; border-bottom: 2px solid #F8F9FA; padding-bottom: 10px; }
+        .sidebar a { display: block; color: #F8F9FA; text-decoration: none; padding: 12px 5px; font-weight: bold; }
+        .sidebar a:hover { color: #A8DADC; }
+
+        /* Main Workspace Container */
+        .main-content { 
+            margin-left: 280px; 
+            padding: 40px 20px; 
+        }
+
+        /* Responsive Wrapper for maps and trackers discussed in Criterion B */
+        .scandiscout-responsive-wrapper { 
+            width: 100%; 
+            max-width: 100%; 
+            position: relative; 
+            height: 0; 
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            overflow: hidden; 
+            margin-bottom: 30px;
+        }
+        .scandiscout-responsive-wrapper iframe { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            border: 0; 
+        }
+
+        /* Layout Grid for Pricing Elements */
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .price-card {
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* Media Query: Changes horizontal grid to vertical stack under 768px */
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; position: relative; height: auto; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .price-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>ScandiScout</h2>
+        <a href="index.html">Home</a>
+        <a href="denmark/index.html">Denmark Directory</a>
+        <a href="sweden/index.html">Sweden Directory</a>
+        <a href="norway/index.html">Norway Directory</a>
+    </div>
+
+    <div class="main-content">
+        <h1>ScandiScout Homepage</h1>
+        <p>An Interactive, Eco-Conscious Digital Guide to Scandinavia built for young travelers.</p>
+        
+        <h3>Interactive Regional Pinpoints</h3>
+        <div class="scandiscout-responsive-wrapper">
+            <iframe src="about:blank"></iframe>
+        </div>
+    </div>
+
+</body>
+</html>
