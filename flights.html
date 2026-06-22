@@ -3,57 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScandiScout - Live Flight Router & Seat Engine</title>
+    <title>ScandiScout - Flight Engine Portal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #0f172a;
+            --bg-sidebar: #1e293b;
             --bg-card: #1e293b;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --accent-blue: #38bdf8;
             --accent-orange: #f97316;
-            --accent-purple: #a855f7;
             --sidebar-width: 280px;
         }
         * { box-sizing: border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
         
-        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: #1e293b; border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 24px; z-index: 100; }
-        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0 0 30px 0; display: flex; align-items: center; gap: 10px; }
-        .sidebar h2::before { content: ''; display: inline-block; width: 8px; height: 24px; background: linear-gradient(to bottom, var(--accent-blue), var(--accent-orange)); border-radius: 4px; }
-        .sidebar a { display: block; color: var(--text-muted); text-decoration: none; padding: 12px 16px; font-weight: 600; font-size: 15px; border-radius: 8px; margin-bottom: 8px; }
+        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 24px; z-index: 100; }
+        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
+        .sidebar h2::before { content: ''; display: inline-block; width: 6px; height: 24px; background: var(--accent-orange); border-radius: 4px; }
+        .sidebar a { display: block; color: var(--text-muted); text-decoration: none; padding: 12px 16px; font-weight: 600; font-size: 15px; border-radius: 8px; margin-bottom: 8px; transition: 0.2s; }
         .sidebar a:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+        .sidebar a.active { background: rgba(249, 115, 22, 0.1); color: var(--accent-orange); }
         
         .main-content { margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); max-width: 1200px; }
-        .header-section { margin-bottom: 40px; }
-        .header-section h1 { font-size: 32px; font-weight: 800; margin: 0 0 10px 0; }
-        .header-section p { color: var(--text-muted); margin: 0; font-size: 16px; }
         
-        .region-section { margin-bottom: 45px; }
-        .region-section h2 { font-size: 22px; font-weight: 800; border-bottom: 2px solid rgba(255, 255, 255, 0.05); padding-bottom: 8px; margin-bottom: 24px; }
+        .header-section { margin-bottom: 36px; }
+        .header-section h1 { font-size: 32px; font-weight: 800; margin: 0 0 12px 0; }
+        .header-section p { color: var(--text-muted); font-size: 15px; margin: 0; }
+        
+        .region-section { margin-bottom: 40px; }
+        .region-section h2 { font-size: 22px; font-weight: 800; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 10px; }
         
         .listings-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-        .flight-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
+        .flight-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.02); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
         
-        .badge { display: inline-block; padding: 4px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; border-radius: 6px; margin-bottom: 12px; }
+        .badge { display: inline-block; padding: 4px 8px; font-size: 11px; font-weight: 700; border-radius: 4px; margin-bottom: 12px; text-transform: uppercase; }
         .badge.premium { background: rgba(56, 189, 248, 0.1); color: var(--accent-blue); }
-        .badge.budget { background: rgba(249, 115, 22, 0.1); color: var(--accent-orange); }
-        .badge.euro { background: rgba(168, 85, 247, 0.1); color: var(--accent-purple); }
+        .badge.euro { background: rgba(249, 115, 22, 0.1); color: var(--accent-orange); }
         
-        .flight-card h4 { margin: 0 0 6px 0; font-size: 18px; font-weight: 700; }
-        .route-info { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; font-weight: 600; }
-        .desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin: 0 0 20px 0; }
+        .flight-card h4 { margin: 0 0 6px 0; font-size: 18px; font-weight: 800; }
+        .route-info { font-size: 13px; color: var(--accent-blue); font-weight: 600; margin-bottom: 12px; }
+        .desc { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin: 0 0 20px 0; }
         
-        .card-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
-        .duration { font-size: 15px; font-weight: 600; }
-        .duration span { color: var(--text-muted); font-size: 13px; font-weight: 400; }
+        .card-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 16px; }
+        .duration { font-size: 13px; color: var(--text-muted); }
+        .duration span { display: block; font-weight: bold; color: #10b981; }
         
-        .action-btn { background: #3b82f6; color: #ffffff; text-decoration: none; padding: 10px 18px; font-size: 13px; font-weight: 700; border-radius: 8px; border: none; cursor: pointer; transition: 0.2s; }
-        .action-btn:hover { background: #ffffff; color: var(--bg-dark); transform: translateY(-1px); }
-        
+        .action-btn { background: var(--accent-orange); color: #0f172a; border: none; padding: 10px 18px; font-size: 13px; font-weight: 700; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .action-btn:hover { background: #ffffff; color: #0f172a; }
+
         @media (max-width: 960px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .listings-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -61,161 +62,90 @@
 
     <div class="sidebar">
         <h2>ScandiScout</h2>
-        <a href="index.html">← Back to Home</a>
+        <a href="./index.html">← Back Dashboard</a>
+        <a href="./flights.html" class="active">✈️ Flights Engine</a>
     </div>
 
     <div class="main-content">
         <div class="header-section">
-            <h1>✈️ Global Flight Plan Directory (15 Active Routes)</h1>
-            <p>Interact with any option to build live search sessions, pulling real-time aircraft layouts and seating configurations.</p>
+            <h1>Global Flight Routing Hub</h1>
+            <p>Select any dynamic operational link below to browse seating charts and active flight inventory directories.</p>
         </div>
 
         <div class="region-section">
-            <h2>🌍 From Middle East Gateways</h2>
+            <h2>🌐 Global Intercontinental Gateways</h2>
             <div class="listings-grid">
+                
                 <div class="flight-card">
                     <div>
-                        <span class="badge premium">Emirates</span>
-                        <h4>Dubai (DXB) to Copenhagen (CPH)</h4>
-                        <div class="route-info">✈️ Hub Transit Corridor</div>
-                        <p class="desc">Daily flagship direct flight. Generates seat map parameters for live Airbus A380/Boeing 777 airframes.</p>
+                        <span class="badge premium">Delta Air Lines</span>
+                        <h4>New York (JFK) to Copenhagen (CPH)</h4>
+                        <div class="route-info">🇺🇸 Transatlantic Flight Link</div>
+                        <p class="desc">Direct long-haul operations crossing from North America into Denmark. Maps dynamic flight inventory layout lines.</p>
                     </div>
                     <div class="card-bottom">
-                        <div class="duration">~7h 20m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Emirates', 'DXB', 'CPH')" class="action-btn">Check Live Seats & Book ↗</button>
+                        <div class="duration">~7h 45m <span>Direct</span></div>
+                        <button onclick="redirectToFlight('Delta', 'JFK', 'CPH')" class="action-btn">Check Live Seats ↗</button>
                     </div>
                 </div>
+
                 <div class="flight-card">
                     <div>
-                        <span class="badge premium">Emirates</span>
-                        <h4>Dubai (DXB) to Stockholm (ARN)</h4>
-                        <div class="route-info">✈️ Swedish Capital Direct</div>
-                        <p class="desc">Direct regular link into Arlanda Terminal 5. Connects to official live inventory charts instantly.</p>
+                        <span class="badge premium">ANA (All Nippon Airways)</span>
+                        <h4>Tokyo (HND) to Stockholm (ARN)</h4>
+                        <div class="route-info">🇯🇵 East Asian Polar Transit</div>
+                        <p class="desc">Connecting Tokyo Haneda directly to Stockholm Arlanda using flagship Boeing airframes.</p>
                     </div>
                     <div class="card-bottom">
-                        <div class="duration">~7h 00m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Emirates', 'DXB', 'ARN')" class="action-btn">Check Live Seats & Book ↗</button>
+                        <div class="duration">~11h 20m <span>Direct</span></div>
+                        <button onclick="redirectToFlight('ANA', 'HND', 'ARN')" class="action-btn">Check Live Seats ↗</button>
                     </div>
                 </div>
+
                 <div class="flight-card">
                     <div>
-                        <span class="badge premium">Qatar Airways</span>
-                        <h4>Doha (DOH) to Stockholm (ARN)</h4>
-                        <div class="route-info">✈️ Oneworld Strategic Connection</div>
-                        <p class="desc">Active long-haul lane. Deep-links directly to the airline interface to choose cabins and check rows.</p>
+                        <span class="badge premium">Singapore Airlines</span>
+                        <h4>Singapore (SIN) to Copenhagen (CPH)</h4>
+                        <div class="route-info">🇸🇬 Southeast Asia Connector</div>
+                        <p class="desc">Premium route tracking across international logistics centers directly into Denmark layout grids.</p>
                     </div>
                     <div class="card-bottom">
-                        <div class="duration">~6h 45m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Qatar', 'DOH', 'ARN')" class="action-btn">Check Live Seats & Book ↗</button>
+                        <div class="duration">~12h 15m <span>Direct</span></div>
+                        <button onclick="redirectToFlight('Singapore', 'SIN', 'CPH')" class="action-btn">Check Live Seats ↗</button>
                     </div>
                 </div>
+
                 <div class="flight-card">
                     <div>
-                        <span class="badge premium">Qatar Airways</span>
-                        <h4>Doha (DOH) to Oslo (OSL)</h4>
-                        <div class="route-info">✈️ Norwegian Fjord Express</div>
-                        <p class="desc">Direct wide-body access into Gardermoen airport. Connects securely to show dynamic availability matrices.</p>
+                        <span class="badge euro">Lufthansa</span>
+                        <h4>Frankfurt (FRA) to Oslo (OSL)</h4>
+                        <div class="route-info">🇩🇪 Central European Hub</div>
+                        <p class="desc">High-frequency connection routing passengers from Germany into Norway destinations cleanly.</p>
                     </div>
                     <div class="card-bottom">
-                        <div class="duration">~7h 10m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Qatar', 'DOH', 'OSL')" class="action-btn">Check Live Seats & Book ↗</button>
+                        <div class="duration">~2h 00m <span>Direct</span></div>
+                        <button onclick="redirectToFlight('Lufthansa', 'FRA', 'OSL')" class="action-btn">Check Live Seats ↗</button>
                     </div>
                 </div>
-                <div class="flight-card">
-                    <div>
-                        <span class="badge premium">Qatar Airways</span>
-                        <h4>Doha (DOH) to Copenhagen (CPH)</h4>
-                        <div class="route-info">✈️ Danish Gateway Link</div>
-                        <p class="desc">Active route connection passing through Denmark. Select to request live aircraft payload data mappings.</p>
-                    </div>
-                    <div class="card-bottom">
-                        <div class="duration">~6h 30m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Qatar', 'DOH', 'CPH')" class="action-btn">Check Live Seats & Book ↗</button>
-                    </div>
-                </div>
+
             </div>
         </div>
+    </div>
 
-        <div class="region-section">
-            <h2>🇪🇺 From European Gateways</h2>
-            <div class="listings-grid">
-                <div class="flight-card">
-                    <div>
-                        <span class="badge euro">Norwegian Air</span>
-                        <h4>London Gatwick (LGW) to Oslo (OSL)</h4>
-                        <div class="route-info">✈️ High-Frequency Core</div>
-                        <p class="desc">Primary direct budget route into Norway. Access live internal cabin seat map allocations instantly.</p>
-                    </div>
-                    <div class="card-bottom">
-                        <div class="duration">~2h 10m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Norwegian', 'LGW', 'OSL')" class="action-btn">Check Live Seats & Book ↗</button>
-                    </div>
-                </div>
-                <div class="flight-card">
-                    <div>
-                        <span class="badge euro">Norwegian Air</span>
-                        <h4>London Gatwick (LGW) to Copenhagen (CPH)</h4>
-                        <div class="route-info">✈️ North Sea Commuter Route</div>
-                        <p class="desc">Fast transit lane optimized for student commuters. Maps live scheduling calendars instantly.</p>
-                    </div>
-                    <div class="card-bottom">
-                        <div class="duration">~1h 50m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Norwegian', 'LGW', 'CPH')" class="action-btn">Check Live Seats & Book ↗</button>
-                    </div>
-                </div>
-                <div class="flight-card">
-                    <div>
-                        <span class="badge euro">Norwegian Air</span>
-                        <h4>London Gatwick (LGW) to Stockholm (ARN)</h4>
-                        <div class="route-info">✈️ Anglo-Swedish Connector</div>
-                        <p class="desc">Budget-friendly flights into Sweden. Links out directly to the active web reservation window.</p>
-                    </div>
-                    <div class="card-bottom">
-                        <div class="duration">~2h 25m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Norwegian', 'LGW', 'ARN')" class="action-btn">Check Live Seats & Book ↗</button>
-                    </div>
-                </div>
-                <div class="flight-card">
-                    <div>
-                        <span class="badge euro">SAS Airlines</span>
-                        <h4>Paris (CDG) to Copenhagen (CPH)</h4>
-                        <div class="route-info">✈️ SkyTeam Alliance Lane</div>
-                        <p class="desc">Connects France directly into Denmark. Opens live Airbus A320neo cabin charts for tracking.</p>
-                    </div>
-                    <div class="card-bottom">
-                        <div class="duration">~1h 55m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('SAS', 'CDG', 'CPH')" class="action-btn">Check Live Seats & Book ↗</button>
-                    </div>
-                </div>
-                <div class="flight-card">
-                    <div>
-                        <span class="badge euro">SAS Airlines</span>
-                        <h4>Paris (CDG) to Stockholm (ARN)</h4>
-                        <div class="route-info">✈️ Continental Express Link</div>
-                        <p class="desc">Direct active route out of France. Triggers the official SAS interface search engine layout.</p>
-                    </div>
-                    <div class="card-bottom">
-                        <div class="duration">~2h 30m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('SAS', 'CDG', 'ARN')" class="action-btn">Check Live Seats & Book ↗</button>
-                    </div>
-                </div>
-                <div class="flight-card">
-                    <div>
-                        <span class="badge euro">SAS Airlines</span>
-                        <h4>Paris (CDG) to Oslo (OSL)</h4>
-                        <div class="route-info">✈️ Western Europe Passage</div>
-                        <p class="desc">Active routing connecting directly into Oslo Gardermoen. View real-time seating availability panels.</p>
-                    </div>
-                    <div class="card-bottom">
-                        <div class="duration">~2h 20m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('SAS', 'CDG', 'OSL')" class="action-btn">Check Live Seats & Book ↗</button>
-                    </div>
-                </div>
-                <div class="flight-card">
-                    <div>
-                        <span class="badge euro">SAS Airlines</span>
-                        <h4>Amsterdam (AMS) to Copenhagen (CPH)</h4>
-                        <div class="route-info">✈️ Lowlands Hub Connection</div>
-                        <p class="desc">Highly active regional short-haul lane. Queries current structural cabin configurations.</p>
-                    </div>
-                    <div class="card-bottom">
+    <script>
+        function redirectToFlight(airline, fromCode, toCode) {
+            let targetUrl = "https://www.google.com/travel/flights?q=Flights%20from%20" + fromCode + "%20to%20" + toCode;
+            
+            // Explicit fallback mapping for exact airline portals if needed
+            if (airline === 'Delta') targetUrl = "https://www.delta.com";
+            if (airline === 'ANA') targetUrl = "https://www.ana.co.jp";
+            if (airline === 'Singapore') targetUrl = "https://www.singaporeair.com";
+            if (airline === 'Lufthansa') targetUrl = "https://www.lufthansa.com";
+
+            // Open the external portal window safely
+            window.open(targetUrl, '_blank');
+        }
+    </script>
+
+</body>
+</html>
