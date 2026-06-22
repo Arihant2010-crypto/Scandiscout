@@ -14,7 +14,7 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --accent-blue: #38bdf8;
-            --accent-red: #f43f5e;
+            --accent-green: #10b981;
             --sidebar-width: 280px;
         }
 
@@ -32,14 +32,14 @@
             min-height: 100vh;
         }
 
-        /* Modern Glassmorphic Sidebar */
+        /* Fixed Navigation Sidebar */
         .sidebar { 
             width: var(--sidebar-width); 
             position: fixed; 
+            top: 0;
+            left: 0;
             height: 100vh; 
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: #1e293b;
             border-right: 1px solid rgba(255, 255, 255, 0.05);
             padding: 30px 24px;
             z-index: 100;
@@ -62,7 +62,7 @@
             display: inline-block;
             width: 8px;
             height: 24px;
-            background: linear-gradient(to bottom, var(--accent-blue), var(--accent-red));
+            background: linear-gradient(to bottom, var(--accent-blue), var(--accent-green));
             border-radius: 4px;
         }
 
@@ -88,7 +88,7 @@
             color: var(--accent-blue);
         }
 
-        /* Main Content Container */
+        /* Layout Content Area */
         .main-content { 
             margin-left: var(--sidebar-width); 
             padding: 50px; 
@@ -96,15 +96,12 @@
             max-width: 1200px; 
         }
         
-        /* Premium Hero Banner */
         .welcome-hero { 
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border: 1px solid rgba(255, 255, 255, 0.05);
             padding: 40px; 
             border-radius: 16px; 
             margin-bottom: 40px; 
-            position: relative;
-            overflow: hidden;
             box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
         }
         
@@ -127,43 +124,4 @@
             font-size: 22px;
             font-weight: 700;
             letter-spacing: -0.5px;
-            margin-bottom: 8px;
-        }
-
-        .section-desc {
-            color: var(--text-muted);
-            margin-bottom: 30px;
-            font-size: 15px;
-        }
-
-        /* Grid & Glass Cards */
-        .country-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 24px; 
-        }
-        
-        .country-card { 
-            background: var(--bg-card); 
-            border: 1px solid rgba(255, 255, 255, 0.03); 
-            border-radius: 16px; 
-            overflow: hidden; 
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
-            transition: transform 0.2s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .country-card:hover {
-            transform: translateY(-4px);
-        }
-        
-        .card-header { 
-            background: rgba(15, 23, 42, 0.4); 
-            padding: 20px 24px; 
-            font-size: 18px; 
-            font-weight: 700; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-        }
-        
-        .card-body {
+            margin-
