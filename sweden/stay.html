@@ -3,18 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScandiScout - Sweden Stay Directory</title>
+    <title>ScandiScout - Sweden Accommodations</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* Shared styling variable layout architecture */
-        :root { --bg-dark: #0f172a; --bg-card: #1e293b; --text-main: #f8fafc; --text-muted: #94a3b8; --accent-blue: #38bdf8; --accent-green: #10b981; --sidebar-width: 280px; }
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-green: #10b981;
+            --accent-purple: #a855f7;
+            --sidebar-width: 280px;
+        }
         * { box-sizing: border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
         .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: #1e293b; border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 24px; z-index: 100; }
-        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin-top: 0; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
-        .sidebar h2::before { content: ''; display: inline-block; width: 8px; height: 24px; background: var(--accent-green); border-radius: 4px; }
+        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0 0 30px 0; display: flex; align-items: center; gap: 10px; }
+        .sidebar h2::before { content: ''; display: inline-block; width: 8px; height: 24px; background: linear-gradient(to bottom, var(--accent-blue), var(--accent-green)); border-radius: 4px; }
         .sidebar a { display: block; color: var(--text-muted); text-decoration: none; padding: 12px 16px; font-weight: 600; font-size: 15px; border-radius: 8px; margin-bottom: 8px; }
         .sidebar a:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
         .main-content { margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); max-width: 1200px; }
@@ -25,61 +33,54 @@
         .stay-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
         .badge { display: inline-block; padding: 4px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; border-radius: 6px; margin-bottom: 12px; }
         .badge.hotel { background: rgba(56, 189, 248, 0.1); color: var(--accent-blue); }
-        .badge.motel { background: rgba(168, 85, 247, 0.1); color: #a855f7; }
-        .stay-card h4 { margin: 0 0 6px 0; font-size: 18px; color: #ffffff; }
+        .badge.motel { background: rgba(168, 85, 247, 0.1); color: var(--accent-purple); }
+        .stay-card h4 { margin: 0 0 6px 0; font-size: 18px; font-weight: 700; }
         .location { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
         .desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin: 0 0 20px 0; }
         .card-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
         .price { font-size: 15px; font-weight: 600; }
         .price span { color: var(--text-muted); font-size: 13px; font-weight: 400; }
-        .book-btn { background: rgba(255, 255, 255, 0.05); color: var(--text-main); text-decoration: none; padding: 8px 16px; font-size: 13px; font-weight: 600; border-radius: 8px; transition: background 0.2s; }
+        .book-btn { background: rgba(255, 255, 255, 0.05); color: var(--text-main); text-decoration: none; padding: 8px 16px; font-size: 13px; font-weight: 600; border-radius: 8px; transition: 0.2s; }
         .book-btn:hover { background: #ffffff; color: var(--bg-dark); }
         @media (max-width: 960px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .listings-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-
     <div class="sidebar">
         <h2>ScandiScout</h2>
-        <a href="../index.html">← Back Home</a>
-        <a href="index.html">Sweden Maps</a>
-        <a href="stay.html" style="color: var(--accent-green);">Sweden Stays</a>
+        <a href="../index.html">← Back to Home</a>
     </div>
-
     <div class="main-content">
         <div class="header-section">
-            <h1>🇸🇪 Sweden Accommodations</h1>
-            <p>Affordable rooms, modern motels, and urban lifestyle retreats across Stockholm networks.</p>
+            <h1>🇸🇪 Sweden Lodging Directory</h1>
+            <p>Affordable urban options across Stockholm and modern transit networks.</p>
         </div>
-
         <div class="listings-grid">
             <div class="stay-card">
                 <div>
                     <span class="badge hotel">Hotel</span>
                     <h4>Generator Stockholm</h4>
                     <div class="location">📍 Norrmalm, Stockholm</div>
-                    <p class="desc">A design-forward hostel and private room asset focusing on high-speed internet, collaborative social layouts, and central proximity.</p>
+                    <p class="desc">A vibrant design hotel centered in downtown Stockholm, combining affordable rooms with architectural lounge spaces.</p>
                 </div>
                 <div class="card-bottom">
                     <div class="price">~490 SEK <span>/ night</span></div>
-                    <a href="#" class="book-btn">Check Rates</a>
+                    <a href="#" class="book-btn">Check Availability</a>
                 </div>
             </div>
-
             <div class="stay-card">
                 <div>
                     <span class="badge motel">Motel</span>
                     <h4>Motel L Hammarby Sjöstad</h4>
-                    <div class="location">📍 Hammarby Sjöstad</div>
-                    <p class="desc">Smart, colorful budget spaces featuring highly secure infrastructure and fast linklines to Stockholm's urban light rail.</p>
+                    <div class="location">📍 South Stockholm</div>
+                    <p class="desc">Boutique budget motel focusing on smart layouts, high-speed connectivity, and immediate light rail tram access.</p>
                 </div>
                 <div class="card-bottom">
-                    <div class="price">~620 SEK <span>/ night</span></div>
-                    <a href="#" class="book-btn">Check Rates</a>
+                    <div class="price">~600 SEK <span>/ night</span></div>
+                    <a href="#" class="book-btn">Check Availability</a>
                 </div>
             </div>
         </div>
     </div>
-
 </body>
 </html>
