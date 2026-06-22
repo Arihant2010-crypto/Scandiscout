@@ -4,61 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ScandiScout - Sweden Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        body { font-family: sans-serif; background-color: #F8F9FA; color: #1D2D44; margin: 0; padding: 0; }
-        .sidebar { width: 240px; position: fixed; height: 100%; background-color: #1D2D44; color: #F8F9FA; padding: 20px; }
-        .sidebar h2 { color: #FFFFFF; font-size: 22px; border-bottom: 2px solid #F8F9FA; padding-bottom: 10px; }
-        .sidebar a { display: block; color: #F8F9FA; text-decoration: none; padding: 12px 5px; font-weight: bold; }
-        .sidebar a:hover { color: #A8DADC; }
-        .main-content { margin-left: 280px; padding: 40px 20px; }
-        .scandiscout-responsive-wrapper { width: 100%; max-width: 100%; position: relative; height: 0; padding-bottom: 56.25%; overflow: hidden; margin-bottom: 30px; background: #E5E5E5; }
-        .scandiscout-responsive-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-        .nav-btn { display: inline-block; background-color: #457B9D; color: white; padding: 12px 20px; text-decoration: none; font-weight: bold; border-radius: 4px; margin-bottom: 20px; }
-        .nav-btn:hover { background-color: #1D2D44; }
-        .landmark-card { background: #FFFFFF; padding: 20px; margin-bottom: 20px; border-left: 5px solid #457B9D; border-radius: 4px; }
-        @media (max-width: 768px) {
-            .sidebar { width: 100%; position: relative; height: auto; padding: 10px; }
-            .main-content { margin-left: 0; padding: 20px; }
-        }
+        :root { --bg-dark: #0f172a; --bg-card: #1e293b; --text-main: #f8fafc; --text-muted: #94a3b8; --accent-blue: #38bdf8; --sidebar-width: 280px; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
+        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 24px; box-sizing: border-box; z-index: 1000; }
+        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin-top: 0; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
+        .sidebar h2::before { content: ''; display: inline-block; width: 8px; height: 24px; background: var(--accent-blue); border-radius: 4px; }
+        .sidebar a { display: block; color: var(--text-muted); text-decoration: none; padding: 12px 16px; font-weight: 600; font-size: 15px; border-radius: 8px; margin-bottom: 8px; transition: all 0.2s ease; }
+        .sidebar a:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+        .main-content { margin-left: var(--sidebar-width); padding: 50px; width: 100%; max-width: 1100px; box-sizing: border-box; }
+        .map-section { margin-bottom: 40px; }
+        #map { width: 100%; height: 450px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); z-index: 1; }
+        .leaflet-popup-content-wrapper { background: #1e293b !important; color: #ffffff !important; border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .leaflet-popup-tip { background: #1e293b !important; }
+        .nav-btn { display: inline-block; background-color: var(--accent-blue); color: var(--bg-dark); padding: 12px 24px; text-decoration: none; font-weight: 700; border-radius: 8px; margin-bottom: 30px; transition: transform 0.2s; }
+        .nav-btn:hover { transform: translateY(-2px); }
+        .landmark-card { background: var(--bg-card); padding: 24px; margin-bottom: 20px; border-left: 5px solid rgba(56, 189, 248, 0.3); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
+        .landmark-card:hover { border-left-color: var(--accent-blue); background: #243146; transform: scale(1.01); }
+        .landmark-card h4 { margin-top: 0; margin-bottom: 8px; font-size: 18px; }
+        .landmark-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 8px; line-height: 1.5; }
+        @media (max-width: 960px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 20px; } .main-content { margin-left: 0; padding: 30px 20px; } }
     </style>
 </head>
 <body>
-
     <div class="sidebar">
         <h2>ScandiScout</h2>
         <a href="../index.html">← Back Home</a>
-        <a href="index.html" style="color: #A8DADC;">Sweden Guide</a>
+        <a href="index.html" style="color: var(--accent-blue);">Sweden Guide</a>
         <a href="prices.html">→ Sweden Prices</a>
     </div>
-
     <div class="main-content">
         <h1>Sweden: Maps & Structures</h1>
-        <p>Explore the geographic layouts and historical details of Sweden's famous architectural landmarks.</p>
-        
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Hover/Click lists to track layout coordinates on the dashboard display.</p>
         <a href="prices.html" class="nav-btn">View Sweden Price Directory →</a>
-
-        <h3>Interactive Map View</h3>
-        <div class="scandiscout-responsive-wrapper">
-            <iframe src="about:blank"></iframe>
+        <div class="map-section">
+            <h3>Interactive Map Dashboard</h3>
+            <div id="map"></div>
         </div>
-
         <h3>Famous Architectural Structures</h3>
-        <div class="landmark-card">
-            <h4>1. Gamla Stan (The Old Town)</h4>
-            <p><strong>Cultural Significance:</strong> Stockholm's medieval foundational hub, featuring winding cobblestone alleys and classic North European architecture.</p>
-            <p><strong>Public Transport Links:</strong> Directly serviced by Gamla Stan Metro Station (Red and Green lines).</p>
+        <div class="landmark-card" onmouseenter="focusMarker(0)" onclick="focusMarker(0)">
+            <h4>1. Gamla Stan (The Old Town) 📍</h4>
+            <p><strong>Cultural Significance:</strong> Stockholm's medieval foundational hub, featuring winding cobblestone alleys.</p>
+            <p><strong>Public Transport Links:</strong> Gamla Stan Metro Station.</p>
         </div>
-        <div class="landmark-card">
-            <h4>2. The Vasa Museum</h4>
-            <p><strong>Cultural Significance:</strong> Maritime museum containing the intact, fully preserved 1628 warship Vasa that sank on its maiden voyage.</p>
-            <p><strong>Public Transport Links:</strong> Accessible via Tram Line 7 (Nordiska Museet/Vasamuseet stop).</p>
+        <div class="landmark-card" onmouseenter="focusMarker(1)" onclick="focusMarker(1)">
+            <h4>2. The Vasa Museum 📍</h4>
+            <p><strong>Cultural Significance:</strong> Maritime structure museum holding the intact, preserved 1628 warship Vasa.</p>
+            <p><strong>Public Transport Links:</strong> Tram Line 7 (Vasamuseet stop).</p>
         </div>
-        <div class="landmark-card">
-            <h4>3. Turning Torso (Malmö)</h4>
-            <p><strong>Cultural Significance:</strong> Neo-futuristic residential skyscraper and the first twisting tower building structural feat in the world.</p>
-            <p><strong>Public Transport Links:</strong> Easily reached via Malmö local Bus line 15 or 3.</p>
+        <div class="landmark-card" onmouseenter="focusMarker(2)" onclick="focusMarker(2)">
+            <h4>3. Turning Torso (Malmö) 📍</h4>
+            <p><strong>Cultural Significance:</strong> High-speed architectural design twisting tower building residential skyscraper.</p>
+            <p><strong>Public Transport Links:</strong> Malmö local Bus line 15.</p>
+        </div>
+        <div class="landmark-card" onmouseenter="focusMarker(3)" onclick="focusMarker(3)">
+            <h4>4. Drottningholm Palace 📍</h4>
+            <p><strong>Cultural Significance:</strong> The well-preserved 17th-century royal palace residence and private parklands.</p>
+            <p><strong>Public Transport Links:</strong> Brommaplan Metro Station to Connecting Bus lines.</p>
+        </div>
+        <div class="landmark-card" onmouseenter="focusMarker(4)" onclick="focusMarker(4)">
+            <h4>5. Stockholm City Hall 📍</h4>
+            <p><strong>Cultural Significance:</strong> Historic brick architecture built in 1923, famous for hosting the international Nobel Prize Banquet.</p>
+            <p><strong>Public Transport Links:</strong> Central Station / Rådhuset Metro Station.</p>
         </div>
     </div>
-
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const map = L.map('map').setView([59.329, 18.068], 11);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
+        const locations = [
+            { coords: [59.3257, 18.0712], desc: "<b>Gamla Stan</b><br>Stockholm Central Hub" },
+            { coords: [59.3280, 18.0914], desc: "<b>Vasa Museum</b><br>Djurgården" },
+            { coords: [55.6128, 12.9766], desc: "<b>Turning Torso</b><br>Västra Hamnen, Malmö" },
+            { coords: [59.3217, 17.8868], desc: "<b>Drottningholm Palace</b><br>Lovön, Stockholm" },
+            { coords: [59.3278, 18.0552], desc: "<b>Stockholm City Hall</b><br>Kungsholmen" }
+        ];
+        const markerInstances = [];
+        locations.forEach((loc) => {
+            const marker = L.marker(loc.coords).addTo(map);
+            marker.bindPopup(loc.desc);
+            markerInstances.push(marker);
+        });
+        function focusMarker(index) {
+            map.flyTo(locations[index].coords, index === 2 ? 14 : 13, { animate: true, duration: 1 });
+            markerInstances[index].openPopup();
+        }
+    </script>
 </body>
 </html>
