@@ -7,92 +7,137 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
     <style>
-        :root { --bg-dark: #0f172a; --bg-card: #1e293b; --text-main: #f8fafc; --text-muted: #94a3b8; --accent-blue: #38bdf8; --sidebar-width: 280px; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
-        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 24px; box-sizing: border-box; z-index: 1000; }
+        :root { 
+            --bg-dark: #0f172a; 
+            --bg-card: #1e293b; 
+            --text-main: #f8fafc; 
+            --text-muted: #94a3b8; 
+            --accent-blue: #38bdf8; 
+            --sidebar-width: 280px; 
+        }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-dark); 
+            color: var(--text-main); 
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            min-height: 100vh; 
+        }
+        
+        .sidebar { 
+            width: var(--sidebar-width); 
+            position: fixed; 
+            height: 100vh; 
+            background: #1e293b; 
+            border-right: 1px solid rgba(255, 255, 255, 0.05); 
+            padding: 30px 24px; 
+            box-sizing: border-box; 
+            z-index: 1000; 
+        }
+        
         .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin-top: 0; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
         .sidebar h2::before { content: ''; display: inline-block; width: 8px; height: 24px; background: var(--accent-blue); border-radius: 4px; }
         .sidebar a { display: block; color: var(--text-muted); text-decoration: none; padding: 12px 16px; font-weight: 600; font-size: 15px; border-radius: 8px; margin-bottom: 8px; transition: all 0.2s ease; }
         .sidebar a:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+        
         .main-content { margin-left: var(--sidebar-width); padding: 50px; width: 100%; max-width: 1100px; box-sizing: border-box; }
         .map-section { margin-bottom: 40px; }
-        #map { width: 100%; height: 450px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); z-index: 1; }
-        .leaflet-popup-content-wrapper { background: #1e293b !important; color: #ffffff !important; border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .leaflet-popup-tip { background: #1e293b !important; }
+        
+        #map { 
+            width: 100%; 
+            height: 450px; 
+            border-radius: 16px; 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            background: #141b2e;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); 
+            z-index: 1; 
+        }
+        
         .nav-btn { display: inline-block; background-color: var(--accent-blue); color: var(--bg-dark); padding: 12px 24px; text-decoration: none; font-weight: 700; border-radius: 8px; margin-bottom: 30px; transition: transform 0.2s; }
         .nav-btn:hover { transform: translateY(-2px); }
+        
         .landmark-card { background: var(--bg-card); padding: 24px; margin-bottom: 20px; border-left: 5px solid rgba(56, 189, 248, 0.3); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
         .landmark-card:hover { border-left-color: var(--accent-blue); background: #243146; transform: scale(1.01); }
         .landmark-card h4 { margin-top: 0; margin-bottom: 8px; font-size: 18px; }
         .landmark-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 8px; line-height: 1.5; }
-        @media (max-width: 960px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 20px; } .main-content { margin-left: 0; padding: 30px 20px; } }
+        
+        @media (max-width: 960px) { 
+            body { flex-direction: column; } 
+            .sidebar { width: 100%; position: relative; height: auto; padding: 20px; } 
+            .main-content { margin-left: 0; padding: 30px 20px; } 
+        }
     </style>
 </head>
 <body>
+
     <div class="sidebar">
         <h2>ScandiScout</h2>
         <a href="../index.html">← Back Home</a>
         <a href="index.html" style="color: var(--accent-blue);">Denmark Guide</a>
         <a href="prices.html">→ Denmark Prices</a>
     </div>
+
     <div class="main-content">
         <h1>Denmark: Maps & Structures</h1>
-        <p style="color: var(--text-muted); margin-bottom: 30px;">Hover/Click lists to track layout coordinates on the dashboard display.</p>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Hover or click on the cards below to pinpoint coordinates on the map.</p>
+        
         <a href="prices.html" class="nav-btn">View Denmark Price Directory →</a>
+
         <div class="map-section">
             <h3>Interactive Map Dashboard</h3>
             <div id="map"></div>
         </div>
+
         <h3>Famous Architectural Structures</h3>
+        
         <div class="landmark-card" onmouseenter="focusMarker(0)" onclick="focusMarker(0)">
             <h4>1. Nyhavn Waterfront Canal 📍</h4>
             <p><strong>Cultural Significance:</strong> 17th-century heritage commercial port district lined with colorful townhouses.</p>
             <p><strong>Public Transport Links:</strong> Kongens Nytorv Metro Station.</p>
         </div>
+        
         <div class="landmark-card" onmouseenter="focusMarker(1)" onclick="focusMarker(1)">
             <h4>2. Christiansborg Palace 📍</h4>
             <p><strong>Cultural Significance:</strong> Government center housing the Danish Parliament and Supreme Court.</p>
             <p><strong>Public Transport Links:</strong> Gammel Strand Metro Station.</p>
         </div>
+        
         <div class="landmark-card" onmouseenter="focusMarker(2)" onclick="focusMarker(2)">
-            <h4>3. The Round Tower (Rndetårn) 📍</h4>
-            <p><strong>Cultural Significance:</strong> 17th-century astronomical observatory featuring a unique equestrian ramp pathway corridor.</p>
+            <h4>3. The Round Tower (Rundetårn) 📍</h4>
+            <p><strong>Cultural Significance:</strong> 17th-century astronomical observatory featuring a unique helical corridor.</p>
             <p><strong>Public Transport Links:</strong> Nørreport Station.</p>
         </div>
+
         <div class="landmark-card" onmouseenter="focusMarker(3)" onclick="focusMarker(3)">
             <h4>4. Tivoli Gardens Amusement Park 📍</h4>
-            <p><strong>Cultural Significance:</strong> Opened in 1843, one of the world's oldest operating pleasure gardens and theme structures.</p>
+            <p><strong>Cultural Significance:</strong> Opened in 1843, one of the world's oldest operating pleasure gardens.</p>
             <p><strong>Public Transport Links:</strong> Copenhagen Central Station (København H).</p>
         </div>
+
         <div class="landmark-card" onmouseenter="focusMarker(4)" onclick="focusMarker(4)">
             <h4>5. Amalienborg Palace 📍</h4>
-            <p><strong>Cultural Significance:</strong> Winter home palace grounds of the Danish royal family consisting of four identical classic palaces.</p>
+            <p><strong>Cultural Significance:</strong> Winter residence of the Danish royal family consisting of four identical palaces.</p>
             <p><strong>Public Transport Links:</strong> Marmorkirken Metro Station.</p>
         </div>
     </div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        const map = L.map('map').setView([55.680, 12.585], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
-        const locations = [
-            { coords: [55.6797, 12.5913], desc: "<b>Nyhavn Canal</b><br>Indre By, Copenhagen" },
-            { coords: [55.6763, 12.5803], desc: "<b>Christiansborg Palace</b><br>Slotsholmen" },
-            { coords: [55.6813, 12.5757], desc: "<b>The Round Tower</b><br>Købmagergade" },
-            { coords: [55.6737, 12.5682], desc: "<b>Tivoli Gardens</b><br>Vesterbrogade" },
-            { coords: [55.6841, 12.5930], desc: "<b>Amalienborg Palace</b><br>Amalienborg Slotsplads" }
-        ];
-        const markerInstances = [];
-        locations.forEach((loc) => {
-            const marker = L.marker(loc.coords).addTo(map);
-            marker.bindPopup(loc.desc);
-            markerInstances.push(marker);
-        });
-        function focusMarker(index) {
-            map.flyTo(locations[index].coords, 14, { animate: true, duration: 1 });
-            markerInstances[index].openPopup();
-        }
-    </script>
-</body>
-</html>
+        // Wrapped in a try/catch block so a map initialization error can never turn your screen blue
+        try {
+            const map = L.map('map').setView([55.680, 12.585], 13);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
+                attribution: '&copy; OpenStreetMap' 
+            }).addTo(map);
+            
+            const locations = [
+                { coords: [55.6797, 12.5913], desc: "<b>Nyhavn Canal</b>" },
+                { coords: [55.6763, 12.5803], desc: "<b>Christiansborg Palace</b>" },
+                { coords:
