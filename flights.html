@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScandiScout - Custom Flight Router</title>
+    <title>ScandiScout - Global Flight Router</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
@@ -37,7 +37,7 @@
         input:focus, select:focus { outline: none; border-color: var(--accent-blue); }
         
         .submit-btn { background: var(--accent-blue); color: var(--bg-dark); width: 100%; border: none; padding: 16px; font-size: 15px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
-        .submit-btn:hover { transform: translateY(-1px); background: #ffffff; }
+        .submit-btn:hover { transform: translateY(-1px); background: #ffffff; color: var(--bg-dark); }
         
         .results-section { display: none; margin-top: 20px; animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -47,11 +47,12 @@
         .route-info h4 { margin: 0 0 6px 0; font-size: 18px; font-weight: 800; color: #ffffff; }
         .route-info p { margin: 0 0 4px 0; font-size: 14px; color: var(--text-muted); }
         .route-info .time-slot { font-size: 12px; color: var(--accent-blue); font-weight: 600; }
+        .airline-origin { font-size: 11px; background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; color: #fff; margin-left: 8px; font-weight: 400; }
         
         .right-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
         .price-badge { font-size: 20px; font-weight: 800; color: var(--accent-green); background: rgba(16, 185, 129, 0.1); padding: 8px 16px; border-radius: 6px; }
-        .book-btn { background: var(--accent-blue); color: var(--bg-dark); border: none; padding: 8px 14px; font-size: 13px; font-weight: 700; border-radius: 6px; cursor: pointer; text-decoration: none; transition: background 0.2s; }
-        .book-btn:hover { background: #ffffff; }
+        .book-btn { background: var(--accent-blue); color: var(--bg-dark); border: none; padding: 10px 16px; font-size: 13px; font-weight: 700; border-radius: 6px; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s; }
+        .book-btn:hover { background: #ffffff; color: var(--bg-dark); }
         
         @media (max-width: 960px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 20px; } .main-content { margin-left: 0; padding: 30px 20px; } .form-grid { grid-template-columns: 1fr; } .flight-card { flex-direction: column; align-items: flex-start; } .right-meta { width: 100%; align-items: flex-start; } }
     </style>
@@ -66,15 +67,15 @@
     </div>
 
     <div class="main-content">
-        <h1>✈️ Scandinavian Flight Router Engine</h1>
-        <p style="color: var(--text-muted); margin-bottom: 30px;">Search live routes across premium and low-cost operators servicing major Scandinavian hubs.</p>
+        <h1>✈️ Global Scandinavian Flight Router Engine</h1>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Route flights from any global departure gateway (USA, UAE, Europe, Asia) directly into Scandinavian hubs.</p>
 
         <div class="search-container">
             <form id="routerForm" onsubmit="calculateRoutes(event)">
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="origin">Departure Airport Code</label>
-                        <input type="text" id="origin" placeholder="e.g. LHR, JFK, BER" maxlength="3" style="text-transform: uppercase;" required>
+                        <input type="text" id="origin" placeholder="e.g. DXB, JFK, LAX, LHR, HND" maxlength="3" style="text-transform: uppercase;" required>
                     </div>
                     <div class="form-group">
                         <label for="destination">Target Nordic Hub</label>
@@ -99,12 +100,12 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="submit-btn">Search Flight Schedules →</button>
+                <button type="submit" class="submit-btn">Search Flight Options &amp; Live Booking Deep-Links →</button>
             </form>
         </div>
 
         <div id="results" class="results-section">
-            <h3 style="margin-bottom: 20px;">Available Flag Carriers &amp; Routes Found</h3>
+            <h3 style="margin-bottom: 20px;">Available Global Carrier Routes Found</h3>
             <div id="flights-list"></div>
         </div>
     </div>
@@ -119,42 +120,36 @@
             
             const origin = document.getElementById('origin').value.toUpperCase();
             const destCode = document.getElementById('destination').value;
-            const travelDate = document.getElementById('travelDate').value;
+            const travelDate = document.getElementById('travelDate').value; // YYYY-MM-DD
             const cabin = document.getElementById('cabinClass').value;
             
             let priceMultiplier = 1.0;
             if (cabin === 'premium') priceMultiplier = 1.6;
-            if (cabin === 'business') priceMultiplier = 3.1;
+            if (cabin === 'business') priceMultiplier = 3.3;
 
+            // Formats dates array into parts for various airline search matrix systems
+            const dateParts = travelDate.split('-'); // [YYYY, MM, DD]
+            const formattedDateEU = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`; // DD-MM-YYYY
+
+            // Comprehensive global list mapping out deep links
             const airlines = [
-                {
-                    name: "SAS Scandinavian Airlines",
-                    basePrice: 120,
-                    time: "08:15 AM",
-                    duration: "2h 10m",
-                    url: `https://www.flysas.com/en/book/flights?from=${origin}&to=${destCode}&outboundDate=${travelDate}`
-                },
-                {
-                    name: "Norwegian Air Shuttle",
-                    basePrice: 75,
-                    time: "11:40 AM",
-                    duration: "2h 15m",
-                    url: `https://www.norwegian.com/en/ipc/availability/freetext?D_Apo=${origin}&A_Apo=${destCode}&D_Day=${travelDate.split('-')[2]}&D_Month=${travelDate.split('-')[0]}${travelDate.split('-')[1]}`
-                },
-                {
-                    name: "Finnair",
-                    basePrice: 145,
-                    time: "15:10 PM",
-                    duration: "3h 05m",
-                    url: `https://www.finnair.com/en/flight-search?origin=${origin}&destination=${destCode}&departing=${travelDate}`
-                },
-                {
-                    name: "Ryanair Economy",
-                    basePrice: 39,
-                    time: "19:25 PM",
-                    duration: "2h 20m",
-                    url: `https://www.ryanair.com/en/trip/flights/select?origin=${origin}&destination=${destCode}&dateOut=${travelDate}`
-                }
+                // UAE CARRIERS
+                { name: "Emirates", region: "UAE", basePrice: 450, time: "09:15 AM", duration: "7h 10m", getUrl: (o, d, dt) => `https://www.emirates.com/choose-flights/?paxType=A&container=flightOffice&dynamicId=flight&departureAirport=${o}&arrivalAirport=${d}&dateOutbound=${dt}` },
+                { name: "Etihad Airways", region: "UAE", basePrice: 430, time: "10:30 AM", duration: "7h 35m", getUrl: (o, d, dt) => `https://www.etihad.com/en/book-flights/find-flights?from=${o}&to=${d}&departureDate=${dt}` },
+                
+                // AMERICAN CARRIERS
+                { name: "Delta Air Lines", region: "USA", basePrice: 520, time: "17:40 PM", duration: "8h 15m", getUrl: (o, d, dt) => `https://www.delta.com/flight-search/search?action=findFlights&originAirport=${o}&destinationAirport=${d}&departureDate=${dt}&tripType=ONE_WAY` },
+                { name: "United Airlines", region: "USA", basePrice: 490, time: "18:25 PM", duration: "8h 30m", getUrl: (o, d, dt) => `https://www.united.com/en/us/fsr/choose-flights?f=${o}&t=${d}&d=${dt}&tt=1` },
+                { name: "American Airlines", region: "USA", basePrice: 510, time: "19:10 PM", duration: "8h 50m", getUrl: (o, d, dt) => `https://www.aa.com/booking/find-flights?origin=${o}&destination=${d}&departureDate=${dt}` },
+                
+                // SCANDINAVIAN & EUROPEAN CARRIERS
+                { name: "SAS Scandinavian Airlines", region: "Nordic Flag", basePrice: 140, time: "08:00 AM", duration: "Direct/Varies", getUrl: (o, d, dt) => `https://www.flysas.com/en/book/flights?from=${o}&to=${d}&outboundDate=${dt}` },
+                { name: "Norwegian Air Shuttle", region: "Nordic Budget", basePrice: 85, time: "11:15 AM", duration: "Direct/Varies", getUrl: (o, d, dt) => `https://www.norwegian.com/en/ipc/availability/freetext?D_Apo=${o}&A_Apo=${d}&D_Day=${dateParts[2]}&D_Month=${dateParts[0]}${dateParts[1]}` },
+                { name: "Finnair", region: "Nordic Premium", basePrice: 180, time: "14:20 PM", duration: "3h 40m", getUrl: (o, d, dt) => `https://www.finnair.com/en/flight-search?origin=${o}&destination=${d}&departing=${dt}` },
+                { name: "Lufthansa", region: "Europe", basePrice: 195, time: "07:25 AM", duration: "Conx via FRA", getUrl: (o, d, dt) => `https://www.lufthansa.com/` },
+                { name: "British Airways", region: "Europe", basePrice: 210, time: "12:05 PM", duration: "Conx via LHR", getUrl: (o, d, dt) => `https://www.britishairways.com/travel/fx/public/en_gb?source=jnl&destination=${d}&origin=${o}&depDate=${dateParts[2]}/${dateParts[1]}/${dateParts[0].substring(2)}` },
+                { name: "KLM Royal Dutch Airlines", region: "Europe", basePrice: 175, time: "15:45 PM", duration: "Conx via AMS", getUrl: (o, d, dt) => `https://www.klm.com/search/offers?destination=${d}&origin=${o}&departureDate=${dt}` },
+                { name: "Air France", region: "Europe", basePrice: 185, time: "16:20 PM", duration: "Conx via CDG", getUrl: (o, d, dt) => `https://www.airfrance.com/` }
             ];
 
             const listContainer = document.getElementById('flights-list');
@@ -162,17 +157,19 @@
 
             airlines.forEach(airline => {
                 const finalPrice = Math.round(airline.basePrice * priceMultiplier);
+                // Call dynamic string generation function to pass state arguments safely
+                const bookingUrl = airline.getUrl(origin, destCode, travelDate);
                 
                 const cardHTML = `
                     <div class="flight-card">
                         <div class="route-info">
-                            <h4>${airline.name}</h4>
-                            <p>${origin} → ${destCode} • Direct Connection • Flight Duration: ${airline.duration}</p>
-                            <span class="time-slot">⏰ Scheduled Departure: ${airline.time}</span>
+                            <h4>${airline.name} <span class="airline-origin">${airline.region}</span></h4>
+                            <p>${origin} → ${destCode} • Route Calculated • Info: ${airline.duration}</p>
+                            <span class="time-slot">⏰ Est. Departure Window: ${airline.time}</span>
                         </div>
                         <div class="right-meta">
                             <div class="price-badge">€${finalPrice}</div>
-                            <a href="${airline.url}" target="_blank" class="book-btn">Book on Official Site ↗</a>
+                            <a href="${bookingUrl}" target="_blank" rel="noopener noreferrer" class="book-btn">Book Flight Deal ↗</a>
                         </div>
                     </div>
                 `;
