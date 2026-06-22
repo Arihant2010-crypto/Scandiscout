@@ -68,14 +68,14 @@
 
     <div class="main-content">
         <h1>✈️ Global Multi-Airline Flight Router</h1>
-        <p style="color: var(--text-muted); margin-bottom: 30px;">Type any global location (city, country, or code) to display direct and connecting flight options from official carrier websites.</p>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Type any global country or city destination to build routing paths across individual international carrier systems.</p>
 
         <div class="search-container">
-            <form id="routerForm" onsubmit="calculateRoutes(event)">
+            <form id="routerForm" action="#" onsubmit="calculateRoutes(event); return false;">
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="origin">Departure City or Country</label>
-                        <input type="text" id="origin" placeholder="e.g. India, Delhi, Mumbai, Dubai, New York, JFK" required>
+                        <input type="text" id="origin" placeholder="e.g. India, Delhi, Mumbai, Dubai, New York" required>
                     </div>
                     <div class="form-group">
                         <label for="destination">Target Nordic Hub</label>
@@ -112,32 +112,31 @@
     </div>
 
     <script>
+        // Force state initialization values
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         document.getElementById('travelDate').value = tomorrow.toISOString().split('T')[0];
 
-        // Intelligent geographic mapping parser
         function getAirportCode(text) {
             const clean = text.toLowerCase().trim();
-            
-            // Check if user already typed a clean 3-letter code
             if (clean.length === 3) return clean.toUpperCase();
 
             const database = {
-                "india": "DEL", "delhi": "DEL", "new delhi": "DEL", "mumbai": "BOM", "bombay": "BOM", "bangalore": "BLR", "bengaluru": "BLR",
-                "uae": "DXB", "dubai": "DXB", "abudhabi": "AUH", "abu dhabi": "AUH",
-                "usa": "JFK", "america": "JFK", "new york": "JFK", "los angeles": "LAX", "lax": "LAX", "chicago": "ORD",
-                "uk": "LHR", "london": "LHR", "england": "LHR",
+                "india": "DEL", "delhi": "DEL", "new delhi": "DEL", "mumbai": "BOM", "bombay": "BOM", "bangalore": "BLR",
+                "uae": "DXB", "dubai": "DXB", "abu dhabi": "AUH",
+                "usa": "JFK", "america": "JFK", "new york": "JFK", "los angeles": "LAX",
+                "uk": "LHR", "london": "LHR",
                 "france": "CDG", "paris": "CDG",
-                "germany": "FRA", "frankfurt": "FRA", "munich": "MUC",
-                "japan": "HND", "tokyo": "HND"
+                "germany": "FRA", "frankfurt": "FRA"
             };
-
-            return database[clean] || "DEL"; // Defaults to DEL if input is unrecognized
+            return database[clean] || "DXB"; 
         }
 
         function calculateRoutes(e) {
-            e.preventDefault();
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             
             const rawOrigin = document.getElementById('origin').value;
             const originCode = getAirportCode(rawOrigin);
@@ -151,22 +150,20 @@
             if (cabin === 'business') { priceMultiplier = 3.3; cabinLabel = "Business Class"; }
             if (cabin === 'first') { priceMultiplier = 5.5; cabinLabel = "First Class"; }
 
-            const dateParts = travelDate.split('-'); 
-
-            // Array containing 12 distinct global airlines mapping directly to their internal search sites
+            // 12 standalone airline systems built dynamically
             const airlines = [
-                { name: "Air India", region: "India", basePrice: 380, time: "11:15 AM", duration: "9h 40m", getUrl: (o, d, dt) => `https://www.airindia.com/` },
-                { name: "Emirates", region: "UAE", basePrice: 450, time: "09:15 AM", duration: "7h 10m", getUrl: (o, d, dt) => `https://www.emirates.com/choose-flights/?departureAirport=${o}&arrivalAirport=${d}&dateOutbound=${dt}` },
-                { name: "Etihad Airways", region: "UAE", basePrice: 430, time: "10:30 AM", duration: "7h 35m", getUrl: (o, d, dt) => `https://www.etihad.com/en/book-flights/find-flights?from=${o}&to=${d}&departureDate=${dt}` },
-                { name: "Delta Air Lines", region: "USA", basePrice: 520, time: "17:40 PM", duration: "8h 15m", getUrl: (o, d, dt) => `https://www.delta.com/flight-search/search?originAirport=${o}&destinationAirport=${d}&departureDate=${dt}&tripType=ONE_WAY` },
-                { name: "United Airlines", region: "USA", basePrice: 490, time: "18:25 PM", duration: "8h 30m", getUrl: (o, d, dt) => `https://www.united.com/en/us/fsr/choose-flights?f=${o}&t=${d}&d=${dt}&tt=1` },
-                { name: "American Airlines", region: "USA", basePrice: 510, time: "19:10 PM", duration: "8h 50m", getUrl: (o, d, dt) => `https://www.aa.com/booking/find-flights?origin=${o}&destination=${d}&departureDate=${dt}` },
-                { name: "SAS Scandinavian Airlines", region: "Nordic Flag", basePrice: 140, time: "08:00 AM", duration: "Direct Route", getUrl: (o, d, dt) => `https://www.flysas.com/en/book/flights?from=${o}&to=${d}&outboundDate=${dt}` },
-                { name: "Finnair", region: "Nordic Premium", basePrice: 180, time: "14:20 PM", duration: "Connection Route", getUrl: (o, d, dt) => `https://www.finnair.com/en/flight-search?origin=${o}&destination=${d}&departing=${dt}` },
-                { name: "Lufthansa", region: "Europe", basePrice: 195, time: "07:25 AM", duration: "via Frankfurt", getUrl: (o, d, dt) => `https://www.lufthansa.com/` },
-                { name: "British Airways", region: "Europe", basePrice: 210, time: "12:05 PM", duration: "via London LHR", getUrl: (o, d, dt) => `https://www.britishairways.com/travel/fx/public/en_gb?destination=${d}&origin=${o}&depDate=${dateParts[2]}/${dateParts[1]}/${dateParts[0].substring(2)}` },
-                { name: "KLM Royal Dutch Airlines", region: "Europe", basePrice: 175, time: "15:45 PM", duration: "via Amsterdam", getUrl: (o, d, dt) => `https://www.klm.com/search/offers?destination=${d}&origin=${o}&departureDate=${dt}` },
-                { name: "Qatar Airways", region: "Gulf Carrier", basePrice: 440, time: "22:10 PM", duration: "via Doha DOH", getUrl: (o, d, dt) => `https://www.qatarairways.com/` }
+                { name: "Air India", region: "India Gateway", basePrice: 380, time: "11:15 AM", duration: "9h 40m", url: "https://www.airindia.com/" },
+                { name: "Emirates", region: "UAE Flag", basePrice: 450, time: "09:15 AM", duration: "7h 10m", url: "https://www.emirates.com/" },
+                { name: "Etihad Airways", region: "UAE Carrier", basePrice: 430, time: "10:30 AM", duration: "7h 35m", url: "https://www.etihad.com/" },
+                { name: "Delta Air Lines", region: "USA Operator", basePrice: 520, time: "17:40 PM", duration: "8h 15m", url: "https://www.delta.com/" },
+                { name: "United Airlines", region: "USA Flag", basePrice: 490, time: "18:25 PM", duration: "8h 30m", url: "https://www.united.com/" },
+                { name: "American Airlines", region: "USA Legacy", basePrice: 510, time: "19:10 PM", duration: "8h 50m", url: "https://www.aa.com/" },
+                { name: "SAS Scandinavian Airlines", region: "Nordic Flag", basePrice: 140, time: "08:00 AM", duration: "Direct Flight", url: "https://www.flysas.com/" },
+                { name: "Finnair", region: "Nordic Premium", basePrice: 180, time: "14:20 PM", duration: "Transit Loop", url: "https://www.finnair.com/" },
+                { name: "Lufthansa", region: "Europe Hub", basePrice: 195, time: "07:25 AM", duration: "via Frankfurt", url: "https://www.lufthansa.com/" },
+                { name: "British Airways", region: "Europe Flag", basePrice: 210, time: "12:05 PM", duration: "via London LHR", url: "https://www.britishairways.com/" },
+                { name: "KLM Royal Dutch", region: "Europe Carrier", basePrice: 175, time: "15:45 PM", duration: "via Amsterdam", url: "https://www.klm.com/" },
+                { name: "Air France", region: "Europe Premium", basePrice: 185, time: "16:20 PM", duration: "via Paris CDG", url: "https://www.airfrance.com/" }
             ];
 
             const listContainer = document.getElementById('flights-list');
@@ -174,18 +171,17 @@
 
             airlines.forEach(airline => {
                 const finalPrice = Math.round(airline.basePrice * priceMultiplier);
-                const bookingUrl = airline.getUrl(originCode, destCode, travelDate);
                 
                 const cardHTML = `
                     <div class="flight-card">
                         <div class="route-info">
                             <h4>${airline.name} <span class="airline-origin">${airline.region}</span></h4>
-                            <p>${originCode} → ${destCode} • ${cabinLabel} Route</p>
-                            <span class="time-slot">⏰ Est. Departure Window: ${airline.time} (${airline.duration})</span>
+                            <p>${originCode} → ${destCode} • Seating Class: ${cabinLabel}</p>
+                            <span class="time-slot">⏰ Scheduled Departure: ${airline.time} (${airline.duration})</span>
                         </div>
                         <div class="right-meta">
                             <div class="price-badge">€${finalPrice}</div>
-                            <a href="${bookingUrl}" target="_blank" rel="noopener noreferrer" class="book-btn">Book on Official Site ↗</a>
+                            <a href="${airline.url}" target="_blank" rel="noopener noreferrer" class="book-btn">Book on Official Site ↗</a>
                         </div>
                     </div>
                 `;
@@ -193,6 +189,7 @@
             });
 
             document.getElementById('results').style.display = 'block';
+            return false;
         }
     </script>
 </body>
