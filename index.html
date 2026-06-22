@@ -22,95 +22,12 @@
         * { box-sizing: border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
         
-        /* Minimal Sidebar Layout */
-        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 24px; z-index: 100; }
-        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
-        .sidebar h2::before { content: ''; display: inline-block; width: 6px; height: 24px; background: var(--accent-blue); border-radius: 4px; }
-        .sidebar p { color: var(--text-muted); font-size: 13px; line-height: 1.6; margin: 0; }
+        /* Sidebar Layout */
+        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 24px; z-index: 100; display: flex; flex-direction: column; justify-content: space-between; }
+        .sidebar-top h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
+        .sidebar-top h2::before { content: ''; display: inline-block; width: 6px; height: 24px; background: var(--accent-blue); border-radius: 4px; }
+        .sidebar-top p { color: var(--text-muted); font-size: 13px; line-height: 1.6; margin: 0; }
         
-        /* Main Layout Content */
-        .main-content { margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); max-width: 1200px; }
-        
-        .header-section { margin-bottom: 36px; }
-        .header-section h1 { font-size: 32px; font-weight: 800; margin: 0 0 12px 0; }
-        .header-section p { color: var(--text-muted); font-size: 15px; margin: 0; }
-        
-        /* Portals Directories Grid */
-        .directories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-        .directory-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.02); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
-        .directory-card h3 { margin: 0 0 12px 0; font-size: 18px; font-weight: 800; }
-        .directory-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin: 0 0 24px 0; flex-grow: 1; }
-        
-        /* 3-Button Layout Stack */
-        .btn-stack { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-        .btn { display: block; width: 100%; text-align: center; text-decoration: none; padding: 11px; font-size: 13px; font-weight: 600; border-radius: 8px; transition: 0.2s; border: none; }
-        
-        .btn.map-grey { background: rgba(255, 255, 255, 0.05); color: var(--text-main); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .btn.map-grey:hover { background: rgba(255, 255, 255, 0.15); }
-        
-        .btn.stay-green { background: rgba(16, 185, 129, 0.05); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.15); }
-        .btn.stay-green:hover { background: var(--accent-green); color: var(--bg-dark); }
-
-        .btn.prices-purple { background: rgba(192, 132, 252, 0.05); color: var(--accent-purple); border: 1px solid rgba(192, 132, 252, 0.15); }
-        .btn.prices-purple:hover { background: var(--accent-purple); color: var(--bg-dark); }
-
-        @media (max-width: 1024px) { .directories-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .directories-grid { grid-template-columns: 1fr; } }
-    </style>
-</head>
-<body>
-
-    <div class="sidebar">
-        <h2>ScandiScout</h2>
-        <p>Your minimalist directory framework for exploring student housing and budget accommodations across Scandinavia.</p>
-    </div>
-
-    <div class="main-content">
-        <div class="header-section">
-            <h1>Nordic Exploration Dashboard</h1>
-            <p>Select a regional portal below to manage accommodations, view structural maps, and track average rental prices.</p>
-        </div>
-
-        <div class="directories-grid">
-            
-            <div class="directory-card">
-                <div>
-                    <h3>DK Denmark Directory</h3>
-                    <p>Explore student housing channels, ultra-clean urban lofts, and budget spaces across Copenhagen and Odense.</p>
-                </div>
-                <div class="btn-stack">
-                    <a href="./denmark/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
-                    <a href="./denmark/stay.html" class="btn stay-green">🇩🇰 Where to Stay</a>
-                    <a href="./denmark/prices.html" class="btn prices-purple">💳 View Prices</a>
-                </div>
-            </div>
-
-            <div class="directory-card">
-                <div>
-                    <h3>SE Sweden Directory</h3>
-                    <p>Look through design hostels, sustainable inner-city eco-studios, and converted shipping quarters across Stockholm and Malmö.</p>
-                </div>
-                <div class="btn-stack">
-                    <a href="./sweden/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
-                    <a href="./sweden/stay.html" class="btn stay-green">🇸🇪 Where to Stay</a>
-                    <a href="./sweden/prices.html" class="btn prices-purple">💳 View Prices</a>
-                </div>
-            </div>
-
-            <div class="directory-card">
-                <div>
-                    <h3>NO Norway Directory</h3>
-                    <p>Browse 11 budget accommodations including automated capsule options and fjord view mountain cabin structures.</p>
-                </div>
-                <div class="btn-stack">
-                    <a href="./norway/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
-                    <a href="./norway/stay.html" class="btn stay-green">🇳🇴 Where to Stay</a>
-                    <a href="./norway/prices.html" class="btn prices-purple">💳 View Prices</a>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-</body>
-</html>
+        /* Sidebar Navigation Link */
+        .sidebar-nav { margin-top: 30px; }
+        .nav-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: rgba(56, 189, 248, 0.1); color: var
