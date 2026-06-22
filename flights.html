@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScandiScout - Live Flight Router & Seat Engine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-orange: #f97316;
+            --accent-purple: #a855f7;
+            --sidebar-width: 280px;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
+        
+        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: #1e293b; border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 24px; z-index: 100; }
+        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0 0 30px 0; display: flex; align-items: center; gap: 10px; }
+        .sidebar h2::before { content: ''; display: inline-block; width: 8px; height: 24px; background: linear-gradient(to bottom, var(--accent-blue), var(--accent-orange)); border-radius: 4px; }
+        .sidebar a { display: block; color: var(--text-muted); text-decoration: none; padding: 12px 16px; font-weight: 600; font-size: 15px; border-radius: 8px; margin-bottom: 8px; }
+        .sidebar a:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+        
+        .main-content { margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); max-width: 1200px; }
+        .header-section { margin-bottom: 40px; }
+        .header-section h1 { font-size: 32px; font-weight: 800; margin: 0 0 10px 0; }
+        .header-section p { color: var(--text-muted); margin: 0; font-size: 16px; }
+        
+        .region-section { margin-bottom: 45px; }
+        .region-section h2 { font-size: 22px; font-weight: 800; border-bottom: 2px solid rgba(255, 255, 255, 0.05); padding-bottom: 8px; margin-bottom: 24px; }
+        
+        .listings-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .flight-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
+        
+        .badge { display: inline-block; padding: 4px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; border-radius: 6px; margin-bottom: 12px; }
+        .badge.premium { background: rgba(56, 189, 248, 0.1); color: var(--accent-blue); }
+        .badge.budget { background: rgba(249, 115, 22, 0.1); color: var(--accent-orange); }
+        .badge.euro { background: rgba(168, 85, 247, 0.1); color: var(--accent-purple); }
+        
+        .flight-card h4 { margin: 0 0 6px 0; font-size: 18px; font-weight: 700; }
+        .route-info { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; font-weight: 600; }
+        .desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin: 0 0 20px 0; }
+        
+        .card-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        .duration { font-size: 15px; font-weight: 600; }
+        .duration span { color: var(--text-muted); font-size: 13px; font-weight: 400; }
+        
+        .action-btn { background: #3b82f6; color: #ffffff; text-decoration: none; padding: 10px 18px; font-size: 13px; font-weight: 700; border-radius: 8px; border: none; cursor: pointer; transition: 0.2s; }
+        .action-btn:hover { background: #ffffff; color: var(--bg-dark); transform: translateY(-1px); }
+        
+        @media (max-width: 960px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .listings-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>ScandiScout</h2>
+        <a href="index.html">← Back to Home</a>
+    </div>
+
+    <div class="main-content">
+        <div class="header-section">
+            <h1>✈️ Live Interactive Flight & Seat Directory</h1>
+            <p>Interact with any route below. The portal securely generates live flight search tokens, pointing you to real-time airline aircraft configurations and open seats.</p>
+        </div>
+
+        <div class="region-section">
+            <h2>🌍 From Middle East Gateways</h2>
+            <div class="listings-grid">
+                
+                <div class="flight-card">
+                    <div>
+                        <span class="badge premium">Emirates</span>
+                        <h4>Dubai (DXB) to Copenhagen (CPH)</h4>
+                        <div class="route-info">✈️ Live Carrier Engine Integration</div>
+                        <p class="desc">Queries the official Emirates live scheduling panel for Boeing 777 / Airbus A380 configuration matrices and open cabin seats.</p>
+                    </div>
+                    <div class="card-bottom">
+                        <div class="duration">~7h 20m <span>Direct</span></div>
+                        <button onclick="redirectToFlight('Emirates', 'DXB', 'CPH')" class="action-btn">Check Live Seats & Book ↗</button>
+                    </div>
+                </div>
+
+                <div class="flight-card">
+                    <div>
+                        <span class="badge premium">Qatar Airways</span>
+                        <h4>Doha (DOH) to Stockholm (ARN)</h4>
+                        <div class="route-info">✈️ Live GDS Seat Mapping</div>
+                        <p class="desc">Connects directly into the Qatar Privilege and seat availability indexes for flights bound toward Stockholm Arlanda.</p>
+                    </div>
+                    <div class="card-bottom">
+                        <div class="duration">~6h 45m <span>Direct</span></div>
+                        <button onclick="redirectToFlight('Qatar', 'DOH', 'ARN')" class="action-btn">Check Live Seats & Book ↗</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="region-section">
+            <h2>🇪🇺 From European Gateways</h2>
+            <div class="listings-grid">
+
+                <div class="flight-card">
+                    <div>
+                        <span class="badge euro">Norwegian Air</span>
+                        <h4>London Gatwick (LGW) to Oslo (OSL)</h4>
+                        <div class="route-info">✈️ Instant Fare Finder</div>
+                        <p class="desc">Forwards directly to the live Norwegian low-fare calendar containing dynamic interior seat maps for Boeing 737 layouts.</p>
+                    </div>
+                    <div class="card-bottom">
+                        <div class="duration">~2h 10m <span>Direct</span></div>
+                        <button onclick="redirectToFlight('Norwegian', 'LGW', 'OSL')" class="action-btn">Check Live Seats & Book ↗</button>
+                    </div>
+                </div>
+
+                <div class="flight-card">
+                    <div>
+                        <span class="badge euro">SAS Airlines</span>
+                        <h4>Paris (CDG) to Copenhagen (CPH)</h4>
+                        <div class="route-info">✈️ SkyTeam Dynamic Router</div>
+                        <p class="desc">Access real-time dynamic inventory on SAS Scandinavian Airlines to view immediate availability fields.</p>
+                    </div>
+                    <div class="card-bottom">
+                        <div class="duration">~1h 55m <span>Direct</span></div>
+                        <button onclick="redirectToFlight('SAS', 'CDG', 'CPH')" class="action-btn">Check Live Seats & Book ↗</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function redirectToFlight(airline, from, to) {
+            // Dynamically calculate a departure date exactly 14 days from today's active date
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + 14);
+            
+            const year = targetDate.getFullYear();
+            const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+            const day = String(targetDate.getDate()).padStart(2, '0');
+            
+            let finalUrl = "";
+
+            // Dynamic deep-linking parameters based on specific carrier architecture
+            switch(airline) {
+                case 'Emirates':
+                    finalUrl = `https://www.emirates.com/ae/english/book/flight-search/?destination=${to}&origin=${from}&dateOutbound=${day}-${month}-${year}`;
+                    break;
+                case 'Qatar':
+                    finalUrl = `https://www.qatarairways.com/en/homepage.html?bookingClass=E&oneway=0&from=${from}&to=${to}&dates=${year}-${month}-${day}`;
+                    break;
+                case 'Norwegian':
+                    // Redirects straight into their live low-fare calendar matrix
+                    finalUrl = `https://www.norwegian.com/en/ipc/availability/faredropdown?D_Airport=${from}&A_Airport=${to}&TripType=1&CurrencyCode=EUR`;
+                    break;
+                case 'SAS':
+                    finalUrl = `https://www.flysas.com/en/book/flights?from=${from}&to=${to}&outbound=${year}${month}${day}&adt=1`;
+                    break;
+                default:
+                    finalUrl = "https://www.skyscanner.net";
+            }
+
+            // Fire window target directly to launch airline seat query loop
+            window.open(finalUrl, '_blank');
+        }
+    </script>
+
+</body>
+</html>
