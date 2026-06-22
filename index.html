@@ -18,6 +18,10 @@
             --sidebar-width: 280px;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background-color: var(--bg-dark); 
@@ -28,17 +32,16 @@
             min-height: 100vh;
         }
 
-        /* Modern Glassmorphic Sidebar */
+        /* Fixed Navigation Sidebar */
         .sidebar { 
             width: var(--sidebar-width); 
             position: fixed; 
+            top: 0;
+            left: 0;
             height: 100vh; 
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: #1e293b;
             border-right: 1px solid rgba(255, 255, 255, 0.05);
             padding: 30px 24px;
-            box-sizing: border-box;
             z-index: 100;
         }
         
@@ -78,7 +81,6 @@
         .sidebar a:hover, .sidebar a.active { 
             color: var(--text-main); 
             background: rgba(255, 255, 255, 0.05);
-            padding-left: 20px;
         }
         
         .sidebar a.active {
@@ -86,36 +88,21 @@
             color: var(--accent-blue);
         }
 
-        /* Main Content Container */
+        /* Layout Content Arena */
         .main-content { 
             margin-left: var(--sidebar-width); 
             padding: 50px; 
-            width: 100%;
-            max-width: 1100px; 
-            box-sizing: border-box;
+            width: calc(100% - var(--sidebar-width));
+            max-width: 1200px; 
         }
         
-        /* Premium Hero Banner */
         .welcome-hero { 
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border: 1px solid rgba(255, 255, 255, 0.05);
             padding: 40px; 
             border-radius: 16px; 
             margin-bottom: 40px; 
-            position: relative;
-            overflow: hidden;
             box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
-        }
-
-        .welcome-hero::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
         }
         
         .welcome-hero h2 { 
@@ -123,9 +110,7 @@
             font-size: 36px; 
             font-weight: 800;
             letter-spacing: -1px;
-            background: linear-gradient(to right, #ffffff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
         }
 
         .welcome-hero p {
@@ -133,7 +118,6 @@
             font-size: 16px;
             line-height: 1.6;
             margin-bottom: 0;
-            max-width: 600px;
         }
         
         h3 {
@@ -141,25 +125,8 @@
             font-weight: 700;
             letter-spacing: -0.5px;
             margin-bottom: 8px;
+            color: #ffffff;
         }
 
         .section-desc {
-            color: var(--text-muted);
-            margin-bottom: 30px;
-            font-size: 15px;
-        }
-
-        /* Grid & Glass Cards */
-        .country-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 24px; 
-        }
-        
-        .country-card { 
-            background: var(--bg-card); 
-            border: 1px solid rgba(255, 255, 255, 0.03); 
-            border-radius: 16px; 
-            overflow: hidden; 
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
-            transition: all 0
+            color:
