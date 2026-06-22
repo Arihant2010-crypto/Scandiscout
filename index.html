@@ -18,9 +18,7 @@
             --sidebar-width: 280px;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
@@ -32,13 +30,11 @@
             min-height: 100vh;
         }
 
-        /* Fixed Navigation Sidebar */
+        /* Sidebar */
         .sidebar { 
             width: var(--sidebar-width); 
             position: fixed; 
-            top: 0;
-            left: 0;
-            height: 100vh; 
+            top: 0; left: 0; height: 100vh; 
             background: #1e293b;
             border-right: 1px solid rgba(255, 255, 255, 0.05);
             padding: 30px 24px;
@@ -46,197 +42,63 @@
         }
         
         .sidebar h2 { 
-            color: var(--text-main); 
-            font-size: 24px; 
-            font-weight: 800;
-            margin-top: 0;
-            margin-bottom: 30px;
-            letter-spacing: -0.5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0 0 30px 0;
+            display: flex; align-items: center; gap: 10px;
         }
 
         .sidebar h2::before {
-            content: '';
-            display: inline-block;
-            width: 8px;
-            height: 24px;
+            content: ''; display: inline-block; width: 8px; height: 24px;
             background: linear-gradient(to bottom, var(--accent-blue), var(--accent-green));
             border-radius: 4px;
         }
 
         .sidebar a { 
-            display: block; 
-            color: var(--text-muted); 
-            text-decoration: none; 
-            padding: 12px 16px; 
-            font-weight: 600; 
-            font-size: 15px;
-            border-radius: 8px;
-            margin-bottom: 8px;
+            display: block; color: var(--text-muted); text-decoration: none; 
+            padding: 12px 16px; font-weight: 600; font-size: 15px; border-radius: 8px; margin-bottom: 8px;
             transition: all 0.2s ease;
         }
         
-        .sidebar a:hover, .sidebar a.active { 
-            color: var(--text-main); 
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .sidebar a.active {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--accent-blue);
-        }
+        .sidebar a:hover, .sidebar a.active { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+        .sidebar a.active { background: rgba(56, 189, 248, 0.1); color: var(--accent-blue); }
 
-        /* Layout Content Area */
+        /* Content Area */
         .main-content { 
-            margin-left: var(--sidebar-width); 
-            padding: 50px; 
-            width: calc(100% - var(--sidebar-width));
-            max-width: 1200px; 
+            margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); max-width: 1200px; 
         }
         
         .welcome-hero { 
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 40px; 
-            border-radius: 16px; 
-            margin-bottom: 40px; 
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 16px; margin-bottom: 40px; 
         }
         
-        .welcome-hero h2 { 
-            margin-top: 0; 
-            font-size: 36px; 
-            font-weight: 800;
-            letter-spacing: -1px;
-            color: #ffffff;
-        }
-
-        .welcome-hero p {
-            color: var(--text-muted);
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 0;
-        }
+        .welcome-hero h2 { margin: 0 0 10px 0; font-size: 36px; font-weight: 800; color: #ffffff; }
+        .welcome-hero p { color: var(--text-muted); font-size: 16px; line-height: 1.6; margin: 0; }
         
-        h3 {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-top: 30px;
-            margin-bottom: 8px;
-            color: #ffffff;
-        }
+        h3 { font-size: 22px; font-weight: 700; margin: 30px 0 8px 0; color: #ffffff; }
+        .section-desc { color: var(--text-muted); margin-bottom: 30px; font-size: 15px; }
 
-        .section-desc {
-            color: var(--text-muted);
-            margin-bottom: 30px;
-            font-size: 15px;
-        }
-
-        .country-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 24px; 
-            margin-bottom: 40px;
-        }
-        
-        .country-card { 
-            background: var(--bg-card); 
-            border: 1px solid rgba(255, 255, 255, 0.03); 
-            border-radius: 16px; 
-            overflow: hidden; 
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s ease;
-        }
-
-        .country-card:hover {
-            transform: translateY(-4px);
-        }
-        
-        .card-header { 
-            background: rgba(15, 23, 42, 0.4); 
-            padding: 20px 24px; 
-            font-size: 18px; 
-            font-weight: 700; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-        }
-        
-        .card-body { 
-            padding: 24px; 
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .card-body p {
-            color: var(--text-muted);
-            font-size: 14px;
-            line-height: 1.5;
-            margin-top: 0;
-            margin-bottom: 24px;
-        }
+        .country-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .country-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s ease; }
+        .country-card:hover { transform: translateY(-4px); }
+        .card-header { background: rgba(15, 23, 42, 0.4); padding: 20px 24px; font-size: 18px; font-weight: 700; border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
+        .card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-body p { color: var(--text-muted); font-size: 14px; line-height: 1.5; margin: 0 0 24px 0; }
         
         .action-link { 
-            display: block; 
-            text-align: center; 
-            background: rgba(255, 255, 255, 0.05); 
-            color: var(--text-main); 
-            padding: 12px; 
-            text-decoration: none; 
-            font-weight: 600; 
-            font-size: 14px;
-            border-radius: 8px; 
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.2s ease;
+            display: block; text-align: center; background: rgba(255, 255, 255, 0.05); color: var(--text-main); 
+            padding: 12px; text-decoration: none; font-weight: 600; font-size: 14px; border-radius: 8px; 
+            border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 10px; transition: all 0.2s ease;
         }
-
-        .action-link:hover {
-            background: var(--accent-blue);
-            color: var(--bg-dark);
-            border-color: var(--accent-blue);
-        }
-
-        /* Central Accommodations Hub Banner Link */
-        .hub-banner {
-            background: linear-gradient(135deg, #1e293b 0%, #064e3b 100%);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            padding: 30px;
-            border-radius: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            text-decoration: none;
-            color: #ffffff;
-            transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-
-        .hub-banner:hover {
-            transform: scale(1.01);
-            border-color: var(--accent-green);
-        }
-
-        .hub-text h4 { margin: 0 0 4px 0; font-size: 20px; font-weight: 700; color: #ffffff; }
-        .hub-text p { margin: 0; font-size: 14px; color: #a7f3d0; }
-
-        .hub-btn {
-            background: var(--accent-green);
-            color: var(--bg-dark);
-            padding: 12px 24px;
-            font-weight: 700;
-            font-size: 14px;
-            border-radius: 8px;
-        }
+        .action-link:hover { background: var(--accent-blue); color: var(--bg-dark); border-color: var(--accent-blue); }
+        
+        .action-link.stay-btn { background: transparent; border: 1px solid rgba(16, 185, 129, 0.3); color: var(--accent-green); margin-bottom: 0; }
+        .action-link.stay-btn:hover { background: var(--accent-green); color: var(--bg-dark); border-color: var(--accent-green); }
 
         @media (max-width: 960px) {
             body { flex-direction: column; }
             .sidebar { width: 100%; position: relative; height: auto; padding: 20px; }
             .main-content { margin-left: 0; width: 100%; padding: 30px 20px; }
             .country-grid { grid-template-columns: 1fr; }
-            .hub-banner { flex-direction: column; align-items: flex-start; gap: 20px; }
         }
     </style>
 </head>
@@ -248,17 +110,16 @@
         <a href="denmark/index.html">Denmark Guide</a>
         <a href="sweden/index.html">Sweden Guide</a>
         <a href="norway/index.html">Norway Guide</a>
-        <a href="stay.html">Stay Directory</a>
     </div>
 
     <div class="main-content">
         <div class="welcome-hero">
             <h2>Welcome to ScandiScout</h2>
-            <p>An interactive, eco-conscious digital guide to Scandinavia built for young travelers. Explore detailed local maps, structural archives, and regional travel indices.</p>
+            <p>An interactive digital guide to Scandinavia built for young travelers. Explore detailed local maps, architecture catalogs, and regional travel directories.</p>
         </div>
 
         <h3>Regional Travel Portals</h3>
-        <p class="section-desc">Select a destination platform below to open geographic metrics and local guide dashboards.</p>
+        <p class="section-desc">Select a destination resource map or view available accommodations below.</p>
 
         <div class="country-grid">
             <div class="country-card">
@@ -266,36 +127,28 @@
                 <div class="card-body">
                     <p>Analyze coastal architectures, historical canals, and transit hubs across Copenhagen networks.</p>
                     <a href="denmark/index.html" class="action-link">Maps & Structures</a>
+                    <a href="denmark/stay.html" class="action-link stay-btn">🛏️ Where to Stay</a>
                 </div>
             </div>
 
             <div class="country-card">
                 <div class="card-header">🇸🇪 Sweden</div>
                 <div class="card-body">
-                    <p>Investigate medieval architectural remnants, maritime artifacts, and modern sustainable design lines.</p>
+                    <p>Investigate medieval architectural remnants, maritime artifacts, and modern design lines.</p>
                     <a href="sweden/index.html" class="action-link">Maps & Structures</a>
+                    <a href="sweden/stay.html" class="action-link stay-btn">🛏️ Where to Stay</a>
                 </div>
             </div>
 
             <div class="country-card">
                 <div class="card-header">🇳🇴 Norway</div>
                 <div class="card-body">
-                    <p>Delve into high-latitude cathedrals, historic stave craftsmanship, and deep-fjord architectural structures.</p>
+                    <p>Delve into high-latitude cathedrals, historic craftsmanship, and deep-fjord architectural structures.</p>
                     <a href="norway/index.html" class="action-link">Maps & Structures</a>
+                    <a href="norway/stay.html" class="action-link stay-btn">🛏️ Where to Stay</a>
                 </div>
             </div>
         </div>
-
-        <h3>Global Booking Resources</h3>
-        <p class="section-desc">Looking for lodging options across your travel routes?</p>
-
-        <a href="stay.html" class="hub-banner">
-            <div class="hub-text">
-                <h4>🏨 Unified Accommodations Directory</h4>
-                <p>Browse a managed list of hotels, motels, and student-friendly house rentals across all regions.</p>
-            </div>
-            <div class="hub-btn">Explore Places to Stay →</div>
-        </a>
     </div>
 
 </body>
