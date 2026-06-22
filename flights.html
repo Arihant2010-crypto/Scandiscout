@@ -29,7 +29,6 @@
         
         .main-content { margin-left: var(--sidebar-width); padding: 50px; width: 100%; max-width: 1100px; }
         
-        /* Interactive Calculator Form */
         .search-container { background: var(--bg-card); padding: 30px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 40px; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
         .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 24px; }
         .form-group { display: flex; flex-direction: column; gap: 8px; }
@@ -37,19 +36,24 @@
         input, select { background: #141b2e; border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px; border-radius: 8px; color: #ffffff; font-family: inherit; font-size: 15px; width: 100%; transition: border-color 0.2s; }
         input:focus, select:focus { outline: none; border-color: var(--accent-blue); }
         
-        .submit-btn { background: var(--accent-blue); color: var(--bg-dark); width: 100%; border: none; padding: 16px; font-size: 15px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: transform 0.2s; }
+        .submit-btn { background: var(--accent-blue); color: var(--bg-dark); width: 100%; border: none; padding: 16px; font-size: 15px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
         .submit-btn:hover { transform: translateY(-1px); background: #ffffff; }
         
-        /* Output Cards styles */
         .results-section { display: none; margin-top: 20px; animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .flight-card { background: var(--bg-card); border-left: 5px solid var(--accent-green); border-radius: 12px; padding: 24px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+        #flights-list { display: flex; flex-direction: column; gap: 16px; }
+        .flight-card { background: var(--bg-card); border-left: 5px solid var(--accent-blue); border-radius: 12px; padding: 24px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
         .route-info h4 { margin: 0 0 6px 0; font-size: 18px; font-weight: 800; color: #ffffff; }
-        .route-info p { margin: 0; font-size: 14px; color: var(--text-muted); }
-        .price-badge { font-size: 20px; font-weight: 800; color: var(--accent-green); background: rgba(16, 185, 129, 0.1); padding: 8px 16px; border-radius: 6px; text-align: right; }
+        .route-info p { margin: 0 0 4px 0; font-size: 14px; color: var(--text-muted); }
+        .route-info .time-slot { font-size: 12px; color: var(--accent-blue); font-weight: 600; }
         
-        @media (max-width: 960px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 20px; } .main-content { margin-left: 0; padding: 30px 20px; } .form-grid { grid-template-columns: 1fr; } .flight-card { flex-direction: column; align-items: flex-start; } .price-badge { width: 100%; text-align: center; } }
+        .right-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+        .price-badge { font-size: 20px; font-weight: 800; color: var(--accent-green); background: rgba(16, 185, 129, 0.1); padding: 8px 16px; border-radius: 6px; }
+        .book-btn { background: var(--accent-blue); color: var(--bg-dark); border: none; padding: 8px 14px; font-size: 13px; font-weight: 700; border-radius: 6px; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+        .book-btn:hover { background: #ffffff; }
+        
+        @media (max-width: 960px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 20px; } .main-content { margin-left: 0; padding: 30px 20px; } .form-grid { grid-template-columns: 1fr; } .flight-card { flex-direction: column; align-items: flex-start; } .right-meta { width: 100%; align-items: flex-start; } }
     </style>
 </head>
 <body>
@@ -62,15 +66,15 @@
     </div>
 
     <div class="main-content">
-        <h1>✈️ Live Airline Schedule & Route Search</h1>
-        <p style="color: var(--text-muted); margin-bottom: 30px;">Input your departure gateway and preferred target Nordic hub below to compute active budget airline timelines.</p>
+        <h1>✈️ Scandinavian Flight Router Engine</h1>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Search live routes across premium and low-cost operators servicing major Scandinavian hubs.</p>
 
         <div class="search-container">
             <form id="routerForm" onsubmit="calculateRoutes(event)">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="origin">Departure City</label>
-                        <input type="text" id="origin" placeholder="e.g. London, New York, Berlin" required>
+                        <label for="origin">Departure Airport Code</label>
+                        <input type="text" id="origin" placeholder="e.g. LHR, JFK, BER" maxlength="3" style="text-transform: uppercase;" required>
                     </div>
                     <div class="form-group">
                         <label for="destination">Target Nordic Hub</label>
@@ -95,33 +99,17 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="submit-btn">Analyze Route Availability →</button>
+                <button type="submit" class="submit-btn">Search Flight Schedules →</button>
             </form>
         </div>
 
         <div id="results" class="results-section">
-            <h3 style="margin-bottom: 20px;">Available Flight Routes Found</h3>
-            
-            <div class="flight-card">
-                <div class="route-info">
-                    <h4 id="route-title-1">SAS Scandinavian Airlines</h4>
-                    <p id="route-details-1">Direct Connection • Duration: 2h 15m • Departs: 08:30 AM</p>
-                </div>
-                <div class="price-badge" id="price-1">€124</div>
-            </div>
-
-            <div class="flight-card" style="border-left-color: var(--accent-blue);">
-                <div class="route-info">
-                    <h4 id="route-title-2">Norwegian Air Shuttle</h4>
-                    <p id="route-details-2">Direct Connection • Duration: 2h 20m • Departs: 14:15 PM</p>
-                </div>
-                <div class="price-badge" id="price-2" style="color: var(--accent-blue); background: rgba(56, 189, 248, 0.1);">€98</div>
-            </div>
+            <h3 style="margin-bottom: 20px;">Available Flag Carriers &amp; Routes Found</h3>
+            <div id="flights-list"></div>
         </div>
     </div>
 
     <script>
-        // Set fallback default placeholder date to tomorrow's timestamp
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         document.getElementById('travelDate').value = tomorrow.toISOString().split('T')[0];
@@ -129,26 +117,68 @@
         function calculateRoutes(e) {
             e.preventDefault();
             
-            const origin = document.getElementById('origin').value;
-            const destSelect = document.getElementById('destination');
-            const destName = destSelect.options[destSelect.selectedIndex].text;
+            const origin = document.getElementById('origin').value.toUpperCase();
+            const destCode = document.getElementById('destination').value;
+            const travelDate = document.getElementById('travelDate').value;
             const cabin = document.getElementById('cabinClass').value;
             
-            // Basic localized base cost scaling logic based on chosen class variables
-            let pricingMultiplier = 1.0;
-            if (cabin === 'premium') pricingMultiplier = 1.6;
-            if (cabin === 'business') pricingMultiplier = 3.2;
+            let priceMultiplier = 1.0;
+            if (cabin === 'premium') priceMultiplier = 1.6;
+            if (cabin === 'business') priceMultiplier = 3.1;
 
-            // Compute custom text nodes to injection slots
-            document.getElementById('route-title-1').innerHTML = `✈️ SAS Scandinavian Airlines (From ${origin})`;
-            document.getElementById('route-details-1').innerHTML = `Direct Express Connection to ${destName} • Duration: 2h 10m • Status: Recommended`;
-            document.getElementById('price-1').innerHTML = `€${Math.round(115 * pricingMultiplier)}`;
+            const airlines = [
+                {
+                    name: "SAS Scandinavian Airlines",
+                    basePrice: 120,
+                    time: "08:15 AM",
+                    duration: "2h 10m",
+                    url: `https://www.flysas.com/en/book/flights?from=${origin}&to=${destCode}&outboundDate=${travelDate}`
+                },
+                {
+                    name: "Norwegian Air Shuttle",
+                    basePrice: 75,
+                    time: "11:40 AM",
+                    duration: "2h 15m",
+                    url: `https://www.norwegian.com/en/ipc/availability/freetext?D_Apo=${origin}&A_Apo=${destCode}&D_Day=${travelDate.split('-')[2]}&D_Month=${travelDate.split('-')[0]}${travelDate.split('-')[1]}`
+                },
+                {
+                    name: "Finnair",
+                    basePrice: 145,
+                    time: "15:10 PM",
+                    duration: "3h 05m",
+                    url: `https://www.finnair.com/en/flight-search?origin=${origin}&destination=${destCode}&departing=${travelDate}`
+                },
+                {
+                    name: "Ryanair Economy",
+                    basePrice: 39,
+                    time: "19:25 PM",
+                    duration: "2h 20m",
+                    url: `https://www.ryanair.com/en/trip/flights/select?origin=${origin}&destination=${destCode}&dateOut=${travelDate}`
+                }
+            ];
 
-            document.getElementById('route-title-2').innerHTML = `✈️ Regional Low-Cost Carrier (From ${origin})`;
-            document.getElementById('route-details-2').innerHTML = `Eco-Saver Route to ${destName} • Duration: 2h 35m • Status: Smart Choice`;
-            document.getElementById('price-2').innerHTML = `€${Math.round(79 * pricingMultiplier)}`;
+            const listContainer = document.getElementById('flights-list');
+            listContainer.innerHTML = ""; 
 
-            // Display results row node dynamically 
+            airlines.forEach(airline => {
+                const finalPrice = Math.round(airline.basePrice * priceMultiplier);
+                
+                const cardHTML = `
+                    <div class="flight-card">
+                        <div class="route-info">
+                            <h4>${airline.name}</h4>
+                            <p>${origin} → ${destCode} • Direct Connection • Flight Duration: ${airline.duration}</p>
+                            <span class="time-slot">⏰ Scheduled Departure: ${airline.time}</span>
+                        </div>
+                        <div class="right-meta">
+                            <div class="price-badge">€${finalPrice}</div>
+                            <a href="${airline.url}" target="_blank" class="book-btn">Book on Official Site ↗</a>
+                        </div>
+                    </div>
+                `;
+                listContainer.innerHTML += cardHTML;
+            });
+
             document.getElementById('results').style.display = 'block';
         }
     </script>
