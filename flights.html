@@ -66,7 +66,7 @@
 
     <div class="main-content">
         <div class="header-section">
-            <h1>✈️ Global Flight Plan Directory (15 Active Routes)</h1>
+            <h1>✈️ Live Flight Plan Directory (15 Active Routes)</h1>
             <p>Interact with any option to build live search sessions, pulling real-time aircraft layouts and seating configurations.</p>
         </div>
 
@@ -83,7 +83,7 @@
                     </div>
                     <div class="card-bottom">
                         <div class="duration">~7h 20m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Emirates', 'DXB', 'CPH')" class="action-btn">Check Live Seats &amp; Book ↗</button>
+                        <button onclick="redirectToFlight('DXB', 'CPH')" class="action-btn">Search Live Flights ↗</button>
                     </div>
                 </div>
 
@@ -96,7 +96,7 @@
                     </div>
                     <div class="card-bottom">
                         <div class="duration">~7h 00m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Emirates', 'DXB', 'ARN')" class="action-btn">Check Live Seats &amp; Book ↗</button>
+                        <button onclick="redirectToFlight('DXB', 'ARN')" class="action-btn">Search Live Flights ↗</button>
                     </div>
                 </div>
 
@@ -109,7 +109,7 @@
                     </div>
                     <div class="card-bottom">
                         <div class="duration">~6h 45m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Qatar', 'DOH', 'ARN')" class="action-btn">Check Live Seats &amp; Book ↗</button>
+                        <button onclick="redirectToFlight('DOH', 'ARN')" class="action-btn">Search Live Flights ↗</button>
                     </div>
                 </div>
 
@@ -122,7 +122,7 @@
                     </div>
                     <div class="card-bottom">
                         <div class="duration">~7h 10m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Qatar', 'DOH', 'OSL')" class="action-btn">Check Live Seats &amp; Book ↗</button>
+                        <button onclick="redirectToFlight('DOH', 'OSL')" class="action-btn">Search Live Flights ↗</button>
                     </div>
                 </div>
 
@@ -135,7 +135,7 @@
                     </div>
                     <div class="card-bottom">
                         <div class="duration">~6h 30m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Qatar', 'DOH', 'CPH')" class="action-btn">Check Live Seats &amp; Book ↗</button>
+                        <button onclick="redirectToFlight('DOH', 'CPH')" class="action-btn">Search Live Flights ↗</button>
                     </div>
                 </div>
 
@@ -155,7 +155,7 @@
                     </div>
                     <div class="card-bottom">
                         <div class="duration">~2h 10m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Norwegian', 'LGW', 'OSL')" class="action-btn">Check Live Seats &amp; Book ↗</button>
+                        <button onclick="redirectToFlight('LGW', 'OSL')" class="action-btn">Search Live Flights ↗</button>
                     </div>
                 </div>
 
@@ -168,7 +168,7 @@
                     </div>
                     <div class="card-bottom">
                         <div class="duration">~1h 50m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Norwegian', 'LGW', 'CPH')" class="action-btn">Check Live Seats &amp; Book ↗</button>
+                        <button onclick="redirectToFlight('LGW', 'CPH')" class="action-btn">Search Live Flights ↗</button>
                     </div>
                 </div>
 
@@ -181,7 +181,7 @@
                     </div>
                     <div class="card-bottom">
                         <div class="duration">~2h 25m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('Norwegian', 'LGW', 'ARN')" class="action-btn">Check Live Seats &amp; Book ↗</button>
+                        <button onclick="redirectToFlight('LGW', 'ARN')" class="action-btn">Search Live Flights ↗</button>
                     </div>
                 </div>
 
@@ -194,7 +194,7 @@
                     </div>
                     <div class="card-bottom">
                         <div class="duration">~1h 55m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('SAS', 'CDG', 'CPH')" class="action-btn">Check Live Seats &amp; Book ↗</button>
+                        <button onclick="redirectToFlight('CDG', 'CPH')" class="action-btn">Search Live Flights ↗</button>
                     </div>
                 </div>
 
@@ -207,7 +207,7 @@
                     </div>
                     <div class="card-bottom">
                         <div class="duration">~2h 30m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('SAS', 'CDG', 'ARN')" class="action-btn">Check Live Seats &amp; Book ↗</button>
+                        <button onclick="redirectToFlight('CDG', 'ARN')" class="action-btn">Search Live Flights ↗</button>
                     </div>
                 </div>
 
@@ -220,7 +220,7 @@
                     </div>
                     <div class="card-bottom">
                         <div class="duration">~2h 20m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('SAS', 'CDG', 'OSL')" class="action-btn">Check Live Seats &amp; Book ↗</button>
+                        <button onclick="redirectToFlight('CDG', 'OSL')" class="action-btn">Search Live Flights ↗</button>
                     </div>
                 </div>
 
@@ -233,7 +233,7 @@
                     </div>
                     <div class="card-bottom">
                         <div class="duration">~1h 20m <span>Direct</span></div>
-                        <button onclick="redirectToFlight('SAS', 'AMS', 'CPH')" class="action-btn">Check Live Seats &amp; Book ↗</button>
+                        <button onclick="redirectToFlight('AMS', 'CPH')" class="action-btn">Search Live Flights ↗</button>
                     </div>
                 </div>
 
@@ -242,17 +242,11 @@
     </div>
 
     <script>
-        function redirectToFlight(airline, fromCode, toCode) {
-            // Generates a direct flight destination engine request
-            let targetUrl = "https://www.google.com/travel/flights?q=Flights%20from%20" + fromCode + "%20to%20" + toCode;
+        function redirectToFlight(fromCode, toCode) {
+            // Uses a web URL format that initializes an active flight query automatically
+            let targetUrl = "https://www.google.com/travel/flights?q=Flights%20to%20" + toCode + "%20from%20" + fromCode;
             
-            // Explicit airline website fallback updates
-            if (airline === 'Emirates') targetUrl = "https://www.emirates.com";
-            if (airline === 'Qatar') targetUrl = "https://www.qatarairways.com";
-            if (airline === 'Norwegian') targetUrl = "https://www.norwegian.com";
-            if (airline === 'SAS') targetUrl = "https://www.flysas.com";
-
-            // Open portal inside a fresh tab smoothly
+            // Open the external page safely in a clean layout tab
             window.open(targetUrl, '_blank');
         }
     </script>
