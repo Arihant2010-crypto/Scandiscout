@@ -20,54 +20,66 @@
         }
         * { box-sizing: border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
+        
         .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: #1e293b; border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 24px; z-index: 100; }
         .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0 0 30px 0; display: flex; align-items: center; gap: 10px; }
         .sidebar h2::before { content: ''; display: inline-block; width: 8px; height: 24px; background: linear-gradient(to bottom, var(--accent-blue), var(--accent-green)); border-radius: 4px; }
         .sidebar a { display: block; color: var(--text-muted); text-decoration: none; padding: 12px 16px; font-weight: 600; font-size: 15px; border-radius: 8px; margin-bottom: 8px; }
         .sidebar a:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+        
         .main-content { margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); max-width: 1200px; }
         .header-section { margin-bottom: 40px; }
         .header-section h1 { font-size: 32px; font-weight: 800; margin: 0 0 10px 0; }
         .header-section p { color: var(--text-muted); margin: 0; font-size: 16px; }
+        
         .listings-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
         .stay-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
+        
         .badge { display: inline-block; padding: 4px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; border-radius: 6px; margin-bottom: 12px; }
         .badge.hotel { background: rgba(56, 189, 248, 0.1); color: var(--accent-blue); }
         .badge.rental { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); }
+        .badge.hostel { background: rgba(168, 85, 247, 0.1); color: var(--accent-purple); }
+        
         .stay-card h4 { margin: 0 0 6px 0; font-size: 18px; font-weight: 700; }
         .location { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
         .desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin: 0 0 20px 0; }
+        
         .card-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
         .price { font-size: 15px; font-weight: 600; }
         .price span { color: var(--text-muted); font-size: 13px; font-weight: 400; }
         .book-btn { background: rgba(255, 255, 255, 0.05); color: var(--text-main); text-decoration: none; padding: 8px 16px; font-size: 13px; font-weight: 600; border-radius: 8px; transition: 0.2s; }
         .book-btn:hover { background: #ffffff; color: var(--bg-dark); }
+        
         @media (max-width: 960px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .listings-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
+
     <div class="sidebar">
         <h2>ScandiScout</h2>
         <a href="../index.html">← Back to Home</a>
     </div>
+
     <div class="main-content">
         <div class="header-section">
             <h1>🇩🇰 Denmark Lodging Directory</h1>
-            <p>Curated student-friendly options in Copenhagen and surrounding areas.</p>
+            <p>A comprehensive directory of student-friendly and budget-aware stays across major networks.</p>
         </div>
+
         <div class="listings-grid">
             <div class="stay-card">
                 <div>
-                    <span class="badge hotel">Hotel</span>
+                    <span class="badge hostel">Hostel</span>
                     <h4>Next House Copenhagen</h4>
                     <div class="location">📍 Central Copenhagen</div>
-                    <p class="desc">A modern, luxury eco-conscious hostel/hotel hybrid offering premium amenities and common social arenas perfect for young travelers.</p>
+                    <p class="desc">A modern, luxury eco-conscious hostel/hotel hybrid offering premium facilities, a rooftop terrace, and social sports arenas.</p>
                 </div>
                 <div class="card-bottom">
                     <div class="price">~350 DKK <span>/ night</span></div>
                     <a href="#" class="book-btn">Check Availability</a>
                 </div>
             </div>
+
             <div class="stay-card">
                 <div>
                     <span class="badge rental">Rental House</span>
@@ -80,31 +92,112 @@
                     <a href="#" class="book-btn">Check Availability</a>
                 </div>
             </div>
+
             <div class="stay-card">
                 <div>
                     <span class="badge hotel">Hotel</span>
                     <h4>Wakeup Copenhagen</h4>
                     <div class="location">📍 Borgergade, City Center</div>
-                    <p class="desc">Cool, high-efficiency minimalist rooms designed by architect Kim Utzon. Focused on low energy usage and high-speed tech amenities.</p>
+                    <p class="desc">Cool, high-efficiency minimalist rooms designed by architect Kim Utzon. Focused on low environmental footprint and high-speed tech amenities.</p>
                 </div>
                 <div class="card-bottom">
                     <div class="price">~520 DKK <span>/ night</span></div>
                     <a href="#" class="book-btn">Check Availability</a>
                 </div>
             </div>
+
             <div class="stay-card">
                 <div>
                     <span class="badge rental">Rental House</span>
                     <h4>The Aarhus Eco-Loft</h4>
                     <div class="location">📍 Aarhus Latin Quarter</div>
-                    <p class="desc">A historic brick timber loft completely retrofitted with solar heating and recycled wood. Great shared community garden yard.</p>
+                    <p class="desc">A historic brick timber loft completely retrofitted with clean radiant heating and recycled materials. Perfect shared community vibe.</p>
                 </div>
                 <div class="card-bottom">
                     <div class="price">~680 DKK <span>/ night</span></div>
                     <a href="#" class="book-btn">Check Availability</a>
                 </div>
             </div>
+
+            <div class="stay-card">
+                <div>
+                    <span class="badge hostel">Hostel</span>
+                    <h4>Steel House Copenhagen</h4>
+                    <div class="location">📍 Vesterbro, Copenhagen</div>
+                    <p class="desc">New York-style industrial luxury hostel featuring pod beds, an indoor pool, a gym room, and multiple custom study/workspace lounges.</p>
+                </div>
+                <div class="card-bottom">
+                    <div class="price">~390 DKK <span>/ night</span></div>
+                    <a href="#" class="book-btn">Check Availability</a>
+                </div>
+            </div>
+
+            <div class="stay-card">
+                <div>
+                    <span class="badge hotel">Hotel</span>
+                    <h4>CitizenM Rådhuspladsen</h4>
+                    <div class="location">📍 City Hall Square</div>
+                    <p class="desc">Boutique hotel with affordable micro-rooms. Fully controlled by digital tablet utilities, alongside collaborative communal work desks.</p>
+                </div>
+                <div class="card-bottom">
+                    <div class="price">~890 DKK <span>/ night</span></div>
+                    <a href="#" class="book-btn">Check Availability</a>
+                </div>
+            </div>
+
+            <div class="stay-card">
+                <div>
+                    <span class="badge hostel">Hostel</span>
+                    <h4>Danhostel Aarhus City</h4>
+                    <div class="location">📍 Aarhus Center</div>
+                    <p class="desc">Located straight on top of the main central shopping street with panoramic city-roof views and modular group dynamic rooms.</p>
+                </div>
+                <div class="card-bottom">
+                    <div class="price">~320 DKK <span>/ night</span></div>
+                    <a href="#" class="book-btn">Check Availability</a>
+                </div>
+            </div>
+
+            <div class="stay-card">
+                <div>
+                    <span class="badge rental">Rental House</span>
+                    <h4>Odense Artist Studio</h4>
+                    <div class="location">📍 Odense Central Quarter</div>
+                    <p class="desc">Cozy cottage-style historic flat property with smart lock capabilities, fast fiber Wi-Fi, and private patio brick gardens.</p>
+                </div>
+                <div class="card-bottom">
+                    <div class="price">~580 DKK <span>/ night</span></div>
+                    <a href="#" class="book-btn">Check Availability</a>
+                </div>
+            </div>
+
+            <div class="stay-card">
+                <div>
+                    <span class="badge hotel">Hotel</span>
+                    <h4>Cabinn Metro Hotel</h4>
+                    <div class="location">📍 Ørestad Development District</div>
+                    <p class="desc">Functional cabin-style spaces designed to look like maritime cruise cabins. Excellent express metro connections right into central loops.</p>
+                </div>
+                <div class="card-bottom">
+                    <div class="price">~460 DKK <span>/ night</span></div>
+                    <a href="#" class="book-btn">Check Availability</a>
+                </div>
+            </div>
+
+            <div class="stay-card">
+                <div>
+                    <span class="badge rental">Rental House</span>
+                    <h4>Maritime Amager Beach Cabin</h4>
+                    <div class="location">📍 Amager Strand, Coastline</div>
+                    <p class="desc">Compact beachside layout house built with green materials. Perfect for waterfront exploration and quick access to coastal networks.</p>
+                </div>
+                <div class="card-bottom">
+                    <div class="price">~800 DKK <span>/ night</span></div>
+                    <a href="#" class="book-btn">Check Availability</a>
+                </div>
+            </div>
         </div>
     </div>
+
 </body>
 </html>
