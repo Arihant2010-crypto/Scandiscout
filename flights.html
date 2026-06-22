@@ -120,18 +120,15 @@
             
             const origin = document.getElementById('origin').value.toUpperCase();
             const destCode = document.getElementById('destination').value;
-            const travelDate = document.getElementById('travelDate').value; // YYYY-MM-DD
+            const travelDate = document.getElementById('travelDate').value; 
             const cabin = document.getElementById('cabinClass').value;
             
             let priceMultiplier = 1.0;
             if (cabin === 'premium') priceMultiplier = 1.6;
             if (cabin === 'business') priceMultiplier = 3.3;
 
-            // Formats dates array into parts for various airline search matrix systems
-            const dateParts = travelDate.split('-'); // [YYYY, MM, DD]
-            const formattedDateEU = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`; // DD-MM-YYYY
+            const dateParts = travelDate.split('-'); 
 
-            // Comprehensive global list mapping out deep links
             const airlines = [
                 // UAE CARRIERS
                 { name: "Emirates", region: "UAE", basePrice: 450, time: "09:15 AM", duration: "7h 10m", getUrl: (o, d, dt) => `https://www.emirates.com/choose-flights/?paxType=A&container=flightOffice&dynamicId=flight&departureAirport=${o}&arrivalAirport=${d}&dateOutbound=${dt}` },
@@ -157,7 +154,6 @@
 
             airlines.forEach(airline => {
                 const finalPrice = Math.round(airline.basePrice * priceMultiplier);
-                // Call dynamic string generation function to pass state arguments safely
                 const bookingUrl = airline.getUrl(origin, destCode, travelDate);
                 
                 const cardHTML = `
