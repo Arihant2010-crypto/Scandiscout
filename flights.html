@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScandiScout - Custom Flight Router</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-orange: #f97316;
+            --sidebar-width: 280px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); display: flex; min-height: 100vh; }
+        
+        /* Sidebar Layout */
+        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: #1e293b; border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 24px; z-index: 100; }
+        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
+        .sidebar h2::before { content: ''; display: inline-block; width: 6px; height: 24px; background: linear-gradient(to bottom, var(--accent-blue), var(--accent-orange)); border-radius: 4px; }
+        .sidebar a { display: block; color: var(--text-muted); text-decoration: none; padding: 12px 16px; font-weight: 600; font-size: 15px; border-radius: 8px; margin-bottom: 8px; transition: all 0.2s; }
+        .sidebar a:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+        
+        /* Main Workspace Container */
+        .main-content { margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); max-width: 1000px; }
+        .header-section { margin-bottom: 40px; }
+        .header-section h1 { font-size: 32px; font-weight: 800; margin-bottom: 10px; }
+        .header-section p { color: var(--text-muted); font-size: 16px; }
+        
+        /* Form Card Panel */
+        .search-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 32px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); }
+        
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 24px; }
+        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+        
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .form-group input, .form-group select { background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 14px; color: var(--text-main); font-family: inherit; font-size: 15px; font-weight: 600; transition: border-color 0.2s; width: 100%; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--accent-blue); }
+        
+        .submit-btn { background: #3b82f6; color: #ffffff; padding: 16px; font-size: 15px; font-weight: 700; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .submit-btn:hover { background: #ffffff; color: var(--bg-dark); transform: translateY(-1px); }
+        
+        /* Layout Responsiveness */
+        @media (max-width: 960px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>ScandiScout</h2>
+        <a href="./index.html">← Back Dashboard</a>
+    </div>
+
+    <div class="main-content">
+        <div class="header-section">
+            <h1>✈️ Custom Flight Router</h1>
+            <p>Enter your location details, preferred dates, and Scandinavian destination to verify active plane availability and real-time carrier choices.</p>
+        </div>
+
+        <div class="search-card">
+            <form id="flightRouterForm" onsubmit="buildFlightQuery(event)">
+                <div class="form-grid">
+                    
+                    <div class="form-group">
+                        <label for="originInput">Where do you live? (City or Airport Code)</label>
+                        <input type="text" id="originInput" placeholder="e.g., London, DXB, New York" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="destinationSelect">Nordic Destination</label>
+                        <select id="destinationSelect" required>
+                            <option value="CPH">Copenhagen, Denmark (CPH)</option>
+                            <option value="ARN">Stockholm, Sweden (ARN)</option>
+                            <option value="OSL">Oslo, Norway (OSL)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateInput">Departure Date</label>
+                        <input type="date" id="dateInput" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="timeSelect">Preferred Time Window</label>
+                        <select id="timeSelect">
+                            <option value="any">Anytime</option>
+                            <option value="morning">Morning (06:00 - 12:00)</option>
+                            <option value="afternoon">Afternoon (12:00 - 18:00)</option>
+                            <option value="evening">Evening (18:00 - 24:00)</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Check Available Airlines &amp; Schedules ↗
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Set default date input field to tomorrow's date for ease of use
+        window.addEventListener('DOMContentLoaded', () => {
+            const dateInput = document.getElementById('dateInput');
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            dateInput.min = tomorrow.toISOString().split('T')[0];
+            dateInput.value = tomorrow.toISOString().split('T')[0];
+        });
+
+        function buildFlightQuery(event) {
+            event.preventDefault();
+
+            // Collect user selections
+            const origin = encodeURIComponent(document.getElementById('originInput').value.trim());
+            const destination = document.getElementById('destinationSelect').value;
+            const date = document.getElementById('dateInput').value;
+            const timeWindow = document.getElementById('timeSelect').value;
+
+            // Format standard web search strings into Google Flights
+            // Includes parameters tracking date configurations natively
+            let searchString = `Flights%20from%20${origin}%20to%20${destination}%20on%20${date}`;
+            
+            if (timeWindow !== 'any') {
+                searchString += `%20${timeWindow}`;
+            }
+
+            const finalUrl = `https://www.google.com/search?q=${searchString}+flights`;
+
+            // Open the compiled live layout schedule directly in a safe clean tab
+            window.open(finalUrl, '_blank');
+        }
+    </script>
+
+</body>
+</html>
