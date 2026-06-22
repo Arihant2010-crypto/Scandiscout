@@ -3,67 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScandiScout - Nordic Exploration Dashboard</title>
+    <title>ScandiScout - Hub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #0f172a;
-            --bg-sidebar: #1e293b;
             --bg-card: #1e293b;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --accent-blue: #38bdf8;
-            --accent-green: #10b981;
-            --accent-purple: #a855f7;
+            --accent-orange: #f97316;
             --sidebar-width: 280px;
         }
         * { box-sizing: border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
         
-        /* Minimal Sidebar Layout */
-        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 24px; z-index: 100; }
-        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
-        .sidebar h2::before { content: ''; display: inline-block; width: 6px; height: 24px; background: var(--accent-blue); border-radius: 4px; }
-        .sidebar p { color: var(--text-muted); font-size: 13px; line-height: 1.6; margin: 0; }
+        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: #1e293b; border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 24px; z-index: 100; }
+        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0 0 30px 0; display: flex; align-items: center; gap: 10px; }
+        .sidebar h2::before { content: ''; display: inline-block; width: 8px; height: 24px; background: linear-gradient(to bottom, var(--accent-blue), var(--accent-orange)); border-radius: 4px; }
+        .sidebar p { color: var(--text-muted); font-size: 14px; line-height: 1.5; }
         
-        /* Main Layout Content */
         .main-content { margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); max-width: 1200px; }
+        .header-section { margin-bottom: 40px; }
+        .header-section h1 { font-size: 36px; font-weight: 800; margin: 0 0 10px 0; }
+        .header-section p { color: var(--text-muted); margin: 0; font-size: 16px; }
         
-        .header-section { margin-bottom: 36px; }
-        .header-section h1 { font-size: 32px; font-weight: 800; margin: 0 0 12px 0; }
-        .header-section p { color: var(--text-muted); font-size: 15px; margin: 0; }
+        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 20px; }
+        .menu-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 30px; display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; color: inherit; transition: transform 0.2s, border-color 0.2s; }
+        .menu-card:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.1); }
         
-        /* Minimal Flight Callout Section */
-        .flight-callout { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 32px; margin-bottom: 36px; }
-        .flight-callout h3 { font-size: 20px; font-weight: 800; margin: 0 0 10px 0; display: flex; align-items: center; gap: 10px; }
-        .flight-callout p { color: var(--text-muted); font-size: 14px; margin: 0 0 20px 0; line-height: 1.6; max-width: 800px; }
+        .menu-card h3 { margin: 0 0 10px 0; font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .menu-card p { color: var(--text-muted); font-size: 14px; line-height: 1.5; margin: 0 0 24px 0; }
+        .menu-btn { display: inline-block; background: rgba(255, 255, 255, 0.05); color: var(--text-main); padding: 10px 20px; font-size: 14px; font-weight: 600; border-radius: 8px; align-self: flex-start; }
+        .menu-card:hover .menu-btn { background: #ffffff; color: var(--bg-dark); }
         
-        /* Portals Directories Grid */
-        .directories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-        .directory-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.02); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
-        .directory-card h3 { margin: 0 0 12px 0; font-size: 18px; font-weight: 800; }
-        .directory-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin: 0 0 24px 0; flex-grow: 1; }
+        .flight-highlight { grid-column: span 2; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid rgba(56, 189, 248, 0.2); }
+        .flight-highlight .menu-btn { background: var(--accent-blue); color: var(--bg-dark); }
         
-        /* 3-Button Stack Layout */
-        .btn-stack { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-        .btn { display: block; width: 100%; text-align: center; text-decoration: none; padding: 11px; font-size: 13px; font-weight: 600; border-radius: 8px; transition: 0.2s; border: none; cursor: pointer; }
-        
-        .btn.primary-blue { background: var(--accent-blue); color: #0f172a; }
-        .btn.primary-blue:hover { background: #ffffff; color: #0f172a; }
-        
-        .btn.map-grey { background: rgba(255, 255, 255, 0.05); color: var(--text-main); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .btn.map-grey:hover { background: rgba(255, 255, 255, 0.15); }
-        
-        .btn.stay-green { background: rgba(16, 185, 129, 0.05); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.1); }
-        .btn.stay-green:hover { background: var(--accent-green); color: var(--bg-dark); }
-
-        .btn.prices-purple { background: rgba(168, 85, 247, 0.05); color: var(--accent-purple); border: 1px solid rgba(168, 85, 247, 0.1); }
-        .btn.prices-purple:hover { background: var(--accent-purple); color: var(--bg-dark); }
-
-        @media (max-width: 1024px) { .directories-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .directories-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 960px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .menu-grid { grid-template-columns: 1fr; } .flight-highlight { grid-column: span 1; } }
     </style>
 </head>
 <body>
@@ -79,50 +58,38 @@
             <p>Select a portal below to manage accommodations or query live international flight paths.</p>
         </div>
 
-        <div class="flight-callout">
-            <h3>✈️ Live Flight Plan &amp; Seat Engine</h3>
-            <p>Search active flight plans bringing you straight into Scandinavia from destinations across Europe, the Americas, Asia, and the Middle East. Interact with specific routes to look up live aircraft layouts, seating, and booking links.</p>
-            <a href="./flights.html" class="btn primary-blue" style="width: auto; display: inline-block; padding: 12px 28px;">Launch Flight Engine →</a>
-        </div>
-
-        <div class="directories-grid">
-            
-            <div class="directory-card">
+        <div class="menu-grid">
+            <a href="flights.html" class="menu-card flight-highlight">
                 <div>
-                    <h3>DK Denmark Directory</h3>
+                    <h3>✈️ Live Flight Plan & Seat Engine</h3>
+                    <p>Search active flight plans bringing you straight into Scandinavia from destinations across Europe and the Middle East. Interact with specific routes to look up live aircraft layouts, seating, and booking links.</p>
+                </div>
+                <div class="menu-btn">Launch Flight Engine →</div>
+            </a>
+
+            <a href="denmark/stay.html" class="menu-card">
+                <div>
+                    <h3>🇩🇰 Denmark Directory</h3>
                     <p>Explore student housing channels, ultra-clean urban lofts, and budget spaces across Copenhagen and Odense.</p>
                 </div>
-                <div class="btn-stack">
-                    <a href="./denmark/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
-                    <a href="./denmark/stay.html" class="btn stay-green">🇩🇰 Where to Stay</a>
-                    <a href="./denmark/prices.html" class="btn prices-purple">💳 View Prices</a>
-                </div>
-            </div>
+                <div class="menu-btn">View Stays</div>
+            </a>
 
-            <div class="directory-card">
+            <a href="norway/stay.html" class="menu-card">
                 <div>
-                    <h3>SE Sweden Directory</h3>
-                    <p>Look through design hostels, sustainable inner-city eco-studios, and converted shipping quarters across Stockholm and Malmö.</p>
-                </div>
-                <div class="btn-stack">
-                    <a href="./sweden/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
-                    <a href="./sweden/stay.html" class="btn stay-green">🇸🇪 Where to Stay</a>
-                    <a href="./sweden/prices.html" class="btn prices-purple">💳 View Prices</a>
-                </div>
-            </div>
-
-            <div class="directory-card">
-                <div>
-                    <h3>NO Norway Directory</h3>
+                    <h3>🇳🇴 Norway Directory</h3>
                     <p>Browse 11 budget accommodations including automated capsule options and fjord view mountain cabin structures.</p>
                 </div>
-                <div class="btn-stack">
-                    <a href="./norway/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
-                    <a href="./norway/stay.html" class="btn stay-green">🇳🇴 Where to Stay</a>
-                    <a href="./norway/prices.html" class="btn prices-purple">💳 View Prices</a>
-                </div>
-            </div>
+                <div class="menu-btn">View Stays</div>
+            </a>
 
+            <a href="sweden/stay.html" class="menu-card">
+                <div>
+                    <h3>🇸🇪 Sweden Directory</h3>
+                    <p>Look through design hostels, sustainable inner-city eco-studios, and converted shipping quarters across Stockholm and Malmö.</p>
+                </div>
+                <div class="menu-btn">View Stays</div>
+            </a>
         </div>
     </div>
 
