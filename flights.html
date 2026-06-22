@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScandiScout - Universal Flight Router</title>
+    <title>ScandiScout - Universal Global Router</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
@@ -66,15 +66,15 @@
     </div>
 
     <div class="main-content">
-        <h1>✈️ Global Scandinavian Flight Router Engine</h1>
-        <p style="color: var(--text-muted); margin-bottom: 30px;">Type any global departure location to scan all available airlines, comparisons, and paths into the Nordics.</p>
+        <h1>✈️ Global Universal Flight Router Engine</h1>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Type any global departure city, country, or station terminal to parse live paths directly into Scandinavia.</p>
 
         <div class="search-container">
             <form id="routerForm" onsubmit="calculateRoutes(event)">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="origin">Departure City or Airport</label>
-                        <input type="text" id="origin" placeholder="e.g. New York, London, Tokyo, Dubai, Paris" required>
+                        <label for="origin">Departure Location (City, Station, or Country)</label>
+                        <input type="text" id="origin" placeholder="e.g. India, Mumbai, New York, New Delhi, London" required>
                     </div>
                     <div class="form-group">
                         <label for="destination">Target Nordic Hub</label>
@@ -100,7 +100,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="submit-btn">Compare All Global Airline Options →</button>
+                <button type="submit" class="submit-btn">Scan Active Air Routes &amp; Portals →</button>
             </form>
         </div>
 
@@ -118,12 +118,13 @@
         function calculateRoutes(e) {
             e.preventDefault();
             
-            const origin = encodeURIComponent(document.getElementById('origin').value.trim());
-            const destination = encodeURIComponent(document.getElementById('destination').value);
+            const originInput = document.getElementById('origin').value.trim();
+            const originEncoded = encodeURIComponent(originInput);
+            const destination = document.getElementById('destination').value;
+            const destEncoded = encodeURIComponent(destination);
             const travelDate = document.getElementById('travelDate').value; 
             const cabin = document.getElementById('cabinClass').value;
             
-            // Adjust label strings depending on selected premium cabins
             let cabinLabel = "Economy";
             if (cabin === 'premium') cabinLabel = "Premium Economy";
             if (cabin === 'business') cabinLabel = "Business Class";
@@ -132,21 +133,21 @@
             const searchEngines = [
                 {
                     name: "Google Flights Matrix",
-                    description: `Compare all active legacy carriers, Middle Eastern routes, and flag operators options side-by-side in ${cabinLabel}.`,
-                    tag: "All Global Airlines",
-                    url: `https://www.google.com/travel/flights?q=Flights%20to%20${destination}%20from%20${origin}%20on%20${travelDate}%20one-way`
+                    description: `Instantly lists direct and connecting airlines (Air India, Emirates, United, Delta, etc.) originating out of your typed location in ${cabinLabel}.`,
+                    tag: "Global Airlines",
+                    url: `https://www.google.com/travel/flights?q=Flights%20to%20${destEncoded}%20from%20${originEncoded}%20on%20${travelDate}%20one-way`
                 },
                 {
                     name: "Skyscanner Live Router",
-                    description: `Find direct routing schedules, low-cost carrier bundles, and elite connections in ${cabinLabel}.`,
-                    tag: "Budget + Premium Search",
-                    url: `https://www.skyscanner.com/transport/flights/${origin}/${destination}/${travelDate}/?adults=1&cabinclass=${cabin}&rtn=0`
+                    description: `Scans multi-city layouts, flight connections, and local country terminal departures in ${cabinLabel}.`,
+                    tag: "All Aviation Options",
+                    url: `https://www.skyscanner.com/transport/flights/${originEncoded}/${destEncoded}/${travelDate}/?adults=1&cabinclass=${cabin}&rtn=0`
                 },
                 {
                     name: "Kayak Global Meta Search",
-                    description: `Scans active airline reservation matrix platforms and outputs optimized pricing paths for ${cabinLabel}.`,
-                    tag: "Flexible Deal Engine",
-                    url: `https://www.kayak.com/flights/${origin}-${destination}/${travelDate}?sort=bestflight_a`
+                    description: `Aggregates active airline seating charts, timetables, and carrier options for your customized route inputs.`,
+                    tag: "Flexible Router",
+                    url: `https://www.kayak.com/flights/${originEncoded}-${destEncoded}/${travelDate}?sort=bestflight_a`
                 }
             ];
 
@@ -161,12 +162,12 @@
                                 ${engine.name} 
                                 <span class="engine-tag">${engine.tag}</span>
                             </h4>
-                            <p>${decodeURIComponent(origin)} → ${decodeURIComponent(destination)} • Class: ${cabinLabel}</p>
+                            <p><strong>Origin:</strong> ${originInput} → <strong>Destination:</strong> ${destination} (${cabinLabel})</p>
                             <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">${engine.description}</p>
                         </div>
                         <div class="right-meta">
-                            <span class="action-text">Live Scheduling Links</span>
-                            <a href="${engine.url}" target="_blank" rel="noopener noreferrer" class="book-btn">Open Live Results ↗</a>
+                            <span class="action-text">Dynamic Deep-Link</span>
+                            <a href="${engine.url}" target="_blank" rel="noopener noreferrer" class="book-btn">Search Planes ↗</a>
                         </div>
                     </div>
                 `;
