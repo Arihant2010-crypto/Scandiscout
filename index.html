@@ -38,21 +38,21 @@
         .nav-btn.purple-btn:hover { background: var(--accent-purple); color: var(--bg-dark); }
 
         /* Main Layout Content */
-        .main-content { margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); max-width: 1200px; }
+        .main-content { margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); max-width: 1250px; }
         
         .header-section { margin-bottom: 36px; }
         .header-section h1 { font-size: 32px; font-weight: 800; margin: 0 0 12px 0; }
         .header-section p { color: var(--text-muted); font-size: 15px; margin: 0; }
         
         /* Portals Directories Grid */
-        .directories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 60px; }
-        .directory-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.02); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
+        .directories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
+        .directory-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; min-height: 320px; }
         .directory-card h3 { margin: 0 0 12px 0; font-size: 18px; font-weight: 800; }
         .directory-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin: 0 0 24px 0; flex-grow: 1; }
         
-        /* 3-Button Layout Stack */
-        .btn-stack { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-        .btn { display: block; width: 100%; text-align: center; text-decoration: none; padding: 11px; font-size: 13px; font-weight: 600; border-radius: 8px; transition: 0.2s; border: none; cursor: pointer; }
+        /* Fixed 3-Button Link Stack */
+        .btn-stack { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: auto; }
+        .btn { display: block; width: 100%; text-align: center; text-decoration: none; padding: 12px; font-size: 13px; font-weight: 600; border-radius: 8px; transition: 0.2s; border: none; cursor: pointer; box-sizing: border-box; }
         
         .btn.map-grey { background: rgba(255, 255, 255, 0.05); color: var(--text-main); border: 1px solid rgba(255, 255, 255, 0.08); }
         .btn.map-grey:hover { background: rgba(255, 255, 255, 0.15); }
@@ -88,8 +88,22 @@
         .ticket-link-btn.yellow-btn { background: #eab308; color: #000000; }
         .ticket-link-btn:hover { opacity: 0.95; }
 
-        @media (max-width: 1024px) { .directories-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .directories-grid, .router-controls { grid-template-columns: 1fr; } .route-data { grid-template-columns: 1fr; gap: 16px; } }
+        /* Secondary Grid Lists */
+        .secondary-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
+        .info-card { background: #141d2f; border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 24px; }
+        .info-card h4 { margin: 0 0 16px 0; font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .info-card .badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 800; text-transform: uppercase; }
+        .info-card .badge.blue { background: rgba(56, 189, 248, 0.1); color: var(--accent-blue); }
+        .info-card .badge.purple { background: rgba(192, 132, 252, 0.1); color: var(--accent-purple); }
+        
+        .info-list { display: flex; flex-direction: column; gap: 12px; }
+        .info-item { display: flex; justify-content: space-between; align-items: center; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.02); padding-bottom: 8px; }
+        .info-item:last-child { border: none; padding: 0; }
+        .info-item .label { color: var(--text-main); font-weight: 500; }
+        .info-item .val { color: var(--text-muted); }
+
+        @media (max-width: 1024px) { .directories-grid, .secondary-info-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .directories-grid, .router-controls, .secondary-info-grid { grid-template-columns: 1fr; } .route-data { grid-template-columns: 1fr; gap: 16px; } }
     </style>
 </head>
 <body>
@@ -189,6 +203,25 @@
             </div>
         </div>
 
+        <div class="secondary-info-grid">
+            <div class="info-card">
+                <h4><span>🚆 Key Intercity Rail Corridors</span> <span class="badge blue">SJ &amp; DSB</span></h4>
+                <div class="info-list">
+                    <div class="info-item"><span class="label">Øresundståg (Copenhagen ➔ Malmö)</span><span class="val">Every 20 Mins</span></div>
+                    <div class="info-item"><span class="label">SJ High Speed (Stockholm ➔ Gothenburg)</span><span class="val">Hourly Direct</span></div>
+                    <div class="info-item"><span class="label">Vy Regional (Oslo ➔ Gothenburg)</span><span class="val">4x Daily</span></div>
+                </div>
+            </div>
+            <div class="info-card">
+                <h4><span>🚢 Major Trans-Nordic Ferries</span> <span class="badge purple">DFDS &amp; STENA</span></h4>
+                <div class="info-list">
+                    <div class="info-item"><span class="label">DFDS Cruise Ferry (Copenhagen ➔ Oslo)</span><span class="val">Daily Overnight</span></div>
+                    <div class="info-item"><span class="label">Stena Line (Frederikshavn ➔ Gothenburg)</span><span class="val">6x Daily Lines</span></div>
+                    <div class="info-item"><span class="label">Stena Line (Grenaa ➔ Halmstad)</span><span class="val">2x Daily Lines</span></div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -204,20 +237,20 @@
             display.innerHTML = `
                 <div class="route-data">
                     <div class="data-block">
-                        <div class="data-label">Vector</div>
+                        <div class="data-label">Active Aviation Vector</div>
                         <div class="data-value" style="color:var(--accent-blue);">${origin} ➔ ${dest}</div>
                     </div>
                     <div class="data-block">
-                        <div class="data-label">Linear Dist</div>
-                        <div class="data-value">6,140 km</div>
+                        <div class="data-label">Est. Linear Distance</div>
+                        <div class="data-value">2,990 km</div>
                     </div>
                     <div class="data-block">
                         <div class="data-label">Est Air Time</div>
-                        <div class="data-value">8h 10m</div>
+                        <div class="data-value" style="color:var(--accent-purple);">3h 38m</div>
                     </div>
                     <div class="data-block">
-                        <div class="data-label">Track ID</div>
-                        <div class="data-value" style="color:var(--accent-green);">${trackingId}</div>
+                        <div class="data-label">Corridor Track ID</div>
+                        <div class="data-value" style="color:var(--accent-green); font-family: monospace;">${trackingId}</div>
                     </div>
                     <a href="${bookingUrl}" target="_blank" class="ticket-link-btn">Find Flights ↗</a>
                 </div>`;
@@ -228,12 +261,10 @@
             const dest = document.getElementById('transDest').value;
             const display = document.getElementById('transitDisplay');
 
-            let type = "High-Speed Rail Line", duration = "2h 45m", cost = "From 290 SEK", linkUrl = "https://www.sj.se/en";
+            let type = "Maritime Sea Car-Ferry", duration = "3h 30m", cost = "From 310 SEK", linkUrl = "https://www.stenaline.com/";
 
             if(origin.includes("Copenhagen") && dest.includes("Malmö")) {
                 type = "Øresundståg Commuter Rail"; duration = "35m"; cost = "135 DKK"; linkUrl = "https://www.oresundstag.se/en";
-            } else if(origin.includes("Frederikshavn") || dest.includes("Gothenburg")) {
-                type = "Stena Line Cruise Ferry"; duration = "3h 30m"; cost = "From 310 SEK"; linkUrl = "https://www.stenaline.com/";
             } else if(origin.includes("Oslo")) {
                 type = "Vy Intercity Express"; duration = "3h 50m"; cost = "From 340 NOK"; linkUrl = "https://www.vy.no/en";
             }
@@ -245,18 +276,18 @@
                         <div class="data-value" style="color:var(--accent-purple);">${type}</div>
                     </div>
                     <div class="data-block">
-                        <div class="data-label">Duration</div>
+                        <div class="data-label">Travel Duration</div>
                         <div class="data-value">${duration}</div>
                     </div>
                     <div class="data-block">
                         <div class="data-label">Operating Interval</div>
-                        <div class="data-value" style="color:var(--accent-green);">Active Trunk</div>
+                        <div class="data-value" style="color:var(--accent-green);">6 Daily Sailings</div>
                     </div>
                     <div class="data-block">
-                        <div class="data-label">Est. Rate</div>
-                        <div class="data-value">${cost}</div>
+                        <div class="data-label">Base Student Rate</div>
+                        <div class="data-value" style="color:#eab308;">${cost}</div>
                     </div>
-                    <a href="${linkUrl}" target="_blank" class="ticket-link-btn yellow-btn">Book Tickets ↗</a>
+                    <a href="${linkUrl}" target="_blank" class="ticket-link-btn yellow-btn">Search Lines ↗</a>
                 </div>`;
         }
     </script>
