@@ -3,194 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScandiScout - Nordic Transit Router</title>
+    <title>ScandiScout - Premium Nordic Hub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --bg-dark: #0f172a; 
-            --bg-card: #1e293b; 
-            --text-main: #f8fafc; 
-            --text-muted: #94a3b8; 
-            --accent-blue: #38bdf8; 
-            --accent-purple: #a855f7;
+        :root {
+            --bg-dark: #0b111e;
+            --bg-sidebar: #131c2e;
+            --bg-card: #19253d;
+            --text-main: #f8fafc;
+            --text-muted: #64748b;
+            --accent-blue: #38bdf8;
             --accent-green: #10b981;
-            --sidebar-width: 280px; 
+            --accent-purple: #c084fc;
+            
+            /* Country Border Accents */
+            --dk-red: #ef4444;
+            --se-yellow: #eab308;
+            --no-blue: #2563eb;
+            
+            --sidebar-width: 280px;
         }
-        
         * { box-sizing: border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
         
-        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: #1e293b; border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 24px; z-index: 1000; }
-        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin-top: 0; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
-        .sidebar h2::before { content: ''; display: inline-block; width: 8px; height: 24px; background: var(--accent-purple); border-radius: 4px; }
-        .sidebar a { display: block; color: var(--text-muted); text-decoration: none; padding: 12px 16px; font-weight: 600; font-size: 15px; border-radius: 8px; margin-bottom: 8px; transition: all 0.2s ease; }
-        .sidebar a:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+        /* Modernized Sidebar */
+        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid rgba(255, 255, 255, 0.03); padding: 40px 24px; z-index: 100; display: flex; flex-direction: column; justify-content: space-between; }
+        .sidebar-top h2 { color: var(--text-main); font-size: 26px; font-weight: 800; margin: 0 0 12px 0; display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
+        .sidebar-top h2::before { content: ''; display: inline-block; width: 6px; height: 26px; background: linear-gradient(to bottom, var(--accent-blue), var(--accent-purple)); border-radius: 4px; }
+        .sidebar-top p { color: #94a3b8; font-size: 13px; line-height: 1.6; margin: 0 0 30px 0; }
         
-        .main-content { margin-left: var(--sidebar-width); padding: 50px; width: 100%; max-width: 1100px; }
+        /* Sidebar Navigation Action Buttons */
+        .sidebar-nav { width: 100%; display: flex; flex-direction: column; gap: 14px; }
+        .nav-btn { display: flex; align-items: center; justify-content: space-between; width: 100%; background: rgba(255, 255, 255, 0.02); color: #cbd5e1; text-decoration: none; padding: 14px 18px; font-size: 14px; font-weight: 700; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+        .nav-btn .icon-box { display: flex; align-items: center; gap: 10px; }
+        .nav-btn::after { content: '→'; opacity: 0; transform: translateX(-5px); transition: all 0.2s; }
+        .nav-btn:hover { background: rgba(255, 255, 255, 0.07); color: #ffffff; border-color: rgba(255, 255, 255, 0.12); }
+        .nav-btn:hover::after { opacity: 1; transform: translateX(0); }
         
-        .search-container { background: var(--bg-card); padding: 30px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 40px; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
-        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 24px; }
-        .form-group { display: flex; flex-direction: column; gap: 8px; }
-        label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        select { background: #141b2e; border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px; border-radius: 8px; color: #ffffff; font-family: inherit; font-size: 15px; width: 100%; }
+        /* Custom Highlight for Tool Links */
+        .nav-btn.active-blue { border-left: 3px solid var(--accent-blue); background: rgba(56, 189, 248, 0.03); }
+        .nav-btn.active-purple { border-left: 3px solid var(--accent-purple); background: rgba(192, 132, 252, 0.03); }
+
+        /* Main Content Container */
+        .main-content { margin-left: var(--sidebar-width); padding: 60px 50px; width: calc(100% - var(--sidebar-width)); max-width: 1300px; }
         
-        .submit-btn { background: var(--accent-purple); color: #ffffff; width: 100%; border: none; padding: 16px; font-size: 15px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
-        .submit-btn:hover { background: #ffffff; color: var(--bg-dark); }
+        /* Large Featured Header Banner Layout */
+        .hero-banner { background: linear-gradient(135deg, #1e294b 0%, #0f172a 100%); border: 1px solid rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 20px; margin-bottom: 44px; position: relative; overflow: hidden; }
+        .hero-banner::before { content: ''; position: absolute; top: -50%; right: -10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%); pointer-events: none; }
+        .hero-banner h1 { font-size: 36px; font-weight: 800; margin: 0 0 12px 0; letter-spacing: -1px; background: linear-gradient(to right, #ffffff, #cbd5e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-banner p { color: #94a3b8; font-size: 16px; margin: 0; max-width: 650px; line-height: 1.6; }
         
-        .results-section { display: none; margin-top: 20px; animation: fadeIn 0.4s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Asymmetric Directory Cards Layout */
+        .directories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+        .directory-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 30px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(0,0,0,0.2); position: relative; }
+        .directory-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
         
-        .route-card { background: var(--bg-card); border-radius: 12px; padding: 24px; margin-bottom: 16px; border-left: 5px solid var(--accent-purple); display: flex; justify-content: space-between; align-items: center; gap: 20px; }
-        .route-card.ferry { border-left-color: var(--accent-blue); }
+        /* Top Accent Indicator Strips */
+        .directory-card::before { content: ''; position: absolute; top: 0; left: 30px; right: 30px; height: 4px; border-radius: 0 0 4px 4px; }
+        .directory-card.dk-card::before { background: var(--dk-red); }
+        .directory-card.se-card::before { background: var(--se-yellow); }
+        .directory-card.no-card::before { background: var(--no-blue); }
         
-        .type-badge { font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
-        .type-badge.train-bg { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); }
-        .type-badge.ferry-bg { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); }
+        .directory-card h3 { margin: 10px 0 14px 0; font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        .directory-card p { color: #94a3b8; font-size: 14px; line-height: 1.6; margin: 0 0 28px 0; flex-grow: 1; }
         
-        .route-title { font-size: 18px; font-weight: 800; margin: 0 0 6px 0; color: #ffffff; }
-        .route-desc { font-size: 14px; color: var(--text-muted); margin: 0 0 12px 0; }
+        /* Redesigned Clean Stack Actions */
+        .btn-stack { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; text-decoration: none; padding: 12px; font-size: 13px; font-weight: 700; border-radius: 8px; transition: all 0.2s; border: none; }
         
-        .schedule-box { background: rgba(0, 0, 0, 0.2); padding: 12px; border-radius: 6px; margin-bottom: 12px; border: 1px solid rgba(255, 255, 255, 0.03); }
-        .schedule-box p { margin: 0; font-size: 13px; color: var(--text-main); line-height: 1.5; }
-        .schedule-box strong { color: var(--accent-blue); }
-        .route-card.train .schedule-box strong { color: var(--accent-purple); }
+        .btn.map-grey { background: rgba(255, 255, 255, 0.04); color: #e2e8f0; border: 1px solid rgba(255, 255, 255, 0.06); }
+        .btn.map-grey:hover { background: rgba(255, 255, 255, 0.12); }
         
-        .route-meta-info { font-size: 12px; color: var(--text-muted); font-weight: 600; display: flex; gap: 15px; }
-        
-        .right-section { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
-        .price { font-size: 20px; font-weight: 800; color: var(--accent-green); }
-        .trans-btn { background: rgba(255,255,255,0.05); color: #fff; text-decoration: none; padding: 10px 16px; border-radius: 6px; font-size: 13px; font-weight: 700; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s; }
-        .trans-btn:hover { background: #fff; color: var(--bg-dark); }
-        
-        @media (max-width: 960px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 20px; } .main-content { margin-left: 0; padding: 30px 20px; } .form-grid { grid-template-columns: 1fr; } .route-card { flex-direction: column; align-items: flex-start; } .right-section { width: 100%; align-items: flex-start; } }
+        .btn.stay-green { background: rgba(16, 185, 129, 0.06); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.12); }
+        .btn.stay-green:hover { background: var(--accent-green); color: #000000; }
+
+        .btn.prices-purple { background: rgba(192, 132, 252, 0.06); color: var(--accent-purple); border: 1px solid rgba(192, 132, 252, 0.12); }
+        .btn.prices-purple:hover { background: var(--accent-purple); color: #000000; }
+
+        @media (max-width: 1150px) { .directories-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 40px 20px; } .directories-grid { grid-template-columns: 1fr; } .hero-banner { padding: 30px 20px; } }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <h2>ScandiScout</h2>
-        <a href="index.html">← Back Home</a>
-        <a href="flights.html">✈️ Flight Router</a>
-        <a href="denmark/index.html">Denmark Guide</a>
-        <a href="norway/index.html">Norway Guide</a>
+        <div class="sidebar-top">
+            <h2>ScandiScout</h2>
+            <p>High-end platform for tracking student apartments, structural housing networks, and connections across the North.</p>
+            
+            <div class="sidebar-nav">
+                <a href="./flights.html" class="nav-btn active-blue">
+                    <span class="icon-box">✈️ <span>Custom Flight Router</span></span>
+                </a>
+                <a href="./transport.html" class="nav-btn active-purple">
+                    <span class="icon-box">🚆 <span>Transit &amp; Ferries</span></span>
+                </a>
+            </div>
+        </div>
     </div>
 
     <div class="main-content">
-        <h1>🚆 Nordic Intercity Train &amp; Fjord Ferry Router</h1>
-        <p style="color: var(--text-muted); margin-bottom: 30px;">Calculate scenic high-speed rail schedules and coastal water ferry departures connecting major Scandinavian terminals.</p>
-
-        <div class="search-container">
-            <form id="transitForm" onsubmit="routeTransit(event)">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="startNode">Departure City Hub</label>
-                        <select id="startNode">
-                            <option value="Oslo">Oslo, Norway</option>
-                            <option value="Bergen">Bergen, Norway</option>
-                            <option value="Copenhagen">Copenhagen, Denmark</option>
-                            <option value="Stockholm">Stockholm, Sweden</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="endNode">Arrival Destination</label>
-                        <select id="endNode">
-                            <option value="Bergen">Bergen, Norway</option>
-                            <option value="Oslo">Oslo, Norway</option>
-                            <option value="Stockholm">Stockholm, Sweden</option>
-                            <option value="Flam">Flåm (Fjord Valley)</option>
-                            <option value="Copenhagen">Copenhagen, Denmark</option>
-                        </select>
-                    </div>
-                </div>
-                <button type="submit" class="submit-btn">Compute Scenic Land &amp; Sea Routes →</button>
-            </form>
+        <div class="hero-banner">
+            <h1>Nordic Exploration Dashboard</h1>
+            <p>Navigate the official structural maps, coordinate city-to-city commuter lanes, and track local student lease index baselines across Scandinavia.</p>
         </div>
 
-        <div id="results" class="results-section">
-            <h3 style="margin-bottom: 20px;">Optimized Ground &amp; Water Crossings Found</h3>
-            <div id="transit-list"></div>
+        <div class="directories-grid">
+            
+            <div class="directory-card dk-card">
+                <div>
+                    <h3>🇩🇰 Denmark Directory</h3>
+                    <p>Explore specialized student apartments, ultra-clean urban lofts, and budget studio networks across Copenhagen and Odense.</p>
+                </div>
+                <div class="btn-stack">
+                    <a href="./denmark/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
+                    <a href="./denmark/stay.html" class="btn stay-green">Where to Stay</a>
+                    <a href="./denmark/prices.html" class="btn prices-purple">💳 View Rental Prices</a>
+                </div>
+            </div>
+
+            <div class="directory-card se-card">
+                <div>
+                    <h3>🇸🇪 Sweden Directory</h3>
+                    <p>Look through design collective housing, eco-studios, and converted harbor architecture layouts throughout Stockholm and Malmö.</p>
+                </div>
+                <div class="btn-stack">
+                    <a href="./sweden/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
+                    <a href="./sweden/stay.html" class="btn stay-green">Where to Stay</a>
+                    <a href="./sweden/prices.html" class="btn prices-purple">💳 View Rental Prices</a>
+                </div>
+            </div>
+
+            <div class="directory-card no-card">
+                <div>
+                    <h3>🇳🇴 Norway Directory</h3>
+                    <p>Browse affordable modular housing setups, student flat collectives, and automated capsule systems near major university cores.</p>
+                </div>
+                <div class="btn-stack">
+                    <a href="./norway/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
+                    <a href="./norway/stay.html" class="btn stay-green">Where to Stay</a>
+                    <a href="./norway/prices.html" class="btn prices-purple">💳 View Rental Prices</a>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <script>
-        function routeTransit(e) {
-            e.preventDefault();
-            const start = document.getElementById('startNode').value;
-            const end = document.getElementById('endNode').value;
-            
-            const transitContainer = document.getElementById('transit-list');
-            transitContainer.innerHTML = "";
-            
-            if (start === end) {
-                transitContainer.innerHTML = `<p style="color: var(--text-muted); padding: 20px;">Departure and arrival points are the same. Please pick distinct transit terminals.</p>`;
-                document.getElementById('results').style.display = 'block';
-                return;
-            }
-
-            // Database containing scenic configurations, departure timings, and frequencies
-            const routesDatabase = [
-                { from: "Oslo", to: "Bergen", type: "train", name: "The Legendary Bergen Line (Bergensbanen)", desc: "Crosses the high-altitude Hardangervidda plateau. Widely considered one of the world's most scenic train tracks.", schedule: "Leaves daily at <b>08:25 AM</b>, <b>12:03 PM</b>, and an overnight sleeper at <b>23:00 PM</b>.", time: "6h 45m", operator: "Vy Train Network", price: "€65", link: "https://www.vy.no/en" },
-                { from: "Oslo", to: "Flam", type: "train", name: "Oslo to Flåm Rail Link via Myrdal", desc: "Take the main intercity route to Myrdal station, then switch seamlessly onto the famous steep Flåmsbana line down into the canyon.", schedule: "Morning connection departures at <b>06:25 AM</b> and <b>08:25 AM</b> daily to line up with the fjord connections.", time: "5h 15m", operator: "Vy + Flåmsbana", price: "€88", link: "https://www.vy.no/en" },
-                { from: "Bergen", to: "Flam", type: "ferry", name: "Sognefjord Express Passenger Boat", desc: "A sleek express catamaran cruise threading completely through the magnificent Sognefjord directly into Flåm harbor.", schedule: "Departs daily from Bergen Strandkaiterminalen at <b>08:00 AM</b> sharp. Seasonal afternoon extra runs at <b>14:15 PM</b>.", time: "5h 30m", operator: "Norled Ferry Terminal", price: "€95", link: "https://www.norled.no/en/" },
-                { from: "Bergen", to: "Flam", type: "train", name: "Voss Express Corridor Rail link", desc: "Intercity regional train to Voss connection, then short panoramic bus/rail access straight to the fjord floor.", schedule: "Runs every 2 hours starting from <b>07:10 AM</b> until <b>17:45 PM</b>.", time: "2h 45m", operator: "Vy Rail System", price: "€42", link: "https://www.vy.no/en" },
-                { from: "Oslo", to: "Stockholm", type: "train", name: "SJ High-Speed X2000 Intercity Link", desc: "Ultra-modern tilting high-speed electric trains crossing beautiful Swedish countryside, lakes, and forests.", schedule: "Direct express schedules depart Monday-Sunday at <b>05:55 AM</b>, <b>10:40 AM</b>, and <b>15:50 PM</b>.", time: "5h 15m", operator: "SJ Swedish Rail", price: "€49", link: "https://www.sj.se/en" },
-                { from: "Copenhagen", to: "Stockholm", type: "train", name: "Øresund Bridge High-Speed Line", desc: "Crosses right over the historic Øresund bridge connecting Denmark and Sweden directly via fast rail routes.", schedule: "Hourly departures out of Copenhagen Central Station (København H) at 23 minutes past the hour.", time: "5h 30m", operator: "SJ Swedish Rail", price: "€55", link: "https://www.sj.se/en" },
-                { from: "Copenhagen", to: "Oslo", type: "ferry", name: "DFDS Overnight Cruise Ferry", desc: "An incredible overnight luxury car & passenger ship route. Fall asleep in Denmark and wake up sailing into the stunning Oslofjord.", schedule: "Departs Copenhagen terminal daily at <b>15:00 PM</b>. Arrives in Oslo next morning at <b>09:00 AM</b>.", time: "17h 00m", operator: "DFDS Seaways", price: "€120", link: "https://www.dfds.com/" }
-            ];
-
-            let matchedRoutes = routesDatabase.filter(r => r.from === start && r.to === end);
-            
-            if (matchedRoutes.length === 0) {
-                matchedRoutes = [
-                    { 
-                        from: start, 
-                        to: end, 
-                        type: "train", 
-                        name: `Scandi Rail Intercity Connection Link`, 
-                        desc: `Standard multi-segment train connection linking main terminal stations across ${start} and ${end}.`, 
-                        schedule: "Departures map out approx. every 4 hours. Check live alignment boards for route connection intervals.",
-                        time: "Approx. 6-8 hours", 
-                        operator: "Eurail / National Rail Matrix", 
-                        price: "€75", 
-                        link: "https://www.eurail.com/" 
-                    }
-                ];
-            }
-
-            matchedRoutes.forEach(route => {
-                const badgeClass = route.type === "train" ? "train-bg" : "ferry-bg";
-                const icon = route.type === "train" ? "🚆" : "⛴️";
-                const cardTypeClass = route.type === "train" ? "train" : "ferry";
-                
-                const cardHTML = `
-                    <div class="route-card ${cardTypeClass}">
-                        <div style="flex-grow: 1;">
-                            <span class="type-badge ${badgeClass}">${icon} ${route.type} line</span>
-                            <h4 class="route-title">${route.name}</h4>
-                            <p class="route-desc">${route.desc}</p>
-                            
-                            <div class="schedule-box">
-                                <p>🕒 <strong>Schedule Timings:</strong> ${route.schedule}</p>
-                            </div>
-
-                            <div class="route-meta-info">
-                                <span>⏱️ Duration: <strong style="color: #fff;">${route.time}</strong></span>
-                                <span>🏢 Operator: <strong style="color: #fff;">${route.operator}</strong></span>
-                            </div>
-                        </div>
-                        <div class="right-section">
-                            <span class="price">${route.price}</span>
-                            <a href="${route.link}" target="_blank" rel="noopener noreferrer" class="trans-btn">Book Tickets ↗</a>
-                        </div>
-                    </div>
-                `;
-                transitContainer.innerHTML += cardHTML;
-            });
-
-            document.getElementById('results').style.display = 'block';
-        }
-    </script>
 </body>
 </html>
