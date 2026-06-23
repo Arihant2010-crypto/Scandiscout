@@ -75,7 +75,7 @@
         .terminal-display { background: #070c16; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.05); padding: 20px; min-height: 100px; display: flex; align-items: center; justify-content: center; }
         .terminal-placeholder { color: #475569; font-size: 14px; font-style: italic; text-align: center; width: 100%; }
         
-        /* UPDATED: Changed from repeat(4) to repeat(5) to make space for the button link */
+        /* Layout Grid for Flight Results Row */
         .route-data { width: 100%; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; align-items: center; }
         .data-block { display: flex; flex-direction: column; gap: 4px; }
         .data-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #475569; font-weight: 700; }
@@ -83,9 +83,9 @@
         .data-value.highlight-blue { color: var(--accent-blue); }
         .data-value.highlight-purple { color: var(--accent-purple); }
 
-        /* Added Ticket Redirect Link Styling */
-        .ticket-link-btn { display: inline-flex; align-items: center; justify-content: center; background: var(--accent-blue); color: #0b111e; text-decoration: none; font-weight: 800; font-size: 12px; padding: 12px 14px; border-radius: 6px; text-transform: uppercase; text-align: center; transition: opacity 0.2s; }
-        .ticket-link-btn:hover { opacity: 0.9; }
+        /* Ticket Action Redirect Link Button Styling */
+        .ticket-link-btn { display: inline-flex; align-items: center; justify-content: center; background: var(--accent-blue); color: #0b111e; text-decoration: none; font-weight: 800; font-size: 13px; padding: 12px 16px; border-radius: 8px; text-transform: uppercase; text-align: center; transition: all 0.2s; border: none; cursor: pointer; width: 100%; }
+        .ticket-link-btn:hover { background: #7dd3fc; transform: translateY(-1px); }
         
         /* Asymmetric Directory Cards Layout */
         .directories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
@@ -112,7 +112,7 @@
         .btn.prices-purple { background: rgba(192, 132, 252, 0.06); color: var(--accent-purple); border: 1px solid rgba(192, 132, 252, 0.12); }
         .btn.prices-purple:hover { background: var(--accent-purple); color: #000000; }
 
-        @media (max-width: 1150px) { .router-controls { grid-template-columns: 1fr; } .directories-grid { grid-template-columns: repeat(2, 1fr); } .route-data { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 1150px) { .router-controls { grid-template-columns: 1fr; } .directories-grid { grid-template-columns: repeat(2, 1fr); } .route-data { grid-template-columns: 1fr; gap: 16px; } }
         @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 40px 20px; } .directories-grid { grid-template-columns: 1fr; } .hero-banner { padding: 30px 20px; } }
     </style>
 </head>
@@ -277,10 +277,11 @@
             const durationMinutes = Math.floor(((distance / speed) % 1) * 60);
             const trackingId = "SK-" + Math.floor(100000 + Math.random() * 900000);
             
-            /* FIXED: Created dynamic link matching user search parameters to Skyscanner */
-            const redirectUrl = `https://www.skyscanner.com/transport/flights/${encodeURIComponent(origin)}/${encodeURIComponent(destination)}/`;
+            // Clean values for Skyscanner query parameters
+            const urlOrigin = encodeURIComponent(origin.toLowerCase());
+            const urlDest = encodeURIComponent(destination.toLowerCase());
+            const redirectUrl = `https://www.skyscanner.com/transport/flights/${urlOrigin}/${urlDest}/`;
 
-            /* FIXED: Injected target link action component right into the generated dashboard layout row */
             display.innerHTML = `
                 <div class="route-data">
                     <div class="data-block">
@@ -300,7 +301,7 @@
                         <div class="data-value" style="font-family: monospace; color: #10b981;">${trackingId}</div>
                     </div>
                     <div class="data-block">
-                        <a href="${redirectUrl}" target="_blank" class="ticket-link-btn">Find Flights ↗</a>
+                        <a href="${redirectUrl}" target="_blank" rel="noopener noreferrer" class="ticket-link-btn">Find Flights ↗</a>
                     </div>
                 </div>
             `;
