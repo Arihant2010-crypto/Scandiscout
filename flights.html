@@ -74,12 +74,18 @@
         /* Output Terminal Screen */
         .terminal-display { background: #070c16; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.05); padding: 20px; min-height: 100px; display: flex; align-items: center; justify-content: center; }
         .terminal-placeholder { color: #475569; font-size: 14px; font-style: italic; text-align: center; width: 100%; }
-        .route-data { width: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        
+        /* UPDATED: Changed from repeat(4) to repeat(5) to make space for the button link */
+        .route-data { width: 100%; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; align-items: center; }
         .data-block { display: flex; flex-direction: column; gap: 4px; }
         .data-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #475569; font-weight: 700; }
         .data-value { font-size: 16px; font-weight: 700; color: #ffffff; }
         .data-value.highlight-blue { color: var(--accent-blue); }
         .data-value.highlight-purple { color: var(--accent-purple); }
+
+        /* Added Ticket Redirect Link Styling */
+        .ticket-link-btn { display: inline-flex; align-items: center; justify-content: center; background: var(--accent-blue); color: #0b111e; text-decoration: none; font-weight: 800; font-size: 12px; padding: 12px 14px; border-radius: 6px; text-transform: uppercase; text-align: center; transition: opacity 0.2s; }
+        .ticket-link-btn:hover { opacity: 0.9; }
         
         /* Asymmetric Directory Cards Layout */
         .directories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
@@ -144,9 +150,9 @@
                     <div id="dropdownList" class="search-dropdown"></div>
                 </div>
                 <select id="destinationHub" class="router-select">
-                    <option value="Denmark (CPH)">Copenhagen, DK (CPH)</option>
-                    <option value="Sweden (ARN)">Stockholm, SE (ARN)</option>
-                    <option value="Norway (OSL)">Oslo, NO (OSL)</option>
+                    <option value="CPH">Copenhagen, DK (CPH)</option>
+                    <option value="ARN">Stockholm, SE (ARN)</option>
+                    <option value="OSL">Oslo, NO (OSL)</option>
                 </select>
                 <button type="button" class="router-btn" onclick="calculateRoute()">Generate Route</button>
             </div>
@@ -157,7 +163,6 @@
         </div>
 
         <div class="directories-grid">
-            
             <div class="directory-card dk-card">
                 <div>
                     <h3>🇩🇰 Denmark Directory</h3>
@@ -193,12 +198,10 @@
                     <a href="./norway/prices.html" class="btn prices-purple">💳 View Rental Prices</a>
                 </div>
             </div>
-
         </div>
     </div>
 
     <script>
-        // Full Dataset: 196 sovereign countries with simulated distance scaling factors
         const countries = [
             "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
             "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan",
@@ -225,7 +228,6 @@
         const searchInput = document.getElementById('countrySearch');
         const dropdownList = document.getElementById('dropdownList');
 
-        // Render search filtered matches
         searchInput.addEventListener('input', () => {
             const val = searchInput.value.toLowerCase();
             dropdownList.innerHTML = '';
@@ -252,14 +254,12 @@
             }
         });
 
-        // Hide list when clicking outside
         document.addEventListener('click', (e) => {
             if (e.target !== searchInput) {
                 dropdownList.style.display = 'none';
             }
         });
 
-        // Calculate and stream flight metrics simulation
         function calculateRoute() {
             const origin = searchInput.value.trim();
             const destination = document.getElementById('destinationHub').value;
@@ -270,19 +270,22 @@
                 return;
             }
 
-            // Pseudo-random seed generation based on string lengths to provide stable, consistent metrics per country
             const seed = origin.length + destination.length;
             const distance = Math.floor((seed * 117) % 9000) + 650; 
-            const speed = 820; // Average commercial cruising velocity in km/h
+            const speed = 820; 
             const durationHours = Math.floor(distance / speed);
             const durationMinutes = Math.floor(((distance / speed) % 1) * 60);
             const trackingId = "SK-" + Math.floor(100000 + Math.random() * 900000);
+            
+            /* FIXED: Created dynamic link matching user search parameters to Skyscanner */
+            const redirectUrl = `https://www.skyscanner.com/transport/flights/${encodeURIComponent(origin)}/${encodeURIComponent(destination)}/`;
 
+            /* FIXED: Injected target link action component right into the generated dashboard layout row */
             display.innerHTML = `
                 <div class="route-data">
                     <div class="data-block">
                         <div class="data-label">Active Aviation Vector</div>
-                        <div class="data-value highlight-blue">${origin} ➔ ${destination.split(' ')[0]}</div>
+                        <div class="data-value highlight-blue">${origin} ➔ ${destination}</div>
                     </div>
                     <div class="data-block">
                         <div class="data-label">Est. Linear Distance</div>
@@ -295,6 +298,9 @@
                     <div class="data-block">
                         <div class="data-label">Corridor Track ID</div>
                         <div class="data-value" style="font-family: monospace; color: #10b981;">${trackingId}</div>
+                    </div>
+                    <div class="data-block">
+                        <a href="${redirectUrl}" target="_blank" class="ticket-link-btn">Find Flights ↗</a>
                     </div>
                 </div>
             `;
