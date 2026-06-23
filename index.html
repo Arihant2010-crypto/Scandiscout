@@ -119,9 +119,9 @@
                     <p>Explore student housing channels, ultra-clean urban lofts, and budget spaces across Copenhagen and Odense.</p>
                 </div>
                 <div class="btn-stack">
-                    <button onclick="document.getElementById('transit-router').scrollIntoView()" class="btn map-grey">🗺️ Maps &amp; Structures</button>
-                    <button onclick="document.getElementById('flight-router').scrollIntoView()" class="btn stay-green">🇩🇰 Find Flights</button>
-                    <button onclick="document.getElementById('transit-router').scrollIntoView()" class="btn prices-purple">💳 View Prices</button>
+                    <a href="denmark/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
+                    <a href="denmark/stay.html" class="btn stay-green">🇩🇰 Where to Stay</a>
+                    <a href="denmark/prices.html" class="btn prices-purple">💳 View Prices</a>
                 </div>
             </div>
 
@@ -131,9 +131,9 @@
                     <p>Look through design hostels, sustainable inner-city eco-studios, and converted shipping quarters across Stockholm and Malmö.</p>
                 </div>
                 <div class="btn-stack">
-                    <button onclick="document.getElementById('transit-router').scrollIntoView()" class="btn map-grey">🗺️ Maps &amp; Structures</button>
-                    <button onclick="document.getElementById('flight-router').scrollIntoView()" class="btn stay-green">🇸🇪 Find Flights</button>
-                    <button onclick="document.getElementById('transit-router').scrollIntoView()" class="btn prices-purple">💳 View Prices</button>
+                    <a href="sweden/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
+                    <a href="sweden/stay.html" class="btn stay-green">🇸🇪 Where to Stay</a>
+                    <a href="sweden/prices.html" class="btn prices-purple">💳 View Prices</a>
                 </div>
             </div>
 
@@ -143,9 +143,9 @@
                     <p>Browse 11 budget accommodations including automated capsule options and fjord view mountain cabin structures.</p>
                 </div>
                 <div class="btn-stack">
-                    <button onclick="document.getElementById('transit-router').scrollIntoView()" class="btn map-grey">🗺️ Maps &amp; Structures</button>
-                    <button onclick="document.getElementById('flight-router').scrollIntoView()" class="btn stay-green">🇳🇴 Find Flights</button>
-                    <button onclick="document.getElementById('transit-router').scrollIntoView()" class="btn prices-purple">💳 View Prices</button>
+                    <a href="norway/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
+                    <a href="norway/stay.html" class="btn stay-green">🇳🇴 Where to Stay</a>
+                    <a href="norway/prices.html" class="btn prices-purple">💳 View Prices</a>
                 </div>
             </div>
         </div>
@@ -203,10 +203,22 @@
 
             display.innerHTML = `
                 <div class="route-data">
-                    <div class="data-block"><div class="data-label">Vector</div><div class="data-value" style="color:var(--accent-blue);">${origin} ➔ ${dest}</div></div>
-                    <div class="data-block"><div class="data-label">Linear Dist</div><div class="data-value">6,140 km</div></div>
-                    <div class="data-block"><div class="data-label">Est Air Time</div><div class="data-value">8h 10m</div></div>
-                    <div class="data-block"><div class="data-label">Track ID</div><div class="data-value" style="color:var(--accent-green);">${trackingId}</div></div>
+                    <div class="data-block">
+                        <div class="data-label">Vector</div>
+                        <div class="data-value" style="color:var(--accent-blue);">${origin} ➔ ${dest}</div>
+                    </div>
+                    <div class="data-block">
+                        <div class="data-label">Linear Dist</div>
+                        <div class="data-value">6,140 km</div>
+                    </div>
+                    <div class="data-block">
+                        <div class="data-label">Est Air Time</div>
+                        <div class="data-value">8h 10m</div>
+                    </div>
+                    <div class="data-block">
+                        <div class="data-label">Track ID</div>
+                        <div class="data-value" style="color:var(--accent-green);">${trackingId}</div>
+                    </div>
                     <a href="${bookingUrl}" target="_blank" class="ticket-link-btn">Find Flights ↗</a>
                 </div>`;
         }
@@ -228,10 +240,22 @@
 
             display.innerHTML = `
                 <div class="route-data">
-                    <div class="data-block"><div class="data-label">Network Mode</div><div class="data-value" style="color:var(--accent-purple);">${type}</div></div>
-                    <div class="data-block"><div class="data-label">Duration</div><div class="data-value">${duration}</div></div>
-                    <div class="data-block"><div class="data-label">Operating Interval</div><div class="data-value" style="color:var(--accent-green);">Active Trunk</div></div>
-                    <div class="data-block"><div class="data-label">Est. Rate</div><div class="data-value">${cost}</div></div>
+                    <div class="data-block">
+                        <div class="data-label">Network Mode</div>
+                        <div class="data-value" style="color:var(--accent-purple);">${type}</div>
+                    </div>
+                    <div class="data-block">
+                        <div class="data-label">Duration</div>
+                        <div class="data-value">${duration}</div>
+                    </div>
+                    <div class="data-block">
+                        <div class="data-label">Operating Interval</div>
+                        <div class="data-value" style="color:var(--accent-green);">Active Trunk</div>
+                    </div>
+                    <div class="data-block">
+                        <div class="data-label">Est. Rate</div>
+                        <div class="data-value">${cost}</div>
+                    </div>
                     <a href="${linkUrl}" target="_blank" class="ticket-link-btn yellow-btn">Book Tickets ↗</a>
                 </div>`;
         }
