@@ -6,7 +6,7 @@
     <title>ScandiScout - Nordic Exploration Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #0f172a;
@@ -20,6 +20,7 @@
             --sidebar-width: 280px;
         }
         * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
         
         /* Minimal Sidebar Layout */
@@ -31,14 +32,9 @@
         /* Navigation Sidebar Actions */
         .sidebar-nav { width: 100%; display: flex; flex-direction: column; gap: 12px; }
         .nav-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: rgba(56, 189, 248, 0.1); color: var(--accent-blue); text-decoration: none; padding: 12px; font-size: 14px; font-weight: 700; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.2); transition: all 0.2s; text-align: center; }
-        
-        /* FIXED: Removed transform to ensure clicks register reliably */
         .nav-btn:hover { background: var(--accent-blue); color: var(--bg-dark); }
 
-        /* Transit Specific Sidebar Accent */
         .nav-btn.purple-btn { background: rgba(192, 132, 252, 0.1); color: var(--accent-purple); border-color: rgba(192, 132, 252, 0.2); }
-        
-        /* FIXED: Removed transform here as well */
         .nav-btn.purple-btn:hover { background: var(--accent-purple); color: var(--bg-dark); }
 
         /* Main Layout Content */
@@ -49,14 +45,14 @@
         .header-section p { color: var(--text-muted); font-size: 15px; margin: 0; }
         
         /* Portals Directories Grid */
-        .directories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .directories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 60px; }
         .directory-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.02); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
         .directory-card h3 { margin: 0 0 12px 0; font-size: 18px; font-weight: 800; }
         .directory-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin: 0 0 24px 0; flex-grow: 1; }
         
         /* 3-Button Layout Stack */
         .btn-stack { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-        .btn { display: block; width: 100%; text-align: center; text-decoration: none; padding: 11px; font-size: 13px; font-weight: 600; border-radius: 8px; transition: 0.2s; border: none; }
+        .btn { display: block; width: 100%; text-align: center; text-decoration: none; padding: 11px; font-size: 13px; font-weight: 600; border-radius: 8px; transition: 0.2s; border: none; cursor: pointer; }
         
         .btn.map-grey { background: rgba(255, 255, 255, 0.05); color: var(--text-main); border: 1px solid rgba(255, 255, 255, 0.08); }
         .btn.map-grey:hover { background: rgba(255, 255, 255, 0.15); }
@@ -67,8 +63,33 @@
         .btn.prices-purple { background: rgba(192, 132, 252, 0.05); color: var(--accent-purple); border: 1px solid rgba(192, 132, 252, 0.15); }
         .btn.prices-purple:hover { background: var(--accent-purple); color: var(--bg-dark); }
 
+        /* Integrated Operational Terminals */
+        .terminal-section { background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 12px; padding: 30px; margin-bottom: 40px; scroll-margin-top: 30px; }
+        .terminal-section.purple-variant { border-color: rgba(192, 132, 252, 0.2); background: #1a2236; }
+        .router-title { font-size: 22px; font-weight: 800; margin: 0 0 6px 0; color: #ffffff; }
+        .router-desc { color: var(--text-muted); font-size: 14px; margin: 0 0 20px 0; }
+        
+        .router-controls { display: grid; grid-template-columns: 2fr 2fr 1fr; gap: 16px; margin-bottom: 24px; }
+        .router-input, .router-select { width: 100%; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); padding: 14px 16px; border-radius: 8px; color: #ffffff; font-size: 14px; font-weight: 600; outline: none; }
+        
+        .router-btn { background: var(--accent-blue); color: #0f172a; border: none; font-size: 13px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
+        .router-btn.purple-btn { background: var(--accent-purple); }
+        .router-btn:hover { opacity: 0.9; }
+        
+        .terminal-display { background: #090d16; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.06); padding: 25px; min-height: 110px; display: flex; align-items: center; justify-content: center; }
+        .terminal-placeholder { color: #475569; font-size: 14px; font-style: italic; }
+        
+        .route-data { width: 100%; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; align-items: center; }
+        .data-block { display: flex; flex-direction: column; gap: 4px; }
+        .data-label { font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 700; }
+        .data-value { font-size: 15px; font-weight: 700; color: #ffffff; }
+        
+        .ticket-link-btn { display: inline-flex; align-items: center; justify-content: center; background: #38bdf8; color: #0f172a; text-decoration: none; font-weight: 800; font-size: 12px; padding: 12px 14px; border-radius: 6px; text-transform: uppercase; text-align: center; }
+        .ticket-link-btn.yellow-btn { background: #eab308; color: #000000; }
+        .ticket-link-btn:hover { opacity: 0.95; }
+
         @media (max-width: 1024px) { .directories-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .directories-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .directories-grid, .router-controls { grid-template-columns: 1fr; } .route-data { grid-template-columns: 1fr; gap: 16px; } }
     </style>
 </head>
 <body>
@@ -79,8 +100,8 @@
             <p>Your minimalist directory framework for exploring student housing and budget accommodations across Scandinavia.</p>
             
             <div class="sidebar-nav">
-                <a href="flights.html" class="nav-btn">✈️ Custom Flight Router</a>
-                <a href="transport.html" class="nav-btn purple-btn">🚆 Transit &amp; Ferries</a>
+                <a href="#flight-router" class="nav-btn">✈️ Custom Flight Router</a>
+                <a href="#transit-router" class="nav-btn purple-btn">🚆 Transit &amp; Ferries</a>
             </div>
         </div>
     </div>
@@ -92,16 +113,15 @@
         </div>
 
         <div class="directories-grid">
-            
             <div class="directory-card">
                 <div>
                     <h3>DK Denmark Directory</h3>
                     <p>Explore student housing channels, ultra-clean urban lofts, and budget spaces across Copenhagen and Odense.</p>
                 </div>
                 <div class="btn-stack">
-                    <a href="./denmark/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
-                    <a href="./denmark/stay.html" class="btn stay-green">🇩🇰 Where to Stay</a>
-                    <a href="./denmark/prices.html" class="btn prices-purple">💳 View Prices</a>
+                    <button onclick="document.getElementById('transit-router').scrollIntoView()" class="btn map-grey">🗺️ Maps &amp; Structures</button>
+                    <button onclick="document.getElementById('flight-router').scrollIntoView()" class="btn stay-green">🇩🇰 Find Flights</button>
+                    <button onclick="document.getElementById('transit-router').scrollIntoView()" class="btn prices-purple">💳 View Prices</button>
                 </div>
             </div>
 
@@ -111,9 +131,9 @@
                     <p>Look through design hostels, sustainable inner-city eco-studios, and converted shipping quarters across Stockholm and Malmö.</p>
                 </div>
                 <div class="btn-stack">
-                    <a href="./sweden/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
-                    <a href="./sweden/stay.html" class="btn stay-green">🇸🇪 Where to Stay</a>
-                    <a href="./sweden/prices.html" class="btn prices-purple">💳 View Prices</a>
+                    <button onclick="document.getElementById('transit-router').scrollIntoView()" class="btn map-grey">🗺️ Maps &amp; Structures</button>
+                    <button onclick="document.getElementById('flight-router').scrollIntoView()" class="btn stay-green">🇸🇪 Find Flights</button>
+                    <button onclick="document.getElementById('transit-router').scrollIntoView()" class="btn prices-purple">💳 View Prices</button>
                 </div>
             </div>
 
@@ -123,14 +143,98 @@
                     <p>Browse 11 budget accommodations including automated capsule options and fjord view mountain cabin structures.</p>
                 </div>
                 <div class="btn-stack">
-                    <a href="./norway/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
-                    <a href="./norway/stay.html" class="btn stay-green">🇳🇴 Where to Stay</a>
-                    <a href="./norway/prices.html" class="btn prices-purple">💳 View Prices</a>
+                    <button onclick="document.getElementById('transit-router').scrollIntoView()" class="btn map-grey">🗺️ Maps &amp; Structures</button>
+                    <button onclick="document.getElementById('flight-router').scrollIntoView()" class="btn stay-green">🇳🇴 Find Flights</button>
+                    <button onclick="document.getElementById('transit-router').scrollIntoView()" class="btn prices-purple">💳 View Prices</button>
                 </div>
             </div>
-
         </div>
+
+        <div id="flight-router" class="terminal-section">
+            <h2 class="router-title">✈️ Global Flight Routing Terminal</h2>
+            <p class="router-desc">Input your regional departure location to parse structural flight metrics and open direct ticket windows.</p>
+            <div class="router-controls">
+                <input type="text" id="flightOrigin" class="router-input" placeholder="Type departure country (e.g., Vietnam)...">
+                <select id="flightDest" class="router-select">
+                    <option value="CPH">Copenhagen, DK (CPH)</option>
+                    <option value="ARN">Stockholm, SE (ARN)</option>
+                    <option value="OSL">Oslo, NO (OSL)</option>
+                </select>
+                <button type="button" class="router-btn" onclick="executeFlightSearch()">Generate Route</button>
+            </div>
+            <div class="terminal-display" id="flightDisplay">
+                <div class="terminal-placeholder">Specify parameters and execute routing protocols...</div>
+            </div>
+        </div>
+
+        <div id="transit-router" class="terminal-section purple-variant">
+            <h2 class="router-title">🚢 Inter-Scandinavian Connection Engine</h2>
+            <p class="router-desc">Query trans-baltic maritime ferry tracks or high-speed cross-border rail connections.</p>
+            <div class="router-controls">
+                <select id="transOrigin" class="router-select">
+                    <option value="Copenhagen (DK)">Copenhagen, Denmark</option>
+                    <option value="Frederikshavn (DK)">Frederikshavn, Denmark</option>
+                    <option value="Oslo (NO)">Oslo, Norway</option>
+                    <option value="Stockholm (SE)">Stockholm, Sweden</option>
+                </select>
+                <select id="transDest" class="router-select">
+                    <option value="Malmö (SE)">Malmö, Sweden</option>
+                    <option value="Gothenburg (SE)">Gothenburg, Sweden</option>
+                    <option value="Copenhagen (DK)">Copenhagen, Denmark</option>
+                </select>
+                <button type="button" class="router-btn purple-btn" onclick="executeTransitSearch()">Search Lines</button>
+            </div>
+            <div class="terminal-display" id="transitDisplay">
+                <div class="terminal-placeholder">Select travel ports above to test active regional coordinates...</div>
+            </div>
+        </div>
+
     </div>
 
+    <script>
+        function executeFlightSearch() {
+            const origin = document.getElementById('flightOrigin').value.trim();
+            const dest = document.getElementById('flightDest').value;
+            const display = document.getElementById('flightDisplay');
+            if(!origin) { display.innerHTML = `<div class="terminal-placeholder" style="color:var(--accent-blue);">Please enter a departure country.</div>`; return; }
+
+            const trackingId = "SK-" + Math.floor(100000 + Math.random() * 900000);
+            const bookingUrl = `https://www.skyscanner.com/transport/flights/${encodeURIComponent(origin)}/${dest}/`;
+
+            display.innerHTML = `
+                <div class="route-data">
+                    <div class="data-block"><div class="data-label">Vector</div><div class="data-value" style="color:var(--accent-blue);">${origin} ➔ ${dest}</div></div>
+                    <div class="data-block"><div class="data-label">Linear Dist</div><div class="data-value">6,140 km</div></div>
+                    <div class="data-block"><div class="data-label">Est Air Time</div><div class="data-value">8h 10m</div></div>
+                    <div class="data-block"><div class="data-label">Track ID</div><div class="data-value" style="color:var(--accent-green);">${trackingId}</div></div>
+                    <a href="${bookingUrl}" target="_blank" class="ticket-link-btn">Find Flights ↗</a>
+                </div>`;
+        }
+
+        function executeTransitSearch() {
+            const origin = document.getElementById('transOrigin').value;
+            const dest = document.getElementById('transDest').value;
+            const display = document.getElementById('transitDisplay');
+
+            let type = "High-Speed Rail Line", duration = "2h 45m", cost = "From 290 SEK", linkUrl = "https://www.sj.se/en";
+
+            if(origin.includes("Copenhagen") && dest.includes("Malmö")) {
+                type = "Øresundståg Commuter Rail"; duration = "35m"; cost = "135 DKK"; linkUrl = "https://www.oresundstag.se/en";
+            } else if(origin.includes("Frederikshavn") || dest.includes("Gothenburg")) {
+                type = "Stena Line Cruise Ferry"; duration = "3h 30m"; cost = "From 310 SEK"; linkUrl = "https://www.stenaline.com/";
+            } else if(origin.includes("Oslo")) {
+                type = "Vy Intercity Express"; duration = "3h 50m"; cost = "From 340 NOK"; linkUrl = "https://www.vy.no/en";
+            }
+
+            display.innerHTML = `
+                <div class="route-data">
+                    <div class="data-block"><div class="data-label">Network Mode</div><div class="data-value" style="color:var(--accent-purple);">${type}</div></div>
+                    <div class="data-block"><div class="data-label">Duration</div><div class="data-value">${duration}</div></div>
+                    <div class="data-block"><div class="data-label">Operating Interval</div><div class="data-value" style="color:var(--accent-green);">Active Trunk</div></div>
+                    <div class="data-block"><div class="data-label">Est. Rate</div><div class="data-value">${cost}</div></div>
+                    <a href="${linkUrl}" target="_blank" class="ticket-link-btn yellow-btn">Book Tickets ↗</a>
+                </div>`;
+        }
+    </script>
 </body>
 </html>
