@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScandiScout - Transit &amp; Ferries Terminal</title>
+    <title>ScandiScout - Premium Nordic Hub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
             --accent-green: #10b981;
             --accent-purple: #c084fc;
             
-            /* Regional Color Badges */
+            /* Country Border Accents */
             --dk-red: #ef4444;
             --se-yellow: #eab308;
             --no-blue: #2563eb;
@@ -31,7 +31,7 @@
         /* Modernized Sidebar */
         .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid rgba(255, 255, 255, 0.03); padding: 40px 24px; z-index: 100; display: flex; flex-direction: column; justify-content: space-between; }
         .sidebar-top h2 { color: var(--text-main); font-size: 26px; font-weight: 800; margin: 0 0 12px 0; display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
-        .sidebar-top h2::before { content: ''; display: inline-block; width: 6px; height: 26px; background: linear-gradient(to bottom, var(--accent-purple), var(--accent-blue)); border-radius: 4px; }
+        .sidebar-top h2::before { content: ''; display: inline-block; width: 6px; height: 26px; background: linear-gradient(to bottom, var(--accent-blue), var(--accent-purple)); border-radius: 4px; }
         .sidebar-top p { color: #94a3b8; font-size: 13px; line-height: 1.6; margin: 0 0 30px 0; }
         
         /* Sidebar Navigation Action Buttons */
@@ -42,6 +42,7 @@
         .nav-btn:hover { background: rgba(255, 255, 255, 0.07); color: #ffffff; border-color: rgba(255, 255, 255, 0.12); }
         .nav-btn:hover::after { opacity: 1; transform: translateX(0); }
         
+        /* Custom Highlight for Tool Links */
         .nav-btn.active-blue { border-left: 3px solid var(--accent-blue); background: rgba(56, 189, 248, 0.03); }
         .nav-btn.active-purple { border-left: 3px solid var(--accent-purple); background: rgba(192, 132, 252, 0.03); }
 
@@ -49,48 +50,40 @@
         .main-content { margin-left: var(--sidebar-width); padding: 60px 50px; width: calc(100% - var(--sidebar-width)); max-width: 1300px; }
         
         /* Large Featured Header Banner Layout */
-        .hero-banner { background: linear-gradient(135deg, #2e1065 0%, #0f172a 100%); border: 1px solid rgba(192, 132, 252, 0.1); padding: 40px; border-radius: 20px; margin-bottom: 30px; position: relative; overflow: hidden; }
-        .hero-banner h1 { font-size: 36px; font-weight: 800; margin: 0 0 12px 0; letter-spacing: -1px; background: linear-gradient(to right, #ffffff, #e9d5ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-banner p { color: #cbd5e1; font-size: 16px; margin: 0; max-width: 650px; line-height: 1.6; }
-
-        /* Transit Query Terminal Section */
-        .transit-section { background: #121324; border: 1px solid rgba(192, 132, 252, 0.15); border-radius: 16px; padding: 30px; margin-bottom: 44px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .router-title { font-size: 22px; font-weight: 800; margin: 0 0 8px 0; display: flex; align-items: center; gap: 10px; color: #ffffff; }
-        .router-desc { color: #94a3b8; font-size: 14px; margin: 0 0 20px 0; }
+        .hero-banner { background: linear-gradient(135deg, #1e294b 0%, #0f172a 100%); border: 1px solid rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 20px; margin-bottom: 44px; position: relative; overflow: hidden; }
+        .hero-banner::before { content: ''; position: absolute; top: -50%; right: -10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%); pointer-events: none; }
+        .hero-banner h1 { font-size: 36px; font-weight: 800; margin: 0 0 12px 0; letter-spacing: -1px; background: linear-gradient(to right, #ffffff, #cbd5e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-banner p { color: #94a3b8; font-size: 16px; margin: 0; max-width: 650px; line-height: 1.6; }
         
-        .router-controls { display: grid; grid-template-columns: 2fr 2fr 1fr; gap: 16px; margin-bottom: 24px; }
-        .router-select { width: 100%; background: #19253d; border: 1px solid rgba(255, 255, 255, 0.08); padding: 14px 16px; border-radius: 8px; color: #ffffff; font-size: 14px; font-weight: 600; outline: none; transition: border-color 0.2s; }
-        .router-select:focus { border-color: var(--accent-purple); }
+        /* Asymmetric Directory Cards Layout */
+        .directories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+        .directory-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 30px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(0,0,0,0.2); position: relative; }
+        .directory-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
         
-        .router-btn { background: var(--accent-purple); color: #0b111e; border: none; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
-        .router-btn:hover { opacity: 0.9; }
-
-        /* Output Terminal Screen */
-        .terminal-display { background: #060813; border-radius: 8px; border: 1px dashed rgba(192, 132, 252, 0.15); padding: 25px; min-height: 120px; display: flex; align-items: center; justify-content: center; }
-        .terminal-placeholder { color: #475569; font-size: 14px; font-style: italic; text-align: center; width: 100%; }
+        /* Top Accent Indicator Strips */
+        .directory-card::before { content: ''; position: absolute; top: 0; left: 30px; right: 30px; height: 4px; border-radius: 0 0 4px 4px; }
+        .directory-card.dk-card::before { background: var(--dk-red); }
+        .directory-card.se-card::before { background: var(--se-yellow); }
+        .directory-card.no-card::before { background: var(--no-blue); }
         
-        .route-data { width: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        .data-block { display: flex; flex-direction: column; gap: 4px; }
-        .data-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #64748b; font-weight: 700; }
-        .data-value { font-size: 16px; font-weight: 700; color: #ffffff; }
-        .data-value.highlight-purple { color: var(--accent-purple); }
-        .data-value.highlight-green { color: var(--accent-green); }
-
-        /* Transit Link Cards Table Grid */
-        .transit-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-        .transit-card { background: var(--bg-card); border-radius: 12px; padding: 24px; border: 1px solid rgba(255,255,255,0.02); }
-        .transit-card h3 { margin: 0 0 12px 0; font-size: 18px; display: flex; align-items: center; gap: 8px; }
-        .badge { font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 800; text-transform: uppercase; }
-        .badge.rail { background: rgba(56, 189, 248, 0.1); color: var(--accent-blue); }
-        .badge.sea { background: rgba(192, 132, 252, 0.1); color: var(--accent-purple); }
+        .directory-card h3 { margin: 10px 0 14px 0; font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        .directory-card p { color: #94a3b8; font-size: 14px; line-height: 1.6; margin: 0 0 28px 0; flex-grow: 1; }
         
-        .line-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 14px; }
-        .line-item:last-child { border-bottom: none; }
-        .line-name { color: #cbd5e1; font-weight: 500; }
-        .line-freq { color: #64748b; font-weight: 600; }
+        /* Redesigned Clean Stack Actions */
+        .btn-stack { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; text-decoration: none; padding: 12px; font-size: 13px; font-weight: 700; border-radius: 8px; transition: all 0.2s; border: none; }
+        
+        .btn.map-grey { background: rgba(255, 255, 255, 0.04); color: #e2e8f0; border: 1px solid rgba(255, 255, 255, 0.06); }
+        .btn.map-grey:hover { background: rgba(255, 255, 255, 0.12); }
+        
+        .btn.stay-green { background: rgba(16, 185, 129, 0.06); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.12); }
+        .btn.stay-green:hover { background: var(--accent-green); color: #000000; }
 
-        @media (max-width: 1150px) { .router-controls { grid-template-columns: 1fr; } .transit-grid { grid-template-columns: 1fr; } }
-        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 40px 20px; } }
+        .btn.prices-purple { background: rgba(192, 132, 252, 0.06); color: var(--accent-purple); border: 1px solid rgba(192, 132, 252, 0.12); }
+        .btn.prices-purple:hover { background: var(--accent-purple); color: #000000; }
+
+        @media (max-width: 1150px) { .directories-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 40px 20px; } .directories-grid { grid-template-columns: 1fr; } .hero-banner { padding: 30px 20px; } }
     </style>
 </head>
 <body>
@@ -101,10 +94,10 @@
             <p>High-end platform for tracking student apartments, structural housing networks, and connections across the North.</p>
             
             <div class="sidebar-nav">
-                <a href="index.html" class="nav-btn active-blue">
-                    <span class="icon-box">✈️ <span>Flight Router Main</span></span>
+                <a href="./flights.html" class="nav-btn active-blue">
+                    <span class="icon-box">✈️ <span>Custom Flight Router</span></span>
                 </a>
-                <a href="transport.html" class="nav-btn active-purple">
+                <a href="./transport.html" class="nav-btn active-purple">
                     <span class="icon-box">🚆 <span>Transit &amp; Ferries</span></span>
                 </a>
             </div>
@@ -113,128 +106,50 @@
 
     <div class="main-content">
         <div class="hero-banner">
-            <h1>🚆 Regional Transit &amp; Sea Ferry Network</h1>
-            <p>Monitor trans-baltic ferry schedules, cross-border high-speed rail velocities, and commuter infrastructure maps linking Denmark, Sweden, and Norway.</p>
+            <h1>Nordic Exploration Dashboard</h1>
+            <p>Navigate the official structural maps, coordinate city-to-city commuter lanes, and track local student lease index baselines across Scandinavia.</p>
         </div>
 
-        <div class="transit-section">
-            <h2 class="router-title">🚢 Inter-Scandinavian Connection Engine</h2>
-            <p class="router-desc">Query active commuter links, regional lines, and maritime passages across the main Scandinavian corridors.</p>
+        <div class="directories-grid">
             
-            <div class="router-controls">
-                <select id="originCity" class="router-select">
-                    <option value="Copenhagen (DK)">Copenhagen, Denmark</option>
-                    <option value="Malmö (SE)">Malmö, Sweden</option>
-                    <option value="Stockholm (SE)">Stockholm, Sweden</option>
-                    <option value="Oslo (NO)">Oslo, Norway</option>
-                    <option value="Frederikshavn (DK)">Frederikshavn, Denmark</option>
-                    <option value="Gothenburg (SE)">Gothenburg, Sweden</option>
-                </select>
-                <select id="targetCity" class="router-select">
-                    <option value="Malmö (SE)">Malmö, Sweden</option>
-                    <option value="Copenhagen (DK)">Copenhagen, Denmark</option>
-                    <option value="Gothenburg (SE)">Gothenburg, Sweden</option>
-                    <option value="Oslo (NO)">Oslo, Norway</option>
-                    <option value="Stockholm (SE)">Stockholm, Sweden</option>
-                </select>
-                <button type="button" class="router-btn" onclick="lookupTransit()">Search Lines</button>
-            </div>
-
-            <div class="terminal-display" id="transitDisplay">
-                <div class="terminal-placeholder">Select your origin and terminal ports above, then execute "Search Lines"...</div>
-            </div>
-        </div>
-
-        <div class="transit-grid">
-            <div class="transit-card">
-                <h3>🚆 Key Intercity Rail Corridors <span class="badge rail">SJ &amp; DSB</span></h3>
-                <div class="line-item">
-                    <span class="line-name">Øresundståg (Copenhagen ➔ Malmö)</span>
-                    <span class="line-freq">Every 20 Mins</span>
+            <div class="directory-card dk-card">
+                <div>
+                    <h3>🇩🇰 Denmark Directory</h3>
+                    <p>Explore specialized student apartments, ultra-clean urban lofts, and budget studio networks across Copenhagen and Odense.</p>
                 </div>
-                <div class="line-item">
-                    <span class="line-name">SJ High Speed (Stockholm ➔ Gothenburg)</span>
-                    <span class="line-freq">Hourly Direct</span>
-                </div>
-                <div class="line-item">
-                    <span class="line-name">Vy Regional (Oslo ➔ Gothenburg)</span>
-                    <span class="line-freq">4x Daily</span>
+                <div class="btn-stack">
+                    <a href="./denmark/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
+                    <a href="./denmark/stay.html" class="btn stay-green">Where to Stay</a>
+                    <a href="./denmark/prices.html" class="btn prices-purple">💳 View Rental Prices</a>
                 </div>
             </div>
 
-            <div class="transit-card">
-                <h3>🚢 Major Trans-Nordic Ferries <span class="badge sea">DFDS &amp; Stena</span></h3>
-                <div class="line-item">
-                    <span class="line-name">DFDS Cruise Ferry (Copenhagen ➔ Oslo)</span>
-                    <span class="line-freq">Daily Overnight</span>
+            <div class="directory-card se-card">
+                <div>
+                    <h3>🇸🇪 Sweden Directory</h3>
+                    <p>Look through design collective housing, eco-studios, and converted harbor architecture layouts throughout Stockholm and Malmö.</p>
                 </div>
-                <div class="line-item">
-                    <span class="line-name">Stena Line (Frederikshavn ➔ Gothenburg)</span>
-                    <span class="line-freq">6x Daily Lines</span>
-                </div>
-                <div class="line-item">
-                    <span class="line-name">Stena Line (Grenaa ➔ Halmstad)</span>
-                    <span class="line-freq">2x Daily Lines</span>
+                <div class="btn-stack">
+                    <a href="./sweden/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
+                    <a href="./sweden/stay.html" class="btn stay-green">Where to Stay</a>
+                    <a href="./sweden/prices.html" class="btn prices-purple">💳 View Rental Prices</a>
                 </div>
             </div>
+
+            <div class="directory-card no-card">
+                <div>
+                    <h3>🇳🇴 Norway Directory</h3>
+                    <p>Browse affordable modular housing setups, student flat collectives, and automated capsule systems near major university cores.</p>
+                </div>
+                <div class="btn-stack">
+                    <a href="./norway/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
+                    <a href="./norway/stay.html" class="btn stay-green">Where to Stay</a>
+                    <a href="./norway/prices.html" class="btn prices-purple">💳 View Rental Prices</a>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <script>
-        function lookupTransit() {
-            const origin = document.getElementById('originCity').value;
-            const target = document.getElementById('targetCity').value;
-            const display = document.getElementById('transitDisplay');
-
-            if (origin === target) {
-                display.innerHTML = `<div class="terminal-placeholder" style="color: #ef4444;">⚠️ Loop Error: Origin and Terminal target cannot match. Please select a cross-city lane.</div>`;
-                return;
-            }
-
-            // Mock transport configurations 
-            let routeType = "High-Speed Rail";
-            let duration = "2h 45m";
-            let frequency = "Hourly Trunk Line";
-            let pricingIndex = "From 240 SEK";
-
-            if ((origin.includes("CPH") || origin.includes("Copenhagen")) && target.includes("Malmö")) {
-                routeType = "Øresund Bridge Commuter Rail";
-                duration = "35 mins";
-                frequency = "Every 20 mins";
-                pricingIndex = "135 DKK";
-            } else if (origin.includes("Frederikshavn") || origin.includes("Gothenburg") && target.includes("Frederikshavn")) {
-                routeType = "Maritime Sea Car-Ferry";
-                duration = "3h 30m";
-                frequency = "6 Daily Sailings";
-                pricingIndex = "From 310 SEK";
-            } else if (origin.includes("Copenhagen") && target.includes("Oslo") || origin.includes("Oslo") && target.includes("Copenhagen")) {
-                routeType = "Overnight Cruise Ferry Line";
-                duration = "17h 00m";
-                frequency = "Daily Departure";
-                pricingIndex = "From 450 DKK";
-            }
-
-            display.innerHTML = `
-                <div class="route-data">
-                    <div class="data-block">
-                        <div class="data-label">Network Mode</div>
-                        <div class="data-value highlight-purple">${routeType}</div>
-                    </div>
-                    <div class="data-block">
-                        <div class="data-label">Travel Duration</div>
-                        <div class="data-value">${duration}</div>
-                    </div>
-                    <div class="data-block">
-                        <div class="data-label">Operating Interval</div>
-                        <div class="data-value highlight-green">${frequency}</div>
-                    </div>
-                    <div class="data-block">
-                        <div class="data-label">Base Student Rate</div>
-                        <div class="data-value" style="color: #eab308;">${pricingIndex}</div>
-                    </div>
-                </div>
-            `;
-        }
-    </script>
 </body>
 </html>
