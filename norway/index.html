@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScandiScout - Norway: Maps &amp; Structures</title>
+    <title>ScandiScout - Norway: Maps, Structures &amp; Landmarks</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -26,7 +26,7 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
         
-        /* Sidebar Layout matching Sweden template */
+        /* Unified Global Sidebar Style */
         .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 24px; z-index: 100; display: flex; flex-direction: column; justify-content: flex-start; gap: 20px; }
         .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 10px; }
         .sidebar h2::before { content: ''; display: inline-block; width: 6px; height: 24px; background: var(--accent-blue); border-radius: 4px; }
@@ -38,28 +38,29 @@
         .btn-back { display: block; width: 100%; text-align: center; text-decoration: none; padding: 12px; font-size: 13px; font-weight: 600; border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: var(--text-main); border: 1px solid rgba(255, 255, 255, 0.08); margin-bottom: 10px; transition: 0.2s; }
         .btn-back:hover { background: rgba(255, 255, 255, 0.15); }
 
-        /* Main Content Workspace Layout */
+        /* Main Workspace Section */
         .main-content { margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); max-width: 1250px; }
         
         .header-section { margin-bottom: 30px; }
         .header-section h1 { font-size: 32px; font-weight: 800; margin: 0 0 12px 0; }
         .header-section p { color: var(--text-muted); font-size: 15px; margin: 0; }
         
-        /* Directory Navigation Action Button */
         .dir-btn { display: inline-block; background: var(--accent-blue); color: var(--bg-dark); text-decoration: none; padding: 14px 24px; font-size: 14px; font-weight: 700; border-radius: 8px; margin-bottom: 40px; transition: opacity 0.2s; }
         .dir-btn:hover { opacity: 0.9; }
 
-        /* Real Map Dashboard Container */
+        /* Mapping Container Style */
         .map-section-title { font-size: 18px; font-weight: 800; margin: 0 0 20px 0; }
-        #map { width: 100%; height: 450px; background: #090d16; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 40px; z-index: 1; }
+        #norway-map { width: 100%; height: 480px; background: #090d16; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 40px; z-index: 1; }
         
         /* Architecture Layout Grid Section */
-        .section-title { font-size: 18px; font-weight: 800; margin: 0 0 20px 0; }
-        .structures-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .section-title { font-size: 18px; font-weight: 800; margin: 40px 0 20px 0; display: flex; align-items: center; gap: 8px; }
+        .structures-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .structure-card { background: #141d2f; border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 24px; }
-        .structure-card h3 { margin: 0 0 12px 0; font-size: 16px; font-weight: 700; color: var(--accent-green); }
+        .structure-card h3 { margin: 0 0 4px 0; font-size: 16px; font-weight: 700; color: var(--accent-blue); }
+        .structure-card .badge { display: inline-block; font-size: 10px; font-weight: 800; color: var(--accent-green); background: rgba(16, 185, 129, 0.1); padding: 2px 6px; border-radius: 4px; margin-bottom: 12px; text-transform: uppercase; }
         .structure-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin: 0; }
 
+        @media (max-width: 1024px) { .structures-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .structures-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -77,43 +78,89 @@
     <div class="main-content">
         <div class="header-section">
             <h1>Norway: Maps &amp; Structures</h1>
-            <p>Hover/Click markers to track layout coordinates on the dashboard display.</p>
+            <p>Hover/Click the landmark pins to view regional housing metrics and historical anchor coordinates across Norway.</p>
         </div>
 
         <a href="prices.html" class="dir-btn">View Norway Price Directory →</a>
 
         <h2 class="map-section-title">Interactive Map Dashboard</h2>
-        <div id="map"></div>
+        <div id="norway-map"></div>
 
-        <h2 class="section-title">Famous Architectural Structures</h2>
+        <h2 class="section-title">🇳🇴 Landmark Regional Allocations (11 Total Structures)</h2>
         <div class="structures-grid">
             <div class="structure-card">
-                <h3>Oslo Urban Hubs</h3>
-                <p>Features automated micro-capsule grids and modular student rooms optimized for high thermal efficiency and swift access to T-Bane transit vectors.</p>
+                <h3>Oslo Cyber Pods</h3>
+                <span class="badge">4 Spaces Available</span>
+                <p>Located near Oslo Central Station. Features automated stacking micro-capsule beds with direct climate controls and soundproofing dividers.</p>
             </div>
             <div class="structure-card">
-                <h3>Fjord View Outposts</h3>
-                <p>Examines rural timber-frame structural micro-housing and shared student cabins located on mountainous city fringes near Bergen.</p>
+                <h3>Grünerløkka Lofts</h3>
+                <span class="badge">2 Spaces Available</span>
+                <p>Repurposed structural artisan brick lofts curated for shared student workspace clusters and budget studio housing.</p>
+            </div>
+
+            <div class="structure-card">
+                <h3>Fløyen Eco Cabins</h3>
+                <span class="badge">2 Spaces Available</span>
+                <p>Timber-framed minimalist modular structures built directly into mountain slopes, offering student allocations with high thermal efficiency.</p>
+            </div>
+
+            <div class="structure-card">
+                <h3>Nidelva Floating Studios</h3>
+                <span class="badge">2 Spaces Available</span>
+                <p>Sustainable, modern student shipping containers anchored alongside riverbanks near historic landmarks.</p>
+            </div>
+
+            <div class="structure-card">
+                <h3>Aurora Capsule Base</h3>
+                <span class="badge">1 Space Available</span>
+                <p>Deep-arctic insulated pods engineered with skylight window viewing panes optimized for northern climate shifts.</p>
             </div>
         </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
-        // Initialize an interactive map centered around Oslo, Norway
-        const map = L.map('map').setView([59.9139, 10.7522], 11);
+        // Initialize an interactive layout viewport focused on southern/central Norway geography
+        const map = L.map('norway-map').setView([62.0000, 9.0000], 5);
 
-        // Standard clean dark map layer style
+        // Load clear dark map tile layer configurations
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Add an active pin point exactly matching the style design on the Sweden view
-        const markerOslo = L.marker([59.9115, 10.7579]).addTo(map);
-        markerOslo.bindPopup("<b>Oslo Sentralstasjon</b><br>Norway Central Hub Node.").openPopup();
+        // Define Landmark Markers containing Structural Data Popups
+        const landmarks = [
+            {
+                coords: [59.9115, 10.7579],
+                title: "<b>Oslo Sentralstasjon Core Hub</b>",
+                desc: "Proximity anchor for 4 Cyber Capsule Pod configurations and local T-Bane connection blocks."
+            },
+            {
+                coords: [60.3913, 5.3221],
+                title: "<b>Bergen Bryggen Frontline Outposts</b>",
+                desc: "Coordinates mapping towards 2 mountain timber-frame eco cabin structural designs."
+            },
+            {
+                coords: [63.4269, 10.3969],
+                title: "<b>Trondheim Nidaros Node</b>",
+                desc: "Home layout vector for 2 modular floating eco-studios on the Nidelva river banks."
+            },
+            {
+                coords: [69.6492, 18.9553],
+                title: "<b>Tromsø Arctic Perimeter</b>",
+                desc: "Deep north viewport tracking 1 high-insulation space capsule pod outcropping."
+            }
+        ];
+
+        // Loop through array elements to cleanly draw vectors on the live canvas window
+        landmarks.forEach(landmark => {
+            const pin = L.marker(landmark.coords).addTo(map);
+            pin.bindPopup(`${landmark.title}<br>${landmark.desc}`);
+        });
         
-        const markerBergen = L.marker([59.9180, 10.7300]).addTo(map);
-        markerBergen.bindPopup("<b>Oslo Capsule Sector</b><br>Automated Micro Pods.");
+        // Auto-open first central pin layout target configuration link stack cleanly
+        L.marker([59.9115, 10.7579]).addTo(map).bindPopup("<b>Oslo Sentralstasjon Core Hub</b><br>Proximity anchor for 4 Cyber Capsule Pod configurations.").openPopup();
     </script>
 </body>
 </html>
