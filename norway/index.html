@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScandiScout - Norway Infrastructure, Maps &amp; Prices</title>
+    <title>ScandiScout - Norway: Maps &amp; Structures</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
     <style>
         :root {
             --bg-dark: #0f172a;
@@ -23,151 +26,94 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
         
-        /* Sidebar layout */
-        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 24px; z-index: 100; display: flex; flex-direction: column; justify-content: space-between; }
-        .sidebar-top h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
-        .sidebar-top h2::before { content: ''; display: inline-block; width: 6px; height: 24px; background: var(--accent-green); border-radius: 4px; }
-        .sidebar-top p { color: var(--text-muted); font-size: 13px; line-height: 1.6; margin: 0 0 24px 0; }
+        /* Sidebar Layout matching Sweden template */
+        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 24px; z-index: 100; display: flex; flex-direction: column; justify-content: flex-start; gap: 20px; }
+        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 10px; }
+        .sidebar h2::before { content: ''; display: inline-block; width: 6px; height: 24px; background: var(--accent-blue); border-radius: 4px; }
         
-        .sidebar-nav { width: 100%; display: flex; flex-direction: column; gap: 12px; }
-        .nav-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: rgba(255, 255, 255, 0.05); color: var(--text-main); text-decoration: none; padding: 12px; font-size: 14px; font-weight: 700; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.2s; text-align: center; }
-        .nav-btn:hover { background: rgba(255, 255, 255, 0.15); }
+        .sidebar-nav { width: 100%; display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+        .nav-link { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s; }
+        .nav-link:hover { color: var(--text-main); }
+        
+        .btn-back { display: block; width: 100%; text-align: center; text-decoration: none; padding: 12px; font-size: 13px; font-weight: 600; border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: var(--text-main); border: 1px solid rgba(255, 255, 255, 0.08); margin-bottom: 10px; transition: 0.2s; }
+        .btn-back:hover { background: rgba(255, 255, 255, 0.15); }
 
-        /* Main Section layout */
+        /* Main Content Workspace Layout */
         .main-content { margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); max-width: 1250px; }
         
-        .header-section { margin-bottom: 36px; }
+        .header-section { margin-bottom: 30px; }
         .header-section h1 { font-size: 32px; font-weight: 800; margin: 0 0 12px 0; }
         .header-section p { color: var(--text-muted); font-size: 15px; margin: 0; }
         
-        /* Interactive Map Area */
-        .map-container { background: #1a2236; border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 12px; padding: 24px; margin-bottom: 40px; }
-        .map-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-        .map-title { font-size: 18px; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 8px; }
-        .map-view { width: 100%; height: 350px; background: #090d16; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        
-        /* Simulated Vector Map Plots */
-        .map-bg-grid { position: absolute; width: 100%; height: 100%; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 20px 20px; }
-        .map-pin { position: absolute; background: var(--accent-green); color: #000; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 20px; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 12px var(--accent-green); transition: transform 0.2s; }
-        .map-pin:hover { transform: scale(1.1); }
-        
-        /* Structures Grid layout */
-        .section-heading { font-size: 22px; font-weight: 800; margin: 0 0 20px 0; display: flex; align-items: center; gap: 10px; }
-        .structures-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
-        .struct-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.04); border-radius: 10px; padding: 20px; }
-        .struct-card h4 { margin: 0 0 8px 0; font-size: 16px; font-weight: 700; color: var(--accent-blue); }
-        .struct-badge { display: inline-block; font-size: 10px; background: rgba(16, 185, 129, 0.1); color: var(--accent-green); padding: 2px 6px; border-radius: 4px; font-weight: 700; margin-bottom: 12px; text-transform: uppercase; }
-        .struct-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0; }
+        /* Directory Navigation Action Button */
+        .dir-btn { display: inline-block; background: var(--accent-blue); color: var(--bg-dark); text-decoration: none; padding: 14px 24px; font-size: 14px; font-weight: 700; border-radius: 8px; margin-bottom: 40px; transition: opacity 0.2s; }
+        .dir-btn:hover { opacity: 0.9; }
 
-        /* Pricing Reference Matrix Table */
-        .pricing-panel { background: #141d2f; border: 1px solid rgba(255,255,255,0.03); border-radius: 12px; padding: 24px; }
-        .price-table { width: 100%; border-collapse: collapse; text-align: left; margin-top: 10px; }
-        .price-table th { font-size: 12px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; padding: 12px 16px; border-bottom: 2px solid rgba(255,255,255,0.05); }
-        .price-table td { font-size: 14px; padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.03); font-weight: 600; }
-        .price-table tr:last-child td { border: none; }
-        .price-tag { color: #eab308; font-weight: 700; }
+        /* Real Map Dashboard Container */
+        .map-section-title { font-size: 18px; font-weight: 800; margin: 0 0 20px 0; }
+        #map { width: 100%; height: 450px; background: #090d16; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 40px; z-index: 1; }
+        
+        /* Architecture Layout Grid Section */
+        .section-title { font-size: 18px; font-weight: 800; margin: 0 0 20px 0; }
+        .structures-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .structure-card { background: #141d2f; border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 24px; }
+        .structure-card h3 { margin: 0 0 12px 0; font-size: 16px; font-weight: 700; color: var(--accent-green); }
+        .structure-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin: 0; }
 
-        @media (max-width: 1024px) { .structures-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .structures-grid { grid-template-columns: 1fr; } .price-table th, .price-table td { padding: 10px; font-size: 12px; } }
+        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .structures-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <div class="sidebar-top">
-            <h2>ScandiScout</h2>
-            <p>Norway Regional Dashboard Portal Layout.</p>
-            
-            <div class="sidebar-nav">
-                <a href="../index.html" class="nav-btn">⬅️ Return to Home Root</a>
-                <a href="#live-map" class="nav-btn">🗺️ Structure Location Map</a>
-                <a href="#structures" class="nav-btn">🏢 Housing Profiles</a>
-                <a href="#rates" class="nav-btn">💳 Rental Matrix Rates</a>
-            </div>
+        <h2>ScandiScout</h2>
+        <div class="sidebar-nav">
+            <a href="../index.html" class="btn-back">← Back Home</a>
+            <a href="#" class="nav-link" style="color: var(--accent-blue);">Norway Guide</a>
+            <a href="prices.html" class="nav-link">→ Norway Prices</a>
         </div>
     </div>
 
     <div class="main-content">
         <div class="header-section">
-            <h1>🇳🇴 Norway Regional Infrastructure Viewport</h1>
-            <p>Comprehensive layout summarizing geographic allocations, architecture designs, and housing costs across Norway.</p>
+            <h1>Norway: Maps &amp; Structures</h1>
+            <p>Hover/Click markers to track layout coordinates on the dashboard display.</p>
         </div>
 
-        <div id="live-map" class="map-container">
-            <div class="map-header">
-                <h3 class="map-title">📍 Structural Core Mapping Grid</h3>
-                <span style="font-size: 12px; color: var(--accent-blue); font-weight: 700; text-transform: uppercase;">Tracking 11 Accommodations</span>
-            </div>
-            <div class="map-view">
-                <div class="map-bg-grid"></div>
-                <div class="map-pin" style="top: 75%; left: 35%;">📍 Oslo Central Station Hub</div>
-                <div class="map-pin" style="top: 55%; left: 15%;">📍 Bergen Fjord Cabins</div>
-                <div class="map-pin" style="top: 30%; left: 45%;">📍 Trondheim Studios</div>
-                <div class="map-pin" style="top: 15%; left: 70%;">📍 Tromsø Aurora Outpost</div>
-            </div>
-        </div>
+        <a href="prices.html" class="dir-btn">View Norway Price Directory →</a>
 
-        <h3 id="structures" class="section-heading">🏢 Featured Norway Housing Profiles</h3>
+        <h2 class="map-section-title">Interactive Map Dashboard</h2>
+        <div id="map"></div>
+
+        <h2 class="section-title">Famous Architectural Structures</h2>
         <div class="structures-grid">
-            <div class="struct-card">
-                <span class="struct-badge">Automated Capsule</span>
-                <h4>Oslo Cyber Pods</h4>
-                <p>High-density stackable sleeping cubes. Fully climate-controlled, situated directly beside local T-Bane rail grids.</p>
+            <div class="structure-card">
+                <h3>Oslo Urban Hubs</h3>
+                <p>Features automated micro-capsule grids and modular student rooms optimized for high thermal efficiency and swift access to T-Bane transit vectors.</p>
             </div>
-            <div class="struct-card">
-                <span class="struct-badge">Modular Cabin</span>
-                <h4>Bergen Mountain Outpost</h4>
-                <p>Shared timber student cabins with minimalist structural architecture, positioned along hiking borders near Bergen.</p>
-            </div>
-            <div class="struct-card">
-                <span class="struct-badge">Urban Studio</span>
-                <h4>Trondheim Student Loft</h4>
-                <p>Clean open-space eco-studios utilizing reclaimed materials and smart structural space management.</p>
+            <div class="structure-card">
+                <h3>Fjord View Outposts</h3>
+                <p>Examines rural timber-frame structural micro-housing and shared student cabins located on mountainous city fringes near Bergen.</p>
             </div>
         </div>
-
-        <div id="rates" class="pricing-panel">
-            <h3 class="section-heading" style="margin-bottom: 10px;">💳 Structural Rental Rates Matrix</h3>
-            <p style="color: var(--text-muted); font-size: 14px; margin: 0 0 20px 0;">Average estimated monthly housing rates calculated for budget student allocations:</p>
-            <table class="price-table">
-                <thead>
-                    <tr>
-                        <th>Structure Classification</th>
-                        <th>Primary Node Location</th>
-                        <th>Avg. Monthly Rate</th>
-                        <th>Network Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Automated Cyber Pods</td>
-                        <td>Oslo Central (OSL)</td>
-                        <td class="price-tag">4,200 NOK</td>
-                        <td style="color: var(--accent-green);">● Available Now</td>
-                    </tr>
-                    <tr>
-                        <td>Fjord Modular Cabins</td>
-                        <td>Bergen Outer Rim</td>
-                        <td class="price-tag">4,800 NOK</td>
-                        <td style="color: var(--accent-green);">● Available Now</td>
-                    </tr>
-                    <tr>
-                        <td>Eco Student Studio</td>
-                        <td>Trondheim Core</td>
-                        <td class="price-tag">5,500 NOK</td>
-                        <td style="color: var(--accent-purple);">○ Waitlist Active</td>
-                    </tr>
-                    <tr>
-                        <td>Aurora Space Capsule</td>
-                        <td>Tromsø North Vector</td>
-                        <td class="price-tag">3,900 NOK</td>
-                        <td style="color: var(--accent-green);">● Available Now</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
     </div>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        // Initialize an interactive map centered around Oslo, Norway
+        const map = L.map('map').setView([59.9139, 10.7522], 11);
+
+        // Standard clean dark map layer style
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Add an active pin point exactly matching the style design on the Sweden view
+        const markerOslo = L.marker([59.9115, 10.7579]).addTo(map);
+        markerOslo.bindPopup("<b>Oslo Sentralstasjon</b><br>Norway Central Hub Node.").openPopup();
+        
+        const markerBergen = L.marker([59.9180, 10.7300]).addTo(map);
+        markerBergen.bindPopup("<b>Oslo Capsule Sector</b><br>Automated Micro Pods.");
+    </script>
 </body>
 </html>
