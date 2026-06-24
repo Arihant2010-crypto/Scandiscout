@@ -3,96 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScandiScout - Denmark Explorer</title>
+    <title>ScandiScout - Norway Directory &amp; Structures</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-dark: #0f172a; --bg-card: #1e293b; --text-main: #f8fafc; --text-muted: #94a3b8; --accent-blue: #38bdf8; --sidebar-width: 280px; }
+        :root {
+            --bg-dark: #0f172a;
+            --bg-sidebar: #1e293b;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-green: #10b981;
+            --accent-purple: #c084fc;
+            --sidebar-width: 280px;
+        }
+        * { box-sizing: border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
-        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 24px; box-sizing: border-box; z-index: 1000; }
-        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin-top: 0; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
-        .sidebar h2::before { content: ''; display: inline-block; width: 8px; height: 24px; background: var(--accent-blue); border-radius: 4px; }
-        .sidebar a { display: block; color: var(--text-muted); text-decoration: none; padding: 12px 16px; font-weight: 600; font-size: 15px; border-radius: 8px; margin-bottom: 8px; transition: all 0.2s ease; }
-        .sidebar a:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
-        .main-content { margin-left: var(--sidebar-width); padding: 50px; width: 100%; max-width: 1100px; box-sizing: border-box; }
-        .map-section { margin-bottom: 40px; }
-        #map { width: 100%; height: 450px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); z-index: 1; }
-        .leaflet-popup-content-wrapper { background: #1e293b !important; color: #ffffff !important; border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .leaflet-popup-tip { background: #1e293b !important; }
-        .nav-btn { display: inline-block; background-color: var(--accent-blue); color: var(--bg-dark); padding: 12px 24px; text-decoration: none; font-weight: 700; border-radius: 8px; margin-bottom: 30px; transition: transform 0.2s; }
-        .nav-btn:hover { transform: translateY(-2px); }
-        .landmark-card { background: var(--bg-card); padding: 24px; margin-bottom: 20px; border-left: 5px solid rgba(56, 189, 248, 0.3); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
-        .landmark-card:hover { border-left-color: var(--accent-blue); background: #243146; transform: scale(1.01); }
-        .landmark-card h4 { margin-top: 0; margin-bottom: 8px; font-size: 18px; }
-        .landmark-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 8px; line-height: 1.5; }
-        @media (max-width: 960px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 20px; } .main-content { margin-left: 0; padding: 30px 20px; } }
+        
+        /* Sidebar Layout */
+        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 24px; z-index: 100; display: flex; flex-direction: column; justify-content: space-between; }
+        .sidebar-top h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
+        .sidebar-top h2::before { content: ''; display: inline-block; width: 6px; height: 24px; background: var(--accent-green); border-radius: 4px; }
+        .sidebar-top p { color: var(--text-muted); font-size: 13px; line-height: 1.6; margin: 0; }
+        
+        .sidebar-nav { width: 100%; display: flex; flex-direction: column; gap: 12px; margin-top: 30px; }
+        .nav-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: rgba(255, 255, 255, 0.05); color: var(--text-main); text-decoration: none; padding: 12px; font-size: 14px; font-weight: 700; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.2s; text-align: center; }
+        .nav-btn:hover { background: rgba(255, 255, 255, 0.15); }
+
+        /* Main Content */
+        .main-content { margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); max-width: 1250px; }
+        
+        .header-section { margin-bottom: 36px; }
+        .header-section h1 { font-size: 32px; font-weight: 800; margin: 0 0 12px 0; }
+        .header-section p { color: var(--text-muted); font-size: 15px; margin: 0; }
+        
+        /* Map Layout Sandbox Placeholder */
+        .map-sandbox { background: #1e293b; border: 1px dashed rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 40px; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; margin-bottom: 40px; }
+        .map-icon { font-size: 48px; margin-bottom: 16px; }
+        .map-title { font-size: 20px; font-weight: 700; margin: 0 0 8px 0; }
+        .map-desc { color: var(--text-muted); font-size: 14px; max-width: 500px; line-height: 1.6; margin: 0; }
+
+        /* Structure Info Cards */
+        .structure-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .structure-card { background: #141d2f; border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 24px; }
+        .structure-card h3 { margin: 0 0 12px 0; font-size: 18px; font-weight: 700; color: var(--accent-green); }
+        .structure-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin: 0; }
+
+        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .structure-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
+
     <div class="sidebar">
-        <h2>ScandiScout</h2>
-        <a href="../index.html">← Back Home</a>
-        <a href="index.html" style="color: var(--accent-blue);">Denmark Guide</a>
-        <a href="prices.html">→ Denmark Prices</a>
+        <div class="sidebar-top">
+            <h2>ScandiScout</h2>
+            <p>Norway Regional Sub-Directory Infrastructure Viewports.</p>
+            
+            <div class="sidebar-nav">
+                <a href="../index.html" class="nav-btn">⬅️ Back to Main Root</a>
+                <a href="stay.html" class="nav-btn" style="color: var(--accent-green);">🇳🇴 Where to Stay</a>
+                <a href="prices.html" class="nav-btn" style="color: var(--accent-purple);">💳 View Prices</a>
+            </div>
+        </div>
     </div>
+
     <div class="main-content">
-        <h1>Denmark: Maps & Structures</h1>
-        <p style="color: var(--text-muted); margin-bottom: 30px;">Hover/Click lists to track layout coordinates on the dashboard display.</p>
-        <a href="prices.html" class="nav-btn">View Denmark Price Directory →</a>
-        <div class="map-section">
-            <h3>Interactive Map Dashboard</h3>
-            <div id="map"></div>
+        <div class="header-section">
+            <h1>🇳🇴 Norway Maps &amp; Structural Overview</h1>
+            <p>Regional spatial layout analysis for automated capsules, mountain cabin designs, and student structures across Oslo and Bergen.</p>
         </div>
-        <h3>Famous Architectural Structures</h3>
-        <div class="landmark-card" onmouseenter="focusMarker(0)" onclick="focusMarker(0)">
-            <h4>1. Nyhavn Waterfront Canal 📍</h4>
-            <p><strong>Cultural Significance:</strong> 17th-century heritage commercial port district lined with colorful townhouses.</p>
-            <p><strong>Public Transport Links:</strong> Kongens Nytorv Metro Station.</p>
+
+        <div class="map-sandbox">
+            <div class="map-icon">🗺️</div>
+            <h2 class="map-title">Norway Spatial Mapping Sandbox</h2>
+            <p class="map-desc">This viewport layout renders custom geographical zoning grids, infrastructure coordinates, and close proximities to local transit corridors.</p>
         </div>
-        <div class="landmark-card" onmouseenter="focusMarker(1)" onclick="focusMarker(1)">
-            <h4>2. Christiansborg Palace 📍</h4>
-            <p><strong>Cultural Significance:</strong> Government center housing the Danish Parliament and Supreme Court.</p>
-            <p><strong>Public Transport Links:</strong> Gammel Strand Metro Station.</p>
-        </div>
-        <div class="landmark-card" onmouseenter="focusMarker(2)" onclick="focusMarker(2)">
-            <h4>3. The Round Tower (Rundetårn) 📍</h4>
-            <p><strong>Cultural Significance:</strong> 17th-century astronomical observatory featuring a unique helical corridor.</p>
-            <p><strong>Public Transport Links:</strong> Nørreport Station.</p>
-        </div>
-        <div class="landmark-card" onmouseenter="focusMarker(3)" onclick="focusMarker(3)">
-            <h4>4. Tivoli Gardens Amusement Park 📍</h4>
-            <p><strong>Cultural Significance:</strong> Opened in 1843, one of the world's oldest operating pleasure gardens.</p>
-            <p><strong>Public Transport Links:</strong> Copenhagen Central Station (København H).</p>
-        </div>
-        <div class="landmark-card" onmouseenter="focusMarker(4)" onclick="focusMarker(4)">
-            <h4>5. Amalienborg Palace 📍</h4>
-            <p><strong>Cultural Significance:</strong> Winter residence of the Danish royal family consisting of four identical palaces.</p>
-            <p><strong>Public Transport Links:</strong> Marmorkirken Metro Station.</p>
+
+        <div class="structure-grid">
+            <div class="structure-card">
+                <h3>Oslo Urban Hubs</h3>
+                <p>Features automated micro-capsule grids and modular student rooms optimized for high thermal efficiency and swift access to T-Bane transit vectors.</p>
+            </div>
+            <div class="structure-card">
+                <h3>Fjord View Outposts</h3>
+                <p>Examines rural timber-frame structural micro-housing and shared student cabins located on mountainous city fringes near Bergen.</p>
+            </div>
         </div>
     </div>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-        const map = L.map('map').setView([55.680, 12.585], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
-        const locations = [
-            { coords: [55.6797, 12.5913], desc: "<b>Nyhavn Canal</b><br>Historical Port & District" },
-            { coords: [55.6763, 12.5803], desc: "<b>Christiansborg Palace</b><br>Seat of Danish Parliament" },
-            { coords: [55.6814, 12.5757], desc: "<b>The Round Tower</b><br>Astronomical Observatory" },
-            { coords: [55.6737, 12.5683], desc: "<b>Tivoli Gardens</b><br>Historic Amusement Park" },
-            { coords: [55.6841, 12.5931], desc: "<b>Amalienborg Palace</b><br>Winter Royal Residence" }
-        ];
-        const markerInstances = [];
-        locations.forEach((loc) => {
-            const marker = L.marker(loc.coords).addTo(map);
-            marker.bindPopup(loc.desc);
-            markerInstances.push(marker);
-        });
-        function focusMarker(index) {
-            map.flyTo(locations[index].coords, 15, { animate: true, duration: 1 });
-            markerInstances[index].openPopup();
-        }
-    </script>
+
 </body>
 </html>
