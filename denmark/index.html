@@ -1,173 +1,331 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScandiScout - Norway Explorer</title>
+
+    <title>ScandiScout - Norway: Maps, Structures &amp; Landmarks</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&amp;display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
     
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
     
+
     <style>
-        :root { 
-            --bg-dark: #0f172a; 
-            --bg-card: #1e293b; 
-            --text-main: #f8fafc; 
-            --text-muted: #94a3b8; 
-            --accent-blue: #38bdf8; 
-            --sidebar-width: 280px; 
+
+        :root {
+
+            --bg-dark: #0f172a;
+
+            --bg-sidebar: #1e293b;
+
+            --bg-card: #1e293b;
+
+            --text-main: #f8fafc;
+
+            --text-muted: #94a3b8;
+
+            --accent-blue: #38bdf8;
+
+            --accent-green: #10b981;
+
+            --accent-purple: #c084fc;
+
+            --sidebar-width: 280px;
+
         }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
+
         
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: var(--bg-dark); 
-            color: var(--text-main); 
-            margin: 0; 
-            padding: 0; 
-            display: flex; 
-            min-height: 100vh; 
-        }
+
+        /* Unified Global Sidebar Style */
+
+        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 24px; z-index: 100; display: flex; flex-direction: column; justify-content: flex-start; gap: 20px; }
+
+        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 10px; }
+
+        .sidebar h2::before { content: ''; display: inline-block; width: 6px; height: 24px; background: var(--accent-blue); border-radius: 4px; }
+
         
-        .sidebar { 
-            width: var(--sidebar-width); 
-            position: fixed; 
-            height: 100vh; 
-            background: #1e293b; 
-            border-right: 1px solid rgba(255, 255, 255, 0.05); 
-            padding: 30px 24px; 
-            box-sizing: border-box; 
-            z-index: 1000; 
-        }
+
+        .sidebar-nav { width: 100%; display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+
+        .nav-link { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s; }
+
+        .nav-link:hover { color: var(--text-main); }
+
         
-        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin-top: 0; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
-        .sidebar h2::before { content: ''; display: inline-block; width: 8px; height: 24px; background: var(--accent-blue); border-radius: 4px; }
-        .sidebar a { display: block; color: var(--text-muted); text-decoration: none; padding: 12px 16px; font-weight: 600; font-size: 15px; border-radius: 8px; margin-bottom: 8px; transition: all 0.2s ease; }
-        .sidebar a:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+
+        .btn-back { display: block; width: 100%; text-align: center; text-decoration: none; padding: 12px; font-size: 13px; font-weight: 600; border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: var(--text-main); border: 1px solid rgba(255, 255, 255, 0.08); margin-bottom: 10px; transition: 0.2s; }
+
+        .btn-back:hover { background: rgba(255, 255, 255, 0.15); }
+
+
+
+        /* Main Workspace Section */
+
+        .main-content { margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); max-width: 1250px; }
+
         
-        .main-content { margin-left: var(--sidebar-width); padding: 50px; width: 100%; max-width: 1100px; box-sizing: border-box; }
-        .map-section { margin-bottom: 40px; }
+
+        .header-section { margin-bottom: 30px; }
+
+        .header-section h1 { font-size: 32px; font-weight: 800; margin: 0 0 12px 0; }
+
+        .header-section p { color: var(--text-muted); font-size: 15px; margin: 0; }
+
         
-        #map { 
-            width: 100%; 
-            height: 450px; 
-            border-radius: 16px; 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            background: #141b2e;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); 
-            z-index: 1; 
-        }
+
+        .dir-btn { display: inline-block; background: var(--accent-blue); color: var(--bg-dark); text-decoration: none; padding: 14px 24px; font-size: 14px; font-weight: 700; border-radius: 8px; margin-bottom: 40px; transition: opacity 0.2s; }
+
+        .dir-btn:hover { opacity: 0.9; }
+
+
+
+        /* Mapping Container Style */
+
+        .map-section-title { font-size: 18px; font-weight: 800; margin: 0 0 20px 0; }
+
+        #norway-map { width: 100%; height: 480px; background: #090d16; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 40px; z-index: 1; }
+
         
-        .nav-btn { display: inline-block; background-color: var(--accent-blue); color: var(--bg-dark); padding: 12px 24px; text-decoration: none; font-weight: 700; border-radius: 8px; margin-bottom: 30px; transition: transform 0.2s; }
-        .nav-btn:hover { transform: translateY(-2px); }
-        
-        .landmark-card { background: var(--bg-card); padding: 24px; margin-bottom: 20px; border-left: 5px solid rgba(56, 189, 248, 0.3); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
-        .landmark-card:hover { border-left-color: var(--accent-blue); background: #243146; transform: scale(1.01); }
-        .landmark-card h4 { margin-top: 0; margin-bottom: 8px; font-size: 18px; }
-        .landmark-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 8px; line-height: 1.5; }
-        
-        @media (max-width: 960px) { 
-            body { flex-direction: column; } 
-            .sidebar { width: 100%; position: relative; height: auto; padding: 20px; } 
-            .main-content { margin-left: 0; padding: 30px 20px; } 
-        }
+
+        /* Architecture Layout Grid Section */
+
+        .section-title { font-size: 18px; font-weight: 800; margin: 40px 0 20px 0; display: flex; align-items: center; gap: 8px; }
+
+        .structures-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+        .structure-card { background: #141d2f; border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 24px; }
+
+        .structure-card h3 { margin: 0 0 4px 0; font-size: 16px; font-weight: 700; color: var(--accent-blue); }
+
+        .structure-card .badge { display: inline-block; font-size: 10px; font-weight: 800; color: var(--accent-green); background: rgba(16, 185, 129, 0.1); padding: 2px 6px; border-radius: 4px; margin-bottom: 12px; text-transform: uppercase; }
+
+        .structure-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin: 0; }
+
+
+
+        @media (max-width: 1024px) { .structures-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .structures-grid { grid-template-columns: 1fr; } }
+
     </style>
+
 </head>
+
 <body>
 
+
+
     <div class="sidebar">
+
         <h2>ScandiScout</h2>
-        <a href="../index.html">← Back Home</a>
-        <a href="index.html" style="color: var(--accent-blue);">Norway Guide</a>
-        <a href="prices.html">→ Norway Prices</a>
+
+        <div class="sidebar-nav">
+
+            <a href="../index.html" class="btn-back">← Back Home</a>
+
+            <a href="#" class="nav-link" style="color: var(--accent-blue);">Norway Guide</a>
+
+            <a href="prices.html" class="nav-link">→ Norway Prices</a>
+
+        </div>
+
     </div>
+
+
 
     <div class="main-content">
-        <h1>Norway: Maps &amp; Structures</h1>
-        <p style="color: var(--text-muted); margin-bottom: 30px;">Hover or click on the cards below to pinpoint coordinates on the map.</p>
-        
-        <a href="prices.html" class="nav-btn">View Norway Price Directory →</a>
 
-        <div class="map-section">
-            <h3>Interactive Map Dashboard</h3>
-            <div id="map"></div>
-        </div>
+        <div class="header-section">
 
-        <h3>Famous Architectural Structures</h3>
-        
-        <div class="landmark-card" onmouseenter="focusMarker(0)" onclick="focusMarker(0)">
-            <h4>1. Oslo Opera House 📍</h4>
-            <p><strong>Cultural Significance:</strong> Home of the Norwegian National Opera and Ballet, featuring a walkable angled roof.</p>
-            <p><strong>Public Transport Links:</strong> Oslo Central Station (Oslo S).</p>
-        </div>
-        
-        <div class="landmark-card" onmouseenter="focusMarker(1)" onclick="focusMarker(1)">
-            <h4>2. Bryggen in Bergen 📍</h4>
-            <p><strong>Cultural Significance:</strong> UNESCO World Heritage historic Hanseatic wharf lined with colorful wooden buildings.</p>
-            <p><strong>Public Transport Links:</strong> Byparken Light Rail Station (Bybanen).</p>
-        </div>
-        
-        <div class="landmark-card" onmouseenter="focusMarker(2)" onclick="focusMarker(2)">
-            <h4>3. Nidaros Cathedral (Trondheim) 📍</h4>
-            <p><strong>Cultural Significance:</strong> Gothic cathedral built over the burial site of King Olav Haraldsson, Norway's patron saint.</p>
-            <p><strong>Public Transport Links:</strong> Prinsen gate Bus Station.</p>
+            <h1>Norway: Maps &amp; Structures</h1>
+
+            <p>Hover/Click the landmark pins to view regional housing metrics and historical anchor coordinates across Norway.</p>
+
         </div>
 
-        <div class="landmark-card" onmouseenter="focusMarker(3)" onclick="focusMarker(3)">
-            <h4>4. The Arctic Cathedral (Tromsø) 📍</h4>
-            <p><strong>Cultural Significance:</strong> Striking modernist church inspired by Arctic nature and ice structures.</p>
-            <p><strong>Public Transport Links:</strong> Tromsdalen Bus Stop.</p>
+
+
+        <a href="prices.html" class="dir-btn">View Norway Price Directory →</a>
+
+
+
+        <h2 class="map-section-title">Interactive Map Dashboard</h2>
+
+        <div id="norway-map"></div>
+
+
+
+        <h2 class="section-title">🇳🇴 Landmark Regional Allocations (11 Total Structures)</h2>
+
+        <div class="structures-grid">
+
+            <div class="structure-card">
+
+                <h3>Oslo Cyber Pods</h3>
+
+                <span class="badge">4 Spaces Available</span>
+
+                <p>Located near Oslo Central Station. Features automated stacking micro-capsule beds with direct climate controls and soundproofing dividers.</p>
+
+            </div>
+
+            <div class="structure-card">
+
+                <h3>Grünerløkka Lofts</h3>
+
+                <span class="badge">2 Spaces Available</span>
+
+                <p>Repurposed structural artisan brick lofts curated for shared student workspace clusters and budget studio housing.</p>
+
+            </div>
+
+
+
+            <div class="structure-card">
+
+                <h3>Fløyen Eco Cabins</h3>
+
+                <span class="badge">2 Spaces Available</span>
+
+                <p>Timber-framed minimalist modular structures built directly into mountain slopes, offering student allocations with high thermal efficiency.</p>
+
+            </div>
+
+
+
+            <div class="structure-card">
+
+                <h3>Nidelva Floating Studios</h3>
+
+                <span class="badge">2 Spaces Available</span>
+
+                <p>Sustainable, modern student shipping containers anchored alongside riverbanks near historic landmarks.</p>
+
+            </div>
+
+
+
+            <div class="structure-card">
+
+                <h3>Aurora Capsule Base</h3>
+
+                <span class="badge">1 Space Available</span>
+
+                <p>Deep-arctic insulated pods engineered with skylight window viewing panes optimized for northern climate shifts.</p>
+
+            </div>
+
         </div>
 
-        <div class="landmark-card" onmouseenter="focusMarker(4)" onclick="focusMarker(4)">
-            <h4>5. Akershus Fortress (Oslo) 📍</h4>
-            <p><strong>Cultural Significance:</strong> Medieval castle and fortress built in the 1290s to protect Oslo.</p>
-            <p><strong>Public Transport Links:</strong> Nationaltheatret Metro Station.</p>
-        </div>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
     <script>
-        let map;
-        let markerInstances = [];
 
-        try {
-            // Instantiate map canvas centered over Southern/Central Norway
-            map = L.map('map').setView([61.000, 9.000], 5);
-            
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
-                attribution: '&copy; OpenStreetMap' 
-            }).addTo(map);
-            
-            // Full completed coordinates mapping layout array for Norwegian landmarks
-            const locations = [
-                { coords: [59.9075, 10.7531], desc: "<b>1. Oslo Opera House</b><br>Iconic waterfront opera house." },
-                { coords: [60.3975, 5.3242], desc: "<b>2. Bryggen in Bergen</b><br>Historic Hanseatic commercial wharf." },
-                { coords: [63.4269, 10.3969], desc: "<b>3. Nidaros Cathedral</b><br>Historic Gothic cathedral in Trondheim." },
-                { coords: [69.6480, 18.9870], desc: "<b>4. The Arctic Cathedral</b><br>Modernist church in Tromsø." },
-                { coords: [59.9070, 10.7370], desc: "<b>5. Akershus Fortress</b><br>Medieval castle and stronghold in Oslo." }
-            ];
+        // Initialize an interactive layout viewport focused on southern/central Norway geography
 
-            // Render native pins onto map view canvas
-            locations.forEach((place) => {
-                const marker = L.marker(place.coords).addTo(map);
-                marker.bindPopup(place.desc);
-                markerInstances.push(marker);
-            });
+        const map = L.map('norway-map').setView([62.0000, 9.0000], 5);
 
-        } catch (e) {
-            console.error("Leaflet execution initialization error:", e);
-        }
 
-        // Card interactive matching execution hover/click router function
-        function focusMarker(index) {
-            if (map && markerInstances[index]) {
-                const targetMarker = markerInstances[index];
-                map.setView(targetMarker.getLatLng(), 14, { animate: true });
-                targetMarker.openPopup();
+
+        // Load clear dark map tile layer configurations
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+
+        }).addTo(map);
+
+
+
+        // Define Landmark Markers containing Structural Data Popups
+
+        const landmarks = [
+
+            {
+
+                coords: [59.9115, 10.7579],
+
+                title: "<b>Oslo Sentralstasjon Core Hub</b>",
+
+                desc: "Proximity anchor for 4 Cyber Capsule Pod configurations and local T-Bane connection blocks."
+
+            },
+
+            {
+
+                coords: [60.3913, 5.3221],
+
+                title: "<b>Bergen Bryggen Frontline Outposts</b>",
+
+                desc: "Coordinates mapping towards 2 mountain timber-frame eco cabin structural designs."
+
+            },
+
+            {
+
+                coords: [63.4269, 10.3969],
+
+                title: "<b>Trondheim Nidaros Node</b>",
+
+                desc: "Home layout vector for 2 modular floating eco-studios on the Nidelva river banks."
+
+            },
+
+            {
+
+                coords: [69.6492, 18.9553],
+
+                title: "<b>Tromsø Arctic Perimeter</b>",
+
+                desc: "Deep north viewport tracking 1 high-insulation space capsule pod outcropping."
+
             }
-        }
+
+        ];
+
+
+
+        // Loop through array elements to cleanly draw vectors on the live canvas window
+
+        landmarks.forEach(landmark => {
+
+            const pin = L.marker(landmark.coords).addTo(map);
+
+            pin.bindPopup(`${landmark.title}<br>${landmark.desc}`);
+
+        });
+
+        
+
+        // Auto-open first central pin layout target configuration link stack cleanly
+
+        L.marker([59.9115, 10.7579]).addTo(map).bindPopup("<b>Oslo Sentralstasjon Core Hub</b><br>Proximity anchor for 4 Cyber Capsule Pod configurations.").openPopup();
+
     </script>
+
 </body>
-</html>
+
+</html> 
