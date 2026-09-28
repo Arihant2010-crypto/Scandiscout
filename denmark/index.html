@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScandiScout - Denmark Explorer</title>
+    <title>ScandiScout - Norway Explorer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&amp;display=swap" rel="stylesheet">
@@ -79,15 +79,15 @@
     <div class="sidebar">
         <h2>ScandiScout</h2>
         <a href="../index.html">← Back Home</a>
-        <a href="index.html" style="color: var(--accent-blue);">Denmark Guide</a>
-        <a href="prices.html">→ Denmark Prices</a>
+        <a href="index.html" style="color: var(--accent-blue);">Norway Guide</a>
+        <a href="prices.html">→ Norway Prices</a>
     </div>
 
     <div class="main-content">
-        <h1>Denmark: Maps &amp; Structures</h1>
+        <h1>Norway: Maps &amp; Structures</h1>
         <p style="color: var(--text-muted); margin-bottom: 30px;">Hover or click on the cards below to pinpoint coordinates on the map.</p>
         
-        <a href="prices.html" class="nav-btn">View Denmark Price Directory →</a>
+        <a href="prices.html" class="nav-btn">View Norway Price Directory →</a>
 
         <div class="map-section">
             <h3>Interactive Map Dashboard</h3>
@@ -97,33 +97,33 @@
         <h3>Famous Architectural Structures</h3>
         
         <div class="landmark-card" onmouseenter="focusMarker(0)" onclick="focusMarker(0)">
-            <h4>1. Nyhavn Waterfront Canal 📍</h4>
-            <p><strong>Cultural Significance:</strong> 17th-century heritage commercial port district lined with colorful townhouses.</p>
-            <p><strong>Public Transport Links:</strong> Kongens Nytorv Metro Station.</p>
+            <h4>1. Oslo Opera House 📍</h4>
+            <p><strong>Cultural Significance:</strong> Home of the Norwegian National Opera and Ballet, featuring a walkable angled roof.</p>
+            <p><strong>Public Transport Links:</strong> Oslo Central Station (Oslo S).</p>
         </div>
         
         <div class="landmark-card" onmouseenter="focusMarker(1)" onclick="focusMarker(1)">
-            <h4>2. Christiansborg Palace 📍</h4>
-            <p><strong>Cultural Significance:</strong> Government center housing the Danish Parliament and Supreme Court.</p>
-            <p><strong>Public Transport Links:</strong> Gammel Strand Metro Station.</p>
+            <h4>2. Bryggen in Bergen 📍</h4>
+            <p><strong>Cultural Significance:</strong> UNESCO World Heritage historic Hanseatic wharf lined with colorful wooden buildings.</p>
+            <p><strong>Public Transport Links:</strong> Byparken Light Rail Station (Bybanen).</p>
         </div>
         
         <div class="landmark-card" onmouseenter="focusMarker(2)" onclick="focusMarker(2)">
-            <h4>3. The Round Tower (Rundetårn) 📍</h4>
-            <p><strong>Cultural Significance:</strong> 17th-century astronomical observatory featuring a unique helical corridor.</p>
-            <p><strong>Public Transport Links:</strong> Nørreport Station.</p>
+            <h4>3. Nidaros Cathedral (Trondheim) 📍</h4>
+            <p><strong>Cultural Significance:</strong> Gothic cathedral built over the burial site of King Olav Haraldsson, Norway's patron saint.</p>
+            <p><strong>Public Transport Links:</strong> Prinsen gate Bus Station.</p>
         </div>
 
         <div class="landmark-card" onmouseenter="focusMarker(3)" onclick="focusMarker(3)">
-            <h4>4. Tivoli Gardens Amusement Park 📍</h4>
-            <p><strong>Cultural Significance:</strong> Opened in 1843, one of the world's oldest operating pleasure gardens.</p>
-            <p><strong>Public Transport Links:</strong> Copenhagen Central Station (København H).</p>
+            <h4>4. The Arctic Cathedral (Tromsø) 📍</h4>
+            <p><strong>Cultural Significance:</strong> Striking modernist church inspired by Arctic nature and ice structures.</p>
+            <p><strong>Public Transport Links:</strong> Tromsdalen Bus Stop.</p>
         </div>
 
         <div class="landmark-card" onmouseenter="focusMarker(4)" onclick="focusMarker(4)">
-            <h4>5. Amalienborg Palace 📍</h4>
-            <p><strong>Cultural Significance:</strong> Winter residence of the Danish royal family consisting of four identical palaces.</p>
-            <p><strong>Public Transport Links:</strong> Marmorkirken Metro Station.</p>
+            <h4>5. Akershus Fortress (Oslo) 📍</h4>
+            <p><strong>Cultural Significance:</strong> Medieval castle and fortress built in the 1290s to protect Oslo.</p>
+            <p><strong>Public Transport Links:</strong> Nationaltheatret Metro Station.</p>
         </div>
     </div>
 
@@ -133,20 +133,20 @@
         let markerInstances = [];
 
         try {
-            // Instantiate map canvas centered over Copenhagen
-            map = L.map('map').setView([55.680, 12.585], 13);
+            // Instantiate map canvas centered over Southern/Central Norway
+            map = L.map('map').setView([61.000, 9.000], 5);
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
                 attribution: '&copy; OpenStreetMap' 
             }).addTo(map);
             
-            // Full completed coordinates mapping layout array
+            // Full completed coordinates mapping layout array for Norwegian landmarks
             const locations = [
-                { coords: [55.6797, 12.5913], desc: "<b>1. Nyhavn Canal</b><br>Historical port and colored houses." },
-                { coords: [55.6763, 12.5803], desc: "<b>2. Christiansborg Palace</b><br>Seat of Danish Parliament." },
-                { coords: [55.6814, 12.5757], desc: "<b>3. The Round Tower</b><br>Astronomical Observatory." },
-                { coords: [55.6737, 12.5683], desc: "<b>4. Tivoli Gardens</b><br>Historic Amusement Park." },
-                { coords: [55.6841, 12.5931], desc: "<b>5. Amalienborg Palace</b><br>Royal Winter Residence." }
+                { coords: [59.9075, 10.7531], desc: "<b>1. Oslo Opera House</b><br>Iconic waterfront opera house." },
+                { coords: [60.3975, 5.3242], desc: "<b>2. Bryggen in Bergen</b><br>Historic Hanseatic commercial wharf." },
+                { coords: [63.4269, 10.3969], desc: "<b>3. Nidaros Cathedral</b><br>Historic Gothic cathedral in Trondheim." },
+                { coords: [69.6480, 18.9870], desc: "<b>4. The Arctic Cathedral</b><br>Modernist church in Tromsø." },
+                { coords: [59.9070, 10.7370], desc: "<b>5. Akershus Fortress</b><br>Medieval castle and stronghold in Oslo." }
             ];
 
             // Render native pins onto map view canvas
@@ -164,7 +164,7 @@
         function focusMarker(index) {
             if (map && markerInstances[index]) {
                 const targetMarker = markerInstances[index];
-                map.setView(targetMarker.getLatLng(), 15, { animate: true });
+                map.setView(targetMarker.getLatLng(), 14, { animate: true });
                 targetMarker.openPopup();
             }
         }
