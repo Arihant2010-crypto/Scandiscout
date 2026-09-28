@@ -50,12 +50,13 @@
 
         /* Mapping Container Style */
         .map-section-title { font-size: 18px; font-weight: 800; margin: 0 0 20px 0; }
-        #norway-map { width: 100%; height: 480px; background: #090d16; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 40px; z-index: 1; }
+        #norway-map { width: 100%; height: 480px; background: #090d16; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 40px; z-index: 1; pointer-events: auto !important; }
         
         /* Architecture Layout Grid Section */
         .section-title { font-size: 18px; font-weight: 800; margin: 40px 0 20px 0; display: flex; align-items: center; gap: 8px; }
         .structures-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-        .structure-card { background: #141d2f; border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 24px; }
+        .structure-card { background: #141d2f; border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 24px; cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
+        .structure-card:hover { transform: translateY(-3px); border-color: var(--accent-blue); }
         .structure-card h3 { margin: 0 0 4px 0; font-size: 16px; font-weight: 700; color: var(--accent-blue); }
         .structure-card .badge { display: inline-block; font-size: 10px; font-weight: 800; color: var(--accent-green); background: rgba(16, 185, 129, 0.1); padding: 2px 6px; border-radius: 4px; margin-bottom: 12px; text-transform: uppercase; }
         .structure-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin: 0; }
@@ -78,7 +79,7 @@
     <div class="main-content">
         <div class="header-section">
             <h1>Norway: Maps &amp; Structures</h1>
-            <p>Hover/Click the landmark pins to view regional housing metrics and historical anchor coordinates across Norway.</p>
+            <p>Hover or click any landmark card below to fly directly to its location on the map.</p>
         </div>
 
         <a href="prices.html" class="dir-btn">View Norway Price Directory →</a>
@@ -88,30 +89,27 @@
 
         <h2 class="section-title">🇳🇴 Landmark Regional Allocations (11 Total Structures)</h2>
         <div class="structures-grid">
-            <div class="structure-card">
+            <div class="structure-card" data-index="0">
                 <h3>Oslo Cyber Pods</h3>
                 <span class="badge">4 Spaces Available</span>
                 <p>Located near Oslo Central Station. Features automated stacking micro-capsule beds with direct climate controls and soundproofing dividers.</p>
             </div>
-            <div class="structure-card">
+            <div class="structure-card" data-index="1">
                 <h3>Grünerløkka Lofts</h3>
                 <span class="badge">2 Spaces Available</span>
                 <p>Repurposed structural artisan brick lofts curated for shared student workspace clusters and budget studio housing.</p>
             </div>
-
-            <div class="structure-card">
+            <div class="structure-card" data-index="2">
                 <h3>Fløyen Eco Cabins</h3>
                 <span class="badge">2 Spaces Available</span>
                 <p>Timber-framed minimalist modular structures built directly into mountain slopes, offering student allocations with high thermal efficiency.</p>
             </div>
-
-            <div class="structure-card">
+            <div class="structure-card" data-index="3">
                 <h3>Nidelva Floating Studios</h3>
                 <span class="badge">2 Spaces Available</span>
                 <p>Sustainable, modern student shipping containers anchored alongside riverbanks near historic landmarks.</p>
             </div>
-
-            <div class="structure-card">
+            <div class="structure-card" data-index="4">
                 <h3>Aurora Capsule Base</h3>
                 <span class="badge">1 Space Available</span>
                 <p>Deep-arctic insulated pods engineered with skylight window viewing panes optimized for northern climate shifts.</p>
@@ -121,46 +119,74 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
-        // Initialize an interactive layout viewport focused on southern/central Norway geography
-        const map = L.map('norway-map').setView([62.0000, 9.0000], 5);
+        // Initialize Map
+        const map = L.map('norway-map');
 
-        // Load clear dark map tile layer configurations
+        // Tile Layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Define Landmark Markers containing Structural Data Popups
+        // Map Data matching all 5 cards
         const landmarks = [
             {
                 coords: [59.9115, 10.7579],
-                title: "<b>Oslo Sentralstasjon Core Hub</b>",
-                desc: "Proximity anchor for 4 Cyber Capsule Pod configurations and local T-Bane connection blocks."
+                title: "<b>Oslo Cyber Pods</b>",
+                desc: "Located near Oslo Central Station. Features automated stacking micro-capsule beds."
             },
             {
-                coords: [60.3913, 5.3221],
-                title: "<b>Bergen Bryggen Frontline Outposts</b>",
-                desc: "Coordinates mapping towards 2 mountain timber-frame eco cabin structural designs."
+                coords: [59.9230, 10.7580],
+                title: "<b>Grünerløkka Lofts</b>",
+                desc: "Repurposed structural artisan brick lofts curated for student workspace clusters."
+            },
+            {
+                coords: [60.3948, 5.3330],
+                title: "<b>Fløyen Eco Cabins</b>",
+                desc: "Timber-framed minimalist modular structures built directly into mountain slopes."
             },
             {
                 coords: [63.4269, 10.3969],
-                title: "<b>Trondheim Nidaros Node</b>",
-                desc: "Home layout vector for 2 modular floating eco-studios on the Nidelva river banks."
+                title: "<b>Nidelva Floating Studios</b>",
+                desc: "Sustainable student shipping containers anchored alongside riverbanks."
             },
             {
                 coords: [69.6492, 18.9553],
-                title: "<b>Tromsø Arctic Perimeter</b>",
-                desc: "Deep north viewport tracking 1 high-insulation space capsule pod outcropping."
+                title: "<b>Aurora Capsule Base</b>",
+                desc: "Deep-arctic insulated pods engineered with skylight viewing panes."
             }
         ];
 
-        // Loop through array elements to cleanly draw vectors on the live canvas window
-        landmarks.forEach(landmark => {
-            const pin = L.marker(landmark.coords).addTo(map);
-            pin.bindPopup(`${landmark.title}<br>${landmark.desc}`);
+        // Store Leaflet marker instances
+        const markerInstances = [];
+        const bounds = [];
+
+        // Add markers to map
+        landmarks.forEach((landmark, index) => {
+            const marker = L.marker(landmark.coords).addTo(map);
+            marker.bindPopup(`${landmark.title}<br>${landmark.desc}`);
+            markerInstances.push(marker);
+            bounds.push(landmark.coords);
         });
-        
-        // Auto-open first central pin layout target configuration link stack cleanly
-        L.marker([59.9115, 10.7579]).addTo(map).bindPopup("<b>Oslo Sentralstasjon Core Hub</b><br>Proximity anchor for 4 Cyber Capsule Pod configurations.").openPopup();
+
+        // Automatically frame all markers nicely on initial load
+        map.fitBounds(bounds, { padding: [50, 50] });
+
+        // Connect HTML Cards to Leaflet Map (Fly-to zoom on Hover/Click)
+        const cards = document.querySelectorAll('.structure-card');
+        cards.forEach(card => {
+            const index = card.getAttribute('data-index');
+            const target = landmarks[index];
+
+            const focusOnMarker = () => {
+                map.flyTo(target.coords, 12, { duration: 1.2 });
+                markerInstances[index].openPopup();
+            };
+
+            card.addEventListener('mouseenter', focusOnMarker);
+            card.addEventListener('click', focusOnMarker);
+        });
     </script>
 </body>
 </html>
+
+        
