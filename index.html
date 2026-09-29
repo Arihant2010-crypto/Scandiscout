@@ -24,13 +24,12 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
         
-        /* Minimal Sidebar Layout */
+        /* Sidebar Layout */
         .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 24px; z-index: 100; display: flex; flex-direction: column; justify-content: space-between; }
         .sidebar-top h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
         .sidebar-top h2::before { content: ''; display: inline-block; width: 6px; height: 24px; background: var(--accent-blue); border-radius: 4px; }
         .sidebar-top p { color: var(--text-muted); font-size: 13px; line-height: 1.6; margin: 0 0 24px 0; }
         
-        /* Navigation Sidebar Actions */
         .sidebar-nav { width: 100%; display: flex; flex-direction: column; gap: 12px; }
         .nav-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: rgba(56, 189, 248, 0.1); color: var(--accent-blue); text-decoration: none; padding: 12px; font-size: 14px; font-weight: 700; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.2); transition: all 0.2s; text-align: center; }
         .nav-btn:hover { background: var(--accent-blue); color: var(--bg-dark); }
@@ -38,20 +37,19 @@
         .nav-btn.purple-btn { background: rgba(192, 132, 252, 0.1); color: var(--accent-purple); border-color: rgba(192, 132, 252, 0.2); }
         .nav-btn.purple-btn:hover { background: var(--accent-purple); color: var(--bg-dark); }
 
-        /* Main Layout Content */
+        /* Main Content */
         .main-content { margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); max-width: 1250px; }
         
         .header-section { margin-bottom: 36px; }
         .header-section h1 { font-size: 32px; font-weight: 800; margin: 0 0 12px 0; }
         .header-section p { color: var(--text-muted); font-size: 15px; margin: 0; }
         
-        /* Portals Directories Grid */
+        /* Directories Grid */
         .directories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
         .directory-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; min-height: 320px; }
         .directory-card h3 { margin: 0 0 12px 0; font-size: 18px; font-weight: 800; }
         .directory-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin: 0 0 24px 0; flex-grow: 1; }
         
-        /* Fixed 3-Button Link Stack */
         .btn-stack { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: auto; }
         .btn { display: block; width: 100%; text-align: center; text-decoration: none; padding: 12px; font-size: 13px; font-weight: 600; border-radius: 8px; transition: 0.2s; border: none; cursor: pointer; box-sizing: border-box; }
         
@@ -64,26 +62,34 @@
         .btn.prices-purple { background: rgba(192, 132, 252, 0.05); color: var(--accent-purple); border: 1px solid rgba(192, 132, 252, 0.15); }
         .btn.prices-purple:hover { background: var(--accent-purple); color: var(--bg-dark); }
 
-        /* Integrated Operational Terminals */
+        /* Terminals */
         .terminal-section { background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 12px; padding: 30px; margin-bottom: 40px; scroll-margin-top: 30px; }
         .terminal-section.purple-variant { border-color: rgba(192, 132, 252, 0.2); background: #1a2236; }
         .router-title { font-size: 22px; font-weight: 800; margin: 0 0 6px 0; color: #ffffff; }
         .router-desc { color: var(--text-muted); font-size: 14px; margin: 0 0 20px 0; }
         
-        /* Skyscanner Style Grid Controls for Flight Section */
-        .skyscanner-controls { display: grid; grid-template-columns: 1fr 40px 1fr 160px; gap: 12px; align-items: end; margin-bottom: 24px; }
-        .input-group { display: flex; flex-direction: column; gap: 6px; }
-        .input-group label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .input-group select { width: 100%; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); padding: 14px 16px; border-radius: 8px; color: #ffffff; font-size: 14px; font-weight: 600; outline: none; cursor: pointer; }
-        .input-group select:focus { border-color: var(--accent-blue); }
+        /* Skyscanner Interactive Search Grid */
+        .skyscanner-controls { display: grid; grid-template-columns: 1fr 40px 1fr 160px; gap: 12px; align-items: end; margin-bottom: 24px; position: relative; }
         
-        .swap-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--accent-blue); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: background 0.2s; justify-self: center; }
+        .input-group { display: flex; flex-direction: column; gap: 6px; position: relative; }
+        .input-group label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-group input { width: 100%; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); padding: 14px 16px; border-radius: 8px; color: #ffffff; font-size: 14px; font-weight: 600; outline: none; transition: border-color 0.2s; }
+        .input-group input:focus { border-color: var(--accent-blue); }
+
+        /* Search Autocomplete Dropdown List */
+        .autocomplete-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: #0f172a; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px; margin-top: 6px; max-height: 220px; overflow-y: auto; z-index: 200; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .autocomplete-dropdown.active { display: block; }
+        .dropdown-item { padding: 12px 16px; cursor: pointer; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        .dropdown-item:hover { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); }
+        .dropdown-item .code-badge { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 700; color: var(--accent-blue); }
+        
+        .swap-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--accent-blue); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: background 0.2s; justify-self: center; margin-bottom: 4px; }
         .swap-btn:hover { background: rgba(255, 255, 255, 0.15); }
         
         .sky-search-btn { background: var(--accent-skyscanner); color: #ffffff; border: none; padding: 14px 16px; border-radius: 8px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; height: 48px; transition: background 0.2s; }
         .sky-search-btn:hover { background: #005bb5; }
 
-        /* Legacy Terminal Elements for Transit Engine */
+        /* Legacy Terminal Elements */
         .router-controls { display: grid; grid-template-columns: 2fr 2fr 1fr; gap: 16px; margin-bottom: 24px; }
         .router-select { width: 100%; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); padding: 14px 16px; border-radius: 8px; color: #ffffff; font-size: 14px; font-weight: 600; outline: none; }
         .router-btn { background: var(--accent-blue); color: #0f172a; border: none; font-size: 13px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -102,7 +108,7 @@
         .ticket-link-btn.yellow-btn { background: #eab308; color: #000000; }
         .ticket-link-btn:hover { opacity: 0.95; }
 
-        /* Flight Results List Layout inside terminal */
+        /* Flight Output Cards */
         .flight-results-container { width: 100%; display: flex; flex-direction: column; gap: 12px; }
         .flight-card-row { background: #141d2f; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; transition: border-color 0.2s; }
         .flight-card-row:hover { border-color: var(--accent-blue); }
@@ -199,32 +205,26 @@
             </div>
         </div>
 
-        <!-- Skyscanner Flight Explorer Component -->
+        <!-- Searchable Skyscanner Flight Terminal -->
         <div id="flight-router" class="terminal-section">
             <h2 class="router-title">✈️ Global Flight Routing Terminal</h2>
-            <p class="router-desc">Select your origin and destination below to generate real-time Skyscanner flight routes and estimates.</p>
+            <p class="router-desc">Type any city, country, or airport code to search global routes and launch Skyscanner.</p>
             
             <div class="skyscanner-controls">
                 <div class="input-group">
-                    <label for="flightOrigin">From (Origin)</label>
-                    <select id="flightOrigin">
-                        <option value="UK">United Kingdom (LON)</option>
-                        <option value="DE">Germany (FRA)</option>
-                        <option value="US">United States (JFK)</option>
-                        <option value="NL">Netherlands (AMS)</option>
-                        <option value="VN">Vietnam (HAN/SGN)</option>
-                    </select>
+                    <label for="originInput">From (Origin)</label>
+                    <input type="text" id="originInput" placeholder="Type origin airport or city..." autocomplete="off">
+                    <input type="hidden" id="originCode" value="LON">
+                    <div id="originDropdown" class="autocomplete-dropdown"></div>
                 </div>
 
                 <button class="swap-btn" type="button" onclick="swapFlightLocations()" title="Swap origin and destination">⇄</button>
 
                 <div class="input-group">
-                    <label for="flightDest">To (Destination)</label>
-                    <select id="flightDest">
-                        <option value="CPH">Copenhagen, DK (CPH)</option>
-                        <option value="OSL" selected>Oslo, NO (OSL)</option>
-                        <option value="ARN">Stockholm, SE (ARN)</option>
-                    </select>
+                    <label for="destInput">To (Destination)</label>
+                    <input type="text" id="destInput" placeholder="Type destination airport or city..." autocomplete="off">
+                    <input type="hidden" id="destCode" value="OSL">
+                    <div id="destDropdown" class="autocomplete-dropdown"></div>
                 </div>
 
                 <button type="button" class="sky-search-btn" onclick="executeFlightSearch()">Search Flights</button>
@@ -279,65 +279,162 @@
     </div>
 
     <script>
-        const flightDatabase = {
-            "UK-OSL": [
-                { airline: "SAS Scandinavian", departure: "07:20 LHR", arrival: "10:35 OSL", duration: "2h 15m (Direct)", price: "€78" },
-                { airline: "Norwegian Air", departure: "13:10 LGW", arrival: "16:20 OSL", duration: "2h 10m (Direct)", price: "€54" }
-            ],
-            "UK-CPH": [
-                { airline: "British Airways", departure: "08:00 LHR", arrival: "10:50 CPH", duration: "1h 50m (Direct)", price: "€82" },
-                { airline: "Ryanair", departure: "18:40 STN", arrival: "21:25 CPH", duration: "1h 45m (Direct)", price: "€29" }
-            ],
-            "UK-ARN": [
-                { airline: "SAS Scandinavian", departure: "10:15 LHR", arrival: "13:45 ARN", duration: "2h 30m (Direct)", price: "€89" }
-            ],
-            "DE-OSL": [
-                { airline: "Lufthansa", departure: "09:30 FRA", arrival: "11:35 OSL", duration: "2h 05m (Direct)", price: "€112" }
-            ]
-        };
+        /* Comprehensive Expanded Airport Database */
+        const airportsList = [
+            // Nordic Airports
+            { name: "Copenhagen Airport, Denmark", code: "CPH", city: "Copenhagen" },
+            { name: "Oslo Gardermoen Airport, Norway", code: "OSL", city: "Oslo" },
+            { name: "Stockholm Arlanda Airport, Sweden", code: "ARN", city: "Stockholm" },
+            { name: "Gothenburg Landvetter Airport, Sweden", code: "GOT", city: "Gothenburg" },
+            { name: "Bergen Airport Flesland, Norway", code: "BGO", city: "Bergen" },
+            { name: "Billund Airport, Denmark", code: "BLL", city: "Billund" },
+            { name: "Aarhus Airport, Denmark", code: "AAR", city: "Aarhus" },
+            { name: "Helsinki-Vantaa Airport, Finland", code: "HEL", city: "Helsinki" },
+            { name: "Reykjavik Keflavik Airport, Iceland", code: "KEF", city: "Reykjavik" },
+            
+            // Major European Hubs
+            { name: "London Heathrow Airport, UK", code: "LHR", city: "London" },
+            { name: "London Gatwick Airport, UK", code: "LGW", city: "London" },
+            { name: "London Stansted Airport, UK", code: "STN", city: "London" },
+            { name: "Frankfurt Airport, Germany", code: "FRA", city: "Frankfurt" },
+            { name: "Munich Airport, Germany", code: "MUC", city: "Munich" },
+            { name: "Berlin Brandenburg Airport, Germany", code: "BER", city: "Berlin" },
+            { name: "Amsterdam Airport Schiphol, Netherlands", code: "AMS", city: "Amsterdam" },
+            { name: "Paris Charles de Gaulle, France", code: "CDG", city: "Paris" },
+            { name: "Madrid Barajas Airport, Spain", code: "MAD", city: "Madrid" },
+            { name: "Barcelona El Prat Airport, Spain", code: "BCN", city: "Barcelona" },
+            { name: "Rome Fiumicino Airport, Italy", code: "FCO", city: "Rome" },
+            { name: "Zurich Airport, Switzerland", code: "ZRH", city: "Zurich" },
+            { name: "Vienna International Airport, Austria", code: "VIE", city: "Vienna" },
+            { name: "Dublin Airport, Ireland", code: "DUB", city: "Dublin" },
+
+            // North America & Asia
+            { name: "New York John F. Kennedy, USA", code: "JFK", city: "New York" },
+            { name: "Los Angeles International, USA", code: "LAX", city: "Los Angeles" },
+            { name: "Toronto Pearson, Canada", code: "YYZ", city: "Toronto" },
+            { name: "Hanoi Noi Bai, Vietnam", code: "HAN", city: "Hanoi" },
+            { name: "Ho Chi Minh Tan Son Nhat, Vietnam", code: "SGN", city: "Ho Chi Minh" },
+            { name: "Tokyo Haneda, Japan", code: "HND", city: "Tokyo" },
+            { name: "Singapore Changi, Singapore", code: "SIN", city: "Singapore" },
+            { name: "Dubai International, UAE", code: "DXB", city: "Dubai" }
+        ];
+
+        // Default initial selections
+        document.getElementById('originInput').value = "London Heathrow Airport, UK (LHR)";
+        document.getElementById('destInput').value = "Oslo Gardermoen Airport, Norway (OSL)";
+
+        function setupSearchableInput(inputId, codeId, dropdownId) {
+            const input = document.getElementById(inputId);
+            const hiddenCode = document.getElementById(codeId);
+            const dropdown = document.getElementById(dropdownId);
+
+            function filterResults() {
+                const query = input.value.toLowerCase().trim();
+                dropdown.innerHTML = '';
+                
+                if (!query) {
+                    dropdown.classList.remove('active');
+                    return;
+                }
+
+                const matches = airportsList.filter(ap => 
+                    ap.name.toLowerCase().includes(query) || 
+                    ap.code.toLowerCase().includes(query) ||
+                    ap.city.toLowerCase().includes(query)
+                );
+
+                if (matches.length === 0) {
+                    const customDiv = document.createElement('div');
+                    customDiv.className = 'dropdown-item';
+                    customDiv.innerHTML = `<span>Use raw text: "<strong>${input.value}</strong>"</span> <span class="code-badge">CUSTOM</span>`;
+                    customDiv.onclick = () => {
+                        hiddenCode.value = input.value.toUpperCase();
+                        dropdown.classList.remove('active');
+                    };
+                    dropdown.appendChild(customDiv);
+                } else {
+                    matches.forEach(ap => {
+                        const item = document.createElement('div');
+                        item.className = 'dropdown-item';
+                        item.innerHTML = `<span>${ap.name}</span> <span class="code-badge">${ap.code}</span>`;
+                        item.onclick = () => {
+                            input.value = `${ap.name} (${ap.code})`;
+                            hiddenCode.value = ap.code;
+                            dropdown.classList.remove('active');
+                        };
+                        dropdown.appendChild(item);
+                    });
+                }
+                dropdown.classList.add('active');
+            }
+
+            input.addEventListener('input', filterResults);
+            input.addEventListener('focus', filterResults);
+        }
+
+        setupSearchableInput('originInput', 'originCode', 'originDropdown');
+        setupSearchableInput('destInput', 'destCode', 'destDropdown');
+
+        // Close search menus when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.input-group')) {
+                document.querySelectorAll('.autocomplete-dropdown').forEach(d => d.classList.remove('active'));
+            }
+        });
 
         function swapFlightLocations() {
-            const originSelect = document.getElementById('flightOrigin');
-            const destSelect = document.getElementById('flightDest');
-            
-            const tempVal = originSelect.value;
-            if ([...destSelect.options].some(opt => opt.value === tempVal)) {
-                originSelect.value = destSelect.value;
-                destSelect.value = tempVal;
-                executeFlightSearch();
-            }
+            const originInput = document.getElementById('originInput');
+            const originCode = document.getElementById('originCode');
+            const destInput = document.getElementById('destInput');
+            const destCode = document.getElementById('destCode');
+
+            const tempInput = originInput.value;
+            const tempCode = originCode.value;
+
+            originInput.value = destInput.value;
+            originCode.value = destCode.value;
+
+            destInput.value = tempInput;
+            destCode.value = tempCode;
+
+            executeFlightSearch();
         }
 
         function executeFlightSearch() {
-            const origin = document.getElementById('flightOrigin').value;
-            const dest = document.getElementById('flightDest').value;
+            const originVal = document.getElementById('originCode').value || document.getElementById('originInput').value || 'LON';
+            const destVal = document.getElementById('destCode').value || document.getElementById('destInput').value || 'OSL';
             const display = document.getElementById('flightDisplay');
-            const routeKey = `${origin}-${dest}`;
 
-            const flights = flightDatabase[routeKey] || [
-                { airline: "SAS Regional", departure: "11:00 Connection", arrival: "14:15 Hub", duration: "3h 15m (1-Stop)", price: "€135" },
-                { airline: "Finnair Connection", departure: "15:20 Airport", arrival: "19:40 Hub", duration: "4h 20m (1-Stop)", price: "€158" }
-            ];
-
-            const bookingUrl = `https://www.skyscanner.com/transport/flights/${encodeURIComponent(origin)}/${encodeURIComponent(dest)}/`;
+            const bookingUrl = `https://www.skyscanner.com/transport/flights/${encodeURIComponent(originVal)}/${encodeURIComponent(destVal)}/`;
 
             display.innerHTML = `
                 <div class="flight-results-container">
-                    ${flights.map(flight => `
-                        <div class="flight-card-row">
-                            <div class="flight-card-left">
-                                <div class="flight-airline">${flight.airline}</div>
-                                <div class="flight-times">
-                                    <strong>${flight.departure} ➔${flight.arrival}</strong>
-                                    <span>${flight.duration}</span>
-                                </div>
-                            </div>
-                            <div class="flight-card-right">
-                                <div class="flight-price">${flight.price}</div>
-                                <a href="${bookingUrl}" target="_blank" class="ticket-link-btn">Book Flight ↗</a>
+                    <div class="flight-card-row">
+                        <div class="flight-card-left">
+                            <div class="flight-airline">SAS Scandinavian</div>
+                            <div class="flight-times">
+                                <strong>${originVal} ➔ ${destVal}</strong>
+                                <span>Direct Express Flight</span>
                             </div>
                         </div>
-                    `).join('')}
+                        <div class="flight-card-right">
+                            <div class="flight-price">Check Rates</div>
+                            <a href="${bookingUrl}" target="_blank" class="ticket-link-btn">Search on Skyscanner ↗</a>
+                        </div>
+                    </div>
+                    <div class="flight-card-row">
+                        <div class="flight-card-left">
+                            <div class="flight-airline">Norwegian Air</div>
+                            <div class="flight-times">
+                                <strong>${originVal} ➔ ${destVal}</strong>
+                                <span>Budget Connection</span>
+                            </div>
+                        </div>
+                        <div class="flight-card-right">
+                            <div class="flight-price">Check Rates</div>
+                            <a href="${bookingUrl}" target="_blank" class="ticket-link-btn">Search on Skyscanner ↗</a>
+                        </div>
+                    </div>
                 </div>`;
         }
 
