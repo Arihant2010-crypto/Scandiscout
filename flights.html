@@ -3,309 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScandiScout - Premium Nordic Hub</title>
+    <title>ScandiScout - Skyscanner Flight Finder</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-dark: #0b111e;
-            --bg-sidebar: #131c2e;
-            --bg-card: #19253d;
+            --bg-dark: #0f172a;
+            --bg-sidebar: #1e293b;
+            --bg-card: #1e293b;
             --text-main: #f8fafc;
-            --text-muted: #64748b;
+            --text-muted: #94a3b8;
             --accent-blue: #38bdf8;
-            --accent-green: #10b981;
-            --accent-purple: #c084fc;
-            
-            /* Country Border Accents */
-            --dk-red: #ef4444;
-            --se-yellow: #eab308;
-            --no-blue: #2563eb;
-            
+            --accent-skyscanner: #0770e3;
             --sidebar-width: 280px;
         }
+
         * { box-sizing: border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; display: flex; min-height: 100vh; }
-        
-        /* Modernized Sidebar */
-        .sidebar { width: var(--sidebar-width); position: fixed; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid rgba(255, 255, 255, 0.03); padding: 40px 24px; z-index: 100; display: flex; flex-direction: column; justify-content: space-between; }
-        .sidebar-top h2 { color: var(--text-main); font-size: 26px; font-weight: 800; margin: 0 0 12px 0; display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
-        .sidebar-top h2::before { content: ''; display: inline-block; width: 6px; height: 26px; background: linear-gradient(to bottom, var(--accent-blue), var(--accent-purple)); border-radius: 4px; }
-        .sidebar-top p { color: #94a3b8; font-size: 13px; line-height: 1.6; margin: 0 0 30px 0; }
-        
-        /* Sidebar Navigation Action Buttons */
-        .sidebar-nav { width: 100%; display: flex; flex-direction: column; gap: 14px; }
-        .nav-btn { display: flex; align-items: center; justify-content: space-between; width: 100%; background: rgba(255, 255, 255, 0.02); color: #cbd5e1; text-decoration: none; padding: 14px 18px; font-size: 14px; font-weight: 700; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
-        .nav-btn .icon-box { display: flex; align-items: center; gap: 10px; }
-        .nav-btn::after { content: '→'; opacity: 0; transform: translateX(-5px); transition: all 0.2s; }
-        .nav-btn:hover { background: rgba(255, 255, 255, 0.07); color: #ffffff; border-color: rgba(255, 255, 255, 0.12); }
-        .nav-btn:hover::after { opacity: 1; transform: translateX(0); }
-        
-        .nav-btn.active-blue { border-left: 3px solid var(--accent-blue); background: rgba(56, 189, 248, 0.03); }
-        .nav-btn.active-purple { border-left: 3px solid var(--accent-purple); background: rgba(192, 132, 252, 0.03); }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+        }
 
-        /* Main Content Container */
-        .main-content { margin-left: var(--sidebar-width); padding: 60px 50px; width: calc(100% - var(--sidebar-width)); max-width: 1300px; }
-        
-        /* Large Featured Header Banner Layout */
-        .hero-banner { background: linear-gradient(135deg, #1e294b 0%, #0f172a 100%); border: 1px solid rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 20px; margin-bottom: 30px; position: relative; overflow: hidden; }
-        .hero-banner h1 { font-size: 36px; font-weight: 800; margin: 0 0 12px 0; letter-spacing: -1px; background: linear-gradient(to right, #ffffff, #cbd5e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-banner p { color: #94a3b8; font-size: 16px; margin: 0; max-width: 650px; line-height: 1.6; }
+        /* Sidebar Navigation */
+        .sidebar {
+            width: var(--sidebar-width);
+            position: fixed;
+            height: 100vh;
+            background: var(--bg-sidebar);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 30px 24px;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
 
-        /* Global Flight Router Section */
-        .flight-router-section { background: #111b2e; border: 1px solid rgba(56, 189, 248, 0.1); border-radius: 16px; padding: 30px; margin-bottom: 44px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .router-title { font-size: 22px; font-weight: 800; margin: 0 0 8px 0; display: flex; align-items: center; gap: 10px; color: #ffffff; }
-        .router-desc { color: #94a3b8; font-size: 14px; margin: 0 0 20px 0; }
-        
-        .router-controls { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; margin-bottom: 24px; position: relative; }
-        .search-wrapper { position: relative; }
-        .router-input, .router-select { width: 100%; background: #19253d; border: 1px solid rgba(255, 255, 255, 0.08); padding: 14px 16px; border-radius: 8px; color: #ffffff; font-size: 14px; font-weight: 600; outline: none; transition: border-color 0.2s; }
-        .router-input:focus, .router-select:focus { border-color: var(--accent-blue); }
-        
-        /* Dropdown Search Results */
-        .search-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: #19253d; border: 1px solid rgba(255,255,255,0.1); border-top: none; border-radius: 0 0 8px 8px; max-height: 220px; overflow-y: auto; z-index: 50; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        .dropdown-item { padding: 12px 16px; cursor: pointer; font-size: 14px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.02); display: flex; align-items: center; gap: 10px; }
-        .dropdown-item:hover { background: rgba(56, 189, 248, 0.1); color: var(--accent-blue); }
-        
-        .router-btn { background: var(--accent-blue); color: #0b111e; border: none; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
-        .router-btn:hover { opacity: 0.9; }
+        .sidebar h2 { color: var(--text-main); font-size: 24px; font-weight: 800; margin-top: 0; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
+        .sidebar h2::before { content: ''; display: inline-block; width: 8px; height: 24px; background: var(--accent-blue); border-radius: 4px; }
+        .sidebar a { display: block; color: var(--text-muted); text-decoration: none; padding: 12px 16px; font-weight: 600; font-size: 15px; border-radius: 8px; margin-bottom: 8px; transition: all 0.2s ease; }
+        .sidebar a:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
 
-        /* Output Terminal Screen */
-        .terminal-display { background: #070c16; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.05); padding: 20px; min-height: 100px; display: flex; align-items: center; justify-content: center; }
-        .terminal-placeholder { color: #475569; font-size: 14px; font-style: italic; text-align: center; width: 100%; }
-        
-        /* Layout Grid for Flight Results Row */
-        .route-data { width: 100%; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; align-items: center; }
-        .data-block { display: flex; flex-direction: column; gap: 4px; }
-        .data-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #475569; font-weight: 700; }
-        .data-value { font-size: 16px; font-weight: 700; color: #ffffff; }
-        .data-value.highlight-blue { color: var(--accent-blue); }
-        .data-value.highlight-purple { color: var(--accent-purple); }
+        /* Main Workspace */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 50px;
+            width: 100%;
+            max-width: 1100px;
+            box-sizing: border-box;
+        }
 
-        /* Ticket Action Redirect Link Button Styling */
-        .ticket-link-btn { display: inline-flex; align-items: center; justify-content: center; background: var(--accent-blue); color: #0b111e; text-decoration: none; font-weight: 800; font-size: 13px; padding: 12px 16px; border-radius: 8px; text-transform: uppercase; text-align: center; transition: all 0.2s; border: none; cursor: pointer; width: 100%; }
-        .ticket-link-btn:hover { background: #7dd3fc; transform: translateY(-1px); }
-        
-        /* Asymmetric Directory Cards Layout */
-        .directories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
-        .directory-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 30px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(0,0,0,0.2); position: relative; }
-        .directory-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
-        
-        .directory-card::before { content: ''; position: absolute; top: 0; left: 30px; right: 30px; height: 4px; border-radius: 0 0 4px 4px; }
-        .directory-card.dk-card::before { background: var(--dk-red); }
-        .directory-card.se-card::before { background: var(--se-yellow); }
-        .directory-card.no-card::before { background: var(--no-blue); }
-        
-        .directory-card h3 { margin: 10px 0 14px 0; font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
-        .directory-card p { color: #94a3b8; font-size: 14px; line-height: 1.6; margin: 0 0 28px 0; flex-grow: 1; }
-        
-        .btn-stack { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-        .btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; text-decoration: none; padding: 12px; font-size: 13px; font-weight: 700; border-radius: 8px; transition: all 0.2s; border: none; }
-        
-        .btn.map-grey { background: rgba(255, 255, 255, 0.04); color: #e2e8f0; border: 1px solid rgba(255, 255, 255, 0.06); }
-        .btn.map-grey:hover { background: rgba(255, 255, 255, 0.12); }
-        
-        .btn.stay-green { background: rgba(16, 185, 129, 0.06); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.12); }
-        .btn.stay-green:hover { background: var(--accent-green); color: #000000; }
+        /* Skyscanner Search Panel Box */
+        .search-widget {
+            background: #141b2e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
 
-        .btn.prices-purple { background: rgba(192, 132, 252, 0.06); color: var(--accent-purple); border: 1px solid rgba(192, 132, 252, 0.12); }
-        .btn.prices-purple:hover { background: var(--accent-purple); color: #000000; }
+        .search-grid {
+            display: grid;
+            grid-template-columns: 1fr 40px 1fr 160px;
+            gap: 12px;
+            align-items: center;
+        }
 
-        @media (max-width: 1150px) { .router-controls { grid-template-columns: 1fr; } .directories-grid { grid-template-columns: repeat(2, 1fr); } .route-data { grid-template-columns: 1fr; gap: 16px; } }
-        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 40px 20px; } .directories-grid { grid-template-columns: 1fr; } .hero-banner { padding: 30px 20px; } }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-group label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group select {
+            background: #1e293b;
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 16px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .input-group select:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .swap-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--accent-blue);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 18px;
+            transition: background 0.2s;
+        }
+
+        .swap-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .search-btn {
+            background: var(--accent-skyscanner);
+            color: #ffffff;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 18px;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .search-btn:hover {
+            background: #005bb5;
+            transform: translateY(-1px);
+        }
+
+        /* Flight Results List */
+        .results-section h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .flight-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: border-color 0.2s;
+        }
+
+        .flight-card:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .route-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .airline {
+            font-weight: 700;
+            color: var(--accent-blue);
+            min-width: 120px;
+        }
+
+        .time-location {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .time-location span {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .price-tag {
+            font-size: 22px;
+            font-weight: 800;
+            color: #10b981;
+        }
+
+        @media (max-width: 960px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; position: relative; height: auto; padding: 20px; }
+            .main-content { margin-left: 0; padding: 30px 20px; }
+            .search-grid { grid-template-columns: 1fr; }
+            .swap-btn { margin: 0 auto; transform: rotate(90deg); }
+        }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <div class="sidebar-top">
-            <h2>ScandiScout</h2>
-            <p>High-end platform for tracking student apartments, structural housing networks, and connections across the North.</p>
-            
-            <div class="sidebar-nav">
-                <a href="flights.html" class="nav-btn active-blue">
-                    <span class="icon-box">✈️ <span>Custom Flight Router</span></span>
-                </a>
-                <a href="transport.html" class="nav-btn active-purple">
-                    <span class="icon-box">🚆 <span>Transit &amp; Ferries</span></span>
-                </a>
-            </div>
-        </div>
+        <h2>ScandiScout</h2>
+        <a href="index.html">← Back Home</a>
+        <a href="denmark/index.html">Denmark Guide</a>
+        <a href="norway/index.html">Norway Guide</a>
+        <a href="sweden/index.html">Sweden Guide</a>
+        <a href="flights.html" style="color: var(--accent-blue);">Flight Finder</a>
     </div>
 
     <div class="main-content">
-        <div class="hero-banner">
-            <h1>Nordic Exploration Dashboard</h1>
-            <p>Navigate the official structural maps, coordinate city-to-city commuter lanes, and track local student lease index baselines across Scandinavia.</p>
+        <h1>Scandic Flight Finder</h1>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Select your departure location and Scandinavian destination to view real-time estimates.</p>
+
+        <!-- Skyscanner Style Finder Box -->
+        <div class="search-widget">
+            <div class="search-grid">
+                <div class="input-group">
+                    <label for="origin-country">From (Origin)</label>
+                    <select id="origin-country">
+                        <option value="UK">United Kingdom (LON)</option>
+                        <option value="DE">Germany (FRA)</option>
+                        <option value="US">United States (JFK)</option>
+                        <option value="NL">Netherlands (AMS)</option>
+                    </select>
+                </div>
+
+                <button class="swap-btn" onclick="swapLocations()" title="Swap origin and destination">⇄</button>
+
+                <div class="input-group">
+                    <label for="destination-country">To (Destination)</label>
+                    <select id="destination-country">
+                        <option value="DK">Denmark (CPH)</option>
+                        <option value="NO" selected>Norway (OSL)</option>
+                        <option value="SE">Sweden (ARN)</option>
+                    </select>
+                </div>
+
+                <button class="search-btn" onclick="executeFlightSearch()">Search Flights</button>
+            </div>
         </div>
 
-        <div class="flight-router-section">
-            <h2 class="router-title">✈️ Global Flight Routing Terminal (196 Countries)</h2>
-            <p class="router-desc">Search for any country globally to plot and calculate algorithmic flight vectors, flight duration metrics, and corridor lines into Scandinavia.</p>
-            
-            <div class="router-controls">
-                <div class="search-wrapper">
-                    <input type="text" id="countrySearch" class="router-input" placeholder="Type to search all 196 countries (e.g., United States, Japan, Brazil...)" autocomplete="off">
-                    <div id="dropdownList" class="search-dropdown"></div>
-                </div>
-                <select id="destinationHub" class="router-select">
-                    <option value="CPH">Copenhagen, DK (CPH)</option>
-                    <option value="ARN">Stockholm, SE (ARN)</option>
-                    <option value="OSL">Oslo, NO (OSL)</option>
-                </select>
-                <button type="button" class="router-btn" onclick="calculateRoute()">Generate Route</button>
-            </div>
-
-            <div class="terminal-display" id="terminalDisplay">
-                <div class="terminal-placeholder">Select an origin country above and click "Generate Route" to display aviation metrics terminal stream...</div>
-            </div>
-        </div>
-
-        <div class="directories-grid">
-            <div class="directory-card dk-card">
-                <div>
-                    <h3>🇩🇰 Denmark Directory</h3>
-                    <p>Explore specialized student apartments, ultra-clean urban lofts, and budget studio networks across Copenhagen and Odense.</p>
-                </div>
-                <div class="btn-stack">
-                    <a href="./denmark/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
-                    <a href="./denmark/stay.html" class="btn stay-green">Where to Stay</a>
-                    <a href="./denmark/prices.html" class="btn prices-purple">💳 View Rental Prices</a>
-                </div>
-            </div>
-
-            <div class="directory-card se-card">
-                <div>
-                    <h3>🇸🇪 Sweden Directory</h3>
-                    <p>Look through design collective housing, eco-studios, and converted harbor architecture layouts throughout Stockholm and Malmö.</p>
-                </div>
-                <div class="btn-stack">
-                    <a href="./sweden/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
-                    <a href="./sweden/stay.html" class="btn stay-green">Where to Stay</a>
-                    <a href="./sweden/prices.html" class="btn prices-purple">💳 View Rental Prices</a>
-                </div>
-            </div>
-
-            <div class="directory-card no-card">
-                <div>
-                    <h3>🇳🇴 Norway Directory</h3>
-                    <p>Browse affordable modular housing setups, student flat collectives, and automated capsule systems near major university cores.</p>
-                </div>
-                <div class="btn-stack">
-                    <a href="./norway/index.html" class="btn map-grey">🗺️ Maps &amp; Structures</a>
-                    <a href="./norway/stay.html" class="btn stay-green">Where to Stay</a>
-                    <a href="./norway/prices.html" class="btn prices-purple">💳 View Rental Prices</a>
-                </div>
+        <!-- Dynamic Results Panel -->
+        <div class="results-section">
+            <h3>Available Route Deals</h3>
+            <div id="flight-results-list">
+                <!-- Javascript injects routes here based on selection -->
             </div>
         </div>
     </div>
 
     <script>
-        const countries = [
-            "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
-            "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan",
-            "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
-            "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo (Congo-Brazzaville)", "Costa Rica",
-            "Croatia", "Cuba", "Cyprus", "Czechia (Czech Republic)", "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador",
-            "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France",
-            "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau",
-            "Guyana", "Haiti", "Holy See", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq",
-            "Ireland", "Israel", "Italy", "Ivory Coast", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati",
-            "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania",
-            "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius",
-            "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar (Burma)", "Namibia",
-            "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway",
-            "Oman", "Pakistan", "Palau", "Palestine State", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland",
-            "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino",
-            "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands",
-            "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland",
-            "Syria", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey",
-            "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu",
-            "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
-        ];
+        const flightDatabase = {
+            "UK-NO": [
+                { airline: "SAS Scandinavian", departure: "07:20 LHR", arrival: "10:35 OSL", duration: "2h 15m (Direct)", price: "€78" },
+                { airline: "Norwegian Air", departure: "13:10 LGW", arrival: "16:20 OSL", duration: "2h 10m (Direct)", price: "€54" }
+            ],
+            "UK-DK": [
+                { airline: "British Airways", departure: "08:00 LHR", arrival: "10:50 CPH", duration: "1h 50m (Direct)", price: "€82" },
+                { airline: "Ryanair", departure: "18:40 STN", arrival: "21:25 CPH", duration: "1h 45m (Direct)", price: "€29" }
+            ],
+            "UK-SE": [
+                { airline: "SAS Scandinavian", departure: "10:15 LHR", arrival: "13:45 ARN", duration: "2h 30m (Direct)", price: "€89" }
+            ],
+            "DE-NO": [
+                { airline: "Lufthansa", departure: "09:30 FRA", arrival: "11:35 OSL", duration: "2h 05m (Direct)", price: "€112" }
+            ]
+        };
 
-        const searchInput = document.getElementById('countrySearch');
-        const dropdownList = document.getElementById('dropdownList');
+        function executeFlightSearch() {
+            const origin = document.getElementById('origin-country').value;
+            const destination = document.getElementById('destination-country').value;
+            const routeKey = `${origin}-${destination}`;
+            const resultsContainer = document.getElementById('flight-results-list');
 
-        searchInput.addEventListener('input', () => {
-            const val = searchInput.value.toLowerCase();
-            dropdownList.innerHTML = '';
-            if (!val) {
-                dropdownList.style.display = 'none';
-                return;
-            }
+            const flights = flightDatabase[routeKey] || [
+                { airline: "SAS Regional", departure: "11:00 Regional", arrival: "14:15 Hub", duration: "3h 15m (1-Stop)", price: "€135" }
+            ];
 
-            const filtered = countries.filter(c => c.toLowerCase().includes(val));
-            if (filtered.length > 0) {
-                filtered.forEach(country => {
-                    const item = document.createElement('div');
-                    item.className = 'dropdown-item';
-                    item.textContent = country;
-                    item.addEventListener('click', () => {
-                        searchInput.value = country;
-                        dropdownList.style.display = 'none';
-                    });
-                    dropdownList.appendChild(item);
-                });
-                dropdownList.style.display = 'block';
-            } else {
-                dropdownList.style.display = 'none';
-            }
-        });
-
-        document.addEventListener('click', (e) => {
-            if (e.target !== searchInput) {
-                dropdownList.style.display = 'none';
-            }
-        });
-
-        function calculateRoute() {
-            const origin = searchInput.value.trim();
-            const destination = document.getElementById('destinationHub').value;
-            const display = document.getElementById('terminalDisplay');
-
-            if (!origin || !countries.map(c => c.toLowerCase()).includes(origin.toLowerCase())) {
-                display.innerHTML = `<div class="terminal-placeholder" style="color: #ef4444;">⚠️ Entry Error: Please input or select a valid country from the 196 official sovereign state registry.</div>`;
-                return;
-            }
-
-            const seed = origin.length + destination.length;
-            const distance = Math.floor((seed * 117) % 9000) + 650; 
-            const speed = 820; 
-            const durationHours = Math.floor(distance / speed);
-            const durationMinutes = Math.floor(((distance / speed) % 1) * 60);
-            const trackingId = "SK-" + Math.floor(100000 + Math.random() * 900000);
-            
-            // Clean values for Skyscanner query parameters
-            const urlOrigin = encodeURIComponent(origin.toLowerCase());
-            const urlDest = encodeURIComponent(destination.toLowerCase());
-            const redirectUrl = `https://www.skyscanner.com/transport/flights/${urlOrigin}/${urlDest}/`;
-
-            display.innerHTML = `
-                <div class="route-data">
-                    <div class="data-block">
-                        <div class="data-label">Active Aviation Vector</div>
-                        <div class="data-value highlight-blue">${origin} ➔ ${destination}</div>
+            resultsContainer.innerHTML = flights.map(flight => `
+                <div class="flight-card">
+                    <div class="route-info">
+                        <div class="airline">${flight.airline}</div>
+                        <div class="time-location">
+                            <strong>${flight.departure} → ${flight.arrival}</strong>
+                            <span>${flight.duration}</span>
+                        </div>
                     </div>
-                    <div class="data-block">
-                        <div class="data-label">Est. Linear Distance</div>
-                        <div class="data-value">${distance.toLocaleString()} km</div>
-                    </div>
-                    <div class="data-block">
-                        <div class="data-label">Est. Air Time</div>
-                        <div class="data-value highlight-purple">${durationHours}h ${durationMinutes}m</div>
-                    </div>
-                    <div class="data-block">
-                        <div class="data-label">Corridor Track ID</div>
-                        <div class="data-value" style="font-family: monospace; color: #10b981;">${trackingId}</div>
-                    </div>
-                    <div class="data-block">
-                        <a href="${redirectUrl}" target="_blank" rel="noopener noreferrer" class="ticket-link-btn">Find Flights ↗</a>
-                    </div>
+                    <div class="price-tag">${flight.price}</div>
                 </div>
-            `;
+            `).join('');
         }
+
+        function swapLocations() {
+            const originSelect = document.getElementById('origin-country');
+            const destSelect = document.getElementById('destination-country');
+            
+            const tempVal = originSelect.value;
+            // Check if swapped value exists in destination dropdown options
+            if ([...destSelect.options].some(opt => opt.value === tempVal)) {
+                originSelect.value = destSelect.value;
+                destSelect.value = tempVal;
+                executeFlightSearch();
+            }
+        }
+
+        // Initialize default search on page load
+        window.onload = executeFlightSearch;
     </script>
 </body>
 </html>
