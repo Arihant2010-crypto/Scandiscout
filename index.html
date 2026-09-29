@@ -17,6 +17,7 @@
             --accent-blue: #38bdf8;
             --accent-green: #10b981;
             --accent-purple: #c084fc;
+            --accent-skyscanner: #0770e3;
             --sidebar-width: 280px;
         }
         * { box-sizing: border-box; }
@@ -69,9 +70,22 @@
         .router-title { font-size: 22px; font-weight: 800; margin: 0 0 6px 0; color: #ffffff; }
         .router-desc { color: var(--text-muted); font-size: 14px; margin: 0 0 20px 0; }
         
-        .router-controls { display: grid; grid-template-columns: 2fr 2fr 1fr; gap: 16px; margin-bottom: 24px; }
-        .router-input, .router-select { width: 100%; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); padding: 14px 16px; border-radius: 8px; color: #ffffff; font-size: 14px; font-weight: 600; outline: none; }
+        /* Skyscanner Style Grid Controls for Flight Section */
+        .skyscanner-controls { display: grid; grid-template-columns: 1fr 40px 1fr 160px; gap: 12px; align-items: end; margin-bottom: 24px; }
+        .input-group { display: flex; flex-direction: column; gap: 6px; }
+        .input-group label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-group select { width: 100%; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); padding: 14px 16px; border-radius: 8px; color: #ffffff; font-size: 14px; font-weight: 600; outline: none; cursor: pointer; }
+        .input-group select:focus { border-color: var(--accent-blue); }
         
+        .swap-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--accent-blue); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: background 0.2s; justify-self: center; }
+        .swap-btn:hover { background: rgba(255, 255, 255, 0.15); }
+        
+        .sky-search-btn { background: var(--accent-skyscanner); color: #ffffff; border: none; padding: 14px 16px; border-radius: 8px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; height: 48px; transition: background 0.2s; }
+        .sky-search-btn:hover { background: #005bb5; }
+
+        /* Legacy Terminal Elements for Transit Engine */
+        .router-controls { display: grid; grid-template-columns: 2fr 2fr 1fr; gap: 16px; margin-bottom: 24px; }
+        .router-select { width: 100%; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); padding: 14px 16px; border-radius: 8px; color: #ffffff; font-size: 14px; font-weight: 600; outline: none; }
         .router-btn { background: var(--accent-blue); color: #0f172a; border: none; font-size: 13px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
         .router-btn.purple-btn { background: var(--accent-purple); }
         .router-btn:hover { opacity: 0.9; }
@@ -88,6 +102,18 @@
         .ticket-link-btn.yellow-btn { background: #eab308; color: #000000; }
         .ticket-link-btn:hover { opacity: 0.95; }
 
+        /* Flight Results List Layout inside terminal */
+        .flight-results-container { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+        .flight-card-row { background: #141d2f; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; transition: border-color 0.2s; }
+        .flight-card-row:hover { border-color: var(--accent-blue); }
+        .flight-card-left { display: flex; align-items: center; gap: 20px; }
+        .flight-airline { font-weight: 700; color: var(--accent-blue); min-width: 140px; font-size: 14px; }
+        .flight-times { display: flex; flex-direction: column; gap: 2px; }
+        .flight-times strong { font-size: 14px; color: #ffffff; }
+        .flight-times span { font-size: 12px; color: var(--text-muted); }
+        .flight-card-right { display: flex; align-items: center; gap: 20px; }
+        .flight-price { font-size: 18px; font-weight: 800; color: var(--accent-green); }
+
         /* Secondary Grid Lists */
         .secondary-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
         .info-card { background: #141d2f; border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 24px; }
@@ -103,7 +129,16 @@
         .info-item .val { color: var(--text-muted); }
 
         @media (max-width: 1024px) { .directories-grid, .secondary-info-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } .directories-grid, .router-controls, .secondary-info-grid { grid-template-columns: 1fr; } .route-data { grid-template-columns: 1fr; gap: 16px; } }
+        @media (max-width: 768px) { 
+            body { flex-direction: column; } 
+            .sidebar { width: 100%; position: relative; height: auto; padding: 30px 20px; } 
+            .main-content { margin-left: 0; width: 100%; padding: 30px 20px; } 
+            .directories-grid, .skyscanner-controls, .router-controls, .secondary-info-grid { grid-template-columns: 1fr; } 
+            .swap-btn { margin: 0 auto; transform: rotate(90deg); }
+            .route-data { grid-template-columns: 1fr; gap: 16px; } 
+            .flight-card-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .flight-card-right { width: 100%; justify-content: space-between; }
+        }
     </style>
 </head>
 <body>
@@ -164,20 +199,39 @@
             </div>
         </div>
 
+        <!-- Skyscanner Flight Explorer Component -->
         <div id="flight-router" class="terminal-section">
             <h2 class="router-title">✈️ Global Flight Routing Terminal</h2>
-            <p class="router-desc">Input your regional departure location to parse structural flight metrics and open direct ticket windows.</p>
-            <div class="router-controls">
-                <input type="text" id="flightOrigin" class="router-input" placeholder="Type departure country (e.g., Vietnam)...">
-                <select id="flightDest" class="router-select">
-                    <option value="CPH">Copenhagen, DK (CPH)</option>
-                    <option value="ARN">Stockholm, SE (ARN)</option>
-                    <option value="OSL">Oslo, NO (OSL)</option>
-                </select>
-                <button type="button" class="router-btn" onclick="executeFlightSearch()">Generate Route</button>
+            <p class="router-desc">Select your origin and destination below to generate real-time Skyscanner flight routes and estimates.</p>
+            
+            <div class="skyscanner-controls">
+                <div class="input-group">
+                    <label for="flightOrigin">From (Origin)</label>
+                    <select id="flightOrigin">
+                        <option value="UK">United Kingdom (LON)</option>
+                        <option value="DE">Germany (FRA)</option>
+                        <option value="US">United States (JFK)</option>
+                        <option value="NL">Netherlands (AMS)</option>
+                        <option value="VN">Vietnam (HAN/SGN)</option>
+                    </select>
+                </div>
+
+                <button class="swap-btn" type="button" onclick="swapFlightLocations()" title="Swap origin and destination">⇄</button>
+
+                <div class="input-group">
+                    <label for="flightDest">To (Destination)</label>
+                    <select id="flightDest">
+                        <option value="CPH">Copenhagen, DK (CPH)</option>
+                        <option value="OSL" selected>Oslo, NO (OSL)</option>
+                        <option value="ARN">Stockholm, SE (ARN)</option>
+                    </select>
+                </div>
+
+                <button type="button" class="sky-search-btn" onclick="executeFlightSearch()">Search Flights</button>
             </div>
+
             <div class="terminal-display" id="flightDisplay">
-                <div class="terminal-placeholder">Specify parameters and execute routing protocols...</div>
+                <div class="terminal-placeholder">Specify parameters and execute flight search...</div>
             </div>
         </div>
 
@@ -225,34 +279,65 @@
     </div>
 
     <script>
+        const flightDatabase = {
+            "UK-OSL": [
+                { airline: "SAS Scandinavian", departure: "07:20 LHR", arrival: "10:35 OSL", duration: "2h 15m (Direct)", price: "€78" },
+                { airline: "Norwegian Air", departure: "13:10 LGW", arrival: "16:20 OSL", duration: "2h 10m (Direct)", price: "€54" }
+            ],
+            "UK-CPH": [
+                { airline: "British Airways", departure: "08:00 LHR", arrival: "10:50 CPH", duration: "1h 50m (Direct)", price: "€82" },
+                { airline: "Ryanair", departure: "18:40 STN", arrival: "21:25 CPH", duration: "1h 45m (Direct)", price: "€29" }
+            ],
+            "UK-ARN": [
+                { airline: "SAS Scandinavian", departure: "10:15 LHR", arrival: "13:45 ARN", duration: "2h 30m (Direct)", price: "€89" }
+            ],
+            "DE-OSL": [
+                { airline: "Lufthansa", departure: "09:30 FRA", arrival: "11:35 OSL", duration: "2h 05m (Direct)", price: "€112" }
+            ]
+        };
+
+        function swapFlightLocations() {
+            const originSelect = document.getElementById('flightOrigin');
+            const destSelect = document.getElementById('flightDest');
+            
+            const tempVal = originSelect.value;
+            if ([...destSelect.options].some(opt => opt.value === tempVal)) {
+                originSelect.value = destSelect.value;
+                destSelect.value = tempVal;
+                executeFlightSearch();
+            }
+        }
+
         function executeFlightSearch() {
-            const origin = document.getElementById('flightOrigin').value.trim();
+            const origin = document.getElementById('flightOrigin').value;
             const dest = document.getElementById('flightDest').value;
             const display = document.getElementById('flightDisplay');
-            if(!origin) { display.innerHTML = `<div class="terminal-placeholder" style="color:var(--accent-blue);">Please enter a departure country.</div>`; return; }
+            const routeKey = `${origin}-${dest}`;
 
-            const trackingId = "SK-" + Math.floor(100000 + Math.random() * 900000);
-            const bookingUrl = `https://www.skyscanner.com/transport/flights/${encodeURIComponent(origin)}/${dest}/`;
+            const flights = flightDatabase[routeKey] || [
+                { airline: "SAS Regional", departure: "11:00 Connection", arrival: "14:15 Hub", duration: "3h 15m (1-Stop)", price: "€135" },
+                { airline: "Finnair Connection", departure: "15:20 Airport", arrival: "19:40 Hub", duration: "4h 20m (1-Stop)", price: "€158" }
+            ];
+
+            const bookingUrl = `https://www.skyscanner.com/transport/flights/${encodeURIComponent(origin)}/${encodeURIComponent(dest)}/`;
 
             display.innerHTML = `
-                <div class="route-data">
-                    <div class="data-block">
-                        <div class="data-label">Active Aviation Vector</div>
-                        <div class="data-value" style="color:var(--accent-blue);">${origin} ➔ ${dest}</div>
-                    </div>
-                    <div class="data-block">
-                        <div class="data-label">Est. Linear Distance</div>
-                        <div class="data-value">2,990 km</div>
-                    </div>
-                    <div class="data-block">
-                        <div class="data-label">Est Air Time</div>
-                        <div class="data-value" style="color:var(--accent-purple);">3h 38m</div>
-                    </div>
-                    <div class="data-block">
-                        <div class="data-label">Corridor Track ID</div>
-                        <div class="data-value" style="color:var(--accent-green); font-family: monospace;">${trackingId}</div>
-                    </div>
-                    <a href="${bookingUrl}" target="_blank" class="ticket-link-btn">Find Flights ↗</a>
+                <div class="flight-results-container">
+                    ${flights.map(flight => `
+                        <div class="flight-card-row">
+                            <div class="flight-card-left">
+                                <div class="flight-airline">${flight.airline}</div>
+                                <div class="flight-times">
+                                    <strong>${flight.departure} ➔${flight.arrival}</strong>
+                                    <span>${flight.duration}</span>
+                                </div>
+                            </div>
+                            <div class="flight-card-right">
+                                <div class="flight-price">${flight.price}</div>
+                                <a href="${bookingUrl}" target="_blank" class="ticket-link-btn">Book Flight ↗</a>
+                            </div>
+                        </div>
+                    `).join('')}
                 </div>`;
         }
 
